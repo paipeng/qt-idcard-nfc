@@ -50,3 +50,4 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+build-qt-idcard-nfc-Desktop_Qt_5_12_12_MSVC2017_64bit-Debug/
