@@ -13,6 +13,7 @@ public:
 
 public:
     void initDB();
+    void close();
 
     void insert();
     void query();

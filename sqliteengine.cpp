@@ -6,9 +6,10 @@
 #include <QSqlQuery>
 #include <QDebug>
 
+static QSqlDatabase temp;
 SqliteEngine::SqliteEngine(QObject *parent) : QObject(parent) {
 #if 1
-    QSqlDatabase temp = QSqlDatabase::addDatabase("QSQLITE");
+    temp = QSqlDatabase::addDatabase("QSQLITE");
     database = &temp;
 #else
     database = new QSqlDatabase();
@@ -21,8 +22,13 @@ SqliteEngine::SqliteEngine(QObject *parent) : QObject(parent) {
 }
 
 SqliteEngine::~SqliteEngine() {
-    database->close();
+    close();
     //delete database;
+}
+
+void SqliteEngine::close() {
+    //database->close();
+    temp.close();
 }
 
 

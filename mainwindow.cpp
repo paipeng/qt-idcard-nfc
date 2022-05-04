@@ -4,15 +4,13 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
+    , ui(new Ui::MainWindow) {
     ui->setupUi(this);
     sqliteEngine = new SqliteEngine();
     //sqliteEngine->initDB();
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete sqliteEngine;
     delete ui;
 }
