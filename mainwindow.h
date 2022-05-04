@@ -16,6 +16,11 @@ public:
     ~MainWindow();
 private:
     void initDB();
+
+
+private slots:
+    void insert();
+    void query();
 private:
     Ui::MainWindow *ui;
 };

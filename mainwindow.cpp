@@ -30,8 +30,6 @@ void MainWindow::initDB() {
         database.setPassword("123456");
     }
 
-
-
     if (!database.open()) {
         qDebug() << "Error: Failed to connect database." << database.lastError();
     } else {
@@ -47,5 +45,35 @@ void MainWindow::initDB() {
         qDebug() << "Table created!";
     }
 
-    database.close();
+    //database.close();
+}
+
+
+void MainWindow::insert() {
+    qDebug() << "SQLite insert";
+    QSqlQuery sql_query;
+    QString insert_sql = "insert into idcard values (?, ?, ?)";
+    sql_query.prepare(insert_sql);
+    sql_query.addBindValue(2);
+    sql_query.addBindValue("Peng");
+    sql_query.addBindValue(100);
+    if(!sql_query.exec()) {
+        qDebug() << sql_query.lastError();
+    } else {
+        qDebug() << "inserted!";
+    }
+}
+void MainWindow::query() {
+    qDebug() << "SQLite query";
+    QSqlQuery sql_query;
+    QString select_sql = "select id, name from idcard";
+    if(!sql_query.exec(select_sql)) {
+        qDebug()<<sql_query.lastError();
+    } else {
+        while(sql_query.next()) {
+            int id = sql_query.value(0).toInt();
+            QString name = sql_query.value(1).toString();
+            qDebug()<<QString("id:%1    name:%2").arg(id).arg(name);
+        }
+    }
 }
