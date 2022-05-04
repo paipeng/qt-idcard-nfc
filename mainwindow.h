@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "sqliteengine.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,5 +24,6 @@ private slots:
     void query();
 private:
     Ui::MainWindow *ui;
+    SqliteEngine * sqliteEngine;
 };
 #endif // MAINWINDOW_H
