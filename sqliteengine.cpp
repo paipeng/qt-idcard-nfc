@@ -84,27 +84,10 @@ QList<IdCard> SqliteEngine::query() {
             QString name = sql_query.value(1).toString();
             QString expireDate = sql_query.value(2).toString();
             QDate date = QDate::fromString(expireDate, "yyyy-MM-dd");
-            //qDebug() << "expireDate: " << expireDate << " date: " << date;
             IdCard idCard(id, name);
-            //IdCard idcard;
-            //qDebug()<<QString("id:%1    name:%2").arg(id).arg(name);
-            //idCard.setExpireDateStr(expireDate);
             idCard.setExpireDate(date);
             idCards.append(idCard);
-            //qDebug() << "address: " << &idCard;
-            //qDebug() << " XXX " << idCard.getId() << " >> " << idCard.getName() << " expire: " << idCard.getExpireDate() << "  " << &idCard;
-
-
-            IdCard temp = idCards.at(0);
-            //qDebug() << " XXX2 " << temp.getId() << " >> " << temp.getName() << " expire: " << temp.getExpireDate() << "  " << &temp;
-
         }
-#if 0
-        foreach(IdCard idCard, idCards ) {
-            qDebug() << "address: " << &idCard;
-            qDebug() << "YYY " << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate();
-        }
-#endif
         return idCards;
     }
 }
