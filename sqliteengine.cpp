@@ -84,8 +84,7 @@ QList<IdCard> SqliteEngine::query() {
             QString name = sql_query.value(1).toString();
             QString expireDate = sql_query.value(2).toString();
             QDate date = QDate::fromString(expireDate, "yyyy-MM-dd");
-            IdCard idCard(id, name);
-            idCard.setExpireDate(date);
+            IdCard idCard(id, name, date);
             idCards.append(idCard);
         }
         return idCards;
