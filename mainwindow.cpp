@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     sqliteEngine = new SqliteEngine();
     //sqliteEngine->initDB();
     initTableView();
+    query();
 }
 
 MainWindow::~MainWindow() {
@@ -29,6 +30,7 @@ void MainWindow::insert() {
     IdCard idCard(ui->nameLineEdit->text(), date);
 
     idCard.setCompany(ui->companyLineEdit->text());
+    idCard.setSerialNumber(ui->serialNumberLineEdit->text());
 
     qDebug() << "insert: " << idCard.getExpireDate();
 
@@ -36,36 +38,52 @@ void MainWindow::insert() {
 }
 
 void MainWindow::query() {
-    QStandardItemModel *model = new QStandardItemModel();
+    QStandardItemModel *model;
 
-    model->setColumnCount(4);
+    model = (QStandardItemModel*)ui->tableView->model();
+    if (model == NULL) {
+        model = new QStandardItemModel();
+    } else {
+        model->clear();
+    }
+    model->setColumnCount(5);
     model->setHeaderData(0,Qt::Horizontal,tr("id"));
-    model->setHeaderData(1,Qt::Horizontal,tr("name"));
-    model->setHeaderData(2,Qt::Horizontal,tr("company"));
-    model->setHeaderData(3,Qt::Horizontal,tr("expire"));
+    model->setHeaderData(1,Qt::Horizontal,tr("serial_number"));
+    model->setHeaderData(2,Qt::Horizontal,tr("name"));
+    model->setHeaderData(3,Qt::Horizontal,tr("company"));
+    model->setHeaderData(4,Qt::Horizontal,tr("expire"));
 
     const QList<IdCard> idCards = sqliteEngine->query();
     QStandardItem * item = NULL;
     qDebug() << "idCards count: " << idCards.size();
+    int index = 0;
     foreach(IdCard idCard, idCards ) {
-        int index = idCards.indexOf(idCard);
-        qDebug() << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate() << " " << idCard.getCompany();
+        //int index = idCards.indexOf(idCard);
+        qDebug() << index << "  -- " << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate() << " " << idCard.getCompany();
         item = new QStandardItem(QString("%1").arg(idCard.getId()));
         model->setItem(index, 0, item);
-        item = new QStandardItem(QString("%1").arg(idCard.getName()));
+
+        item = new QStandardItem(QString("%1").arg(idCard.getSerialNumber()));
         model->setItem(index, 1, item);
-        //item = new QStandardItem(QString("%1").arg(idCard.getCompany()));
-        //model->setItem(index, 2, item);
-        //item = new QStandardItem(QString("%1").arg(idCard.getExpireDate().toString("yyyy-MM-dd")));
-        //model->setItem(index, 3, item);
+        item = new QStandardItem(QString("%1").arg(idCard.getName()));
+        model->setItem(index, 2, item);
+        item = new QStandardItem(QString("%1").arg(idCard.getCompany()));
+        model->setItem(index, 3, item);
+        item = new QStandardItem(QString("%1").arg(idCard.getExpireDate().toString("yyyy-MM-dd")));
+        model->setItem(index, 4, item);
+        //break;
+        index ++;
     }
+    //model->setItem(0, 0, new QStandardItem(QString("%1").arg(1212)));
+
 
     ui->tableView->setModel(model);
-    ui->tableView->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter);
-    ui->tableView->setColumnWidth(0,101);
-    ui->tableView->setColumnWidth(1,102);
-    ui->tableView->setShowGrid(true);
-    ui->tableView->show();
+    //ui->tableView->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter);
+
+    //ui->tableView->setColumnWidth(0,101);
+    //ui->tableView->setColumnWidth(1,102);
+    //ui->tableView->setShowGrid(true);
+    //ui->tableView->show();
 }
 
 void MainWindow::initTableView() {
@@ -76,6 +94,7 @@ void MainWindow::initTableView() {
     model->setHeaderData(2,Qt::Horizontal,tr("expire"));
 
 
+    model->setItem(0, 0, new QStandardItem(QString("%1").arg(1212)));
     ui->tableView->setModel(model);
 
     ui->tableView->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);

@@ -32,6 +32,7 @@ IdCard::IdCard(const IdCard &other):IdCard(NULL) {
     setName(other.name);
     setExpireDate(other.expireDate);
     setCompany(other.company);
+    setSerialNumber(other.serialNumber);
 }
 
 void IdCard::setName(QString name) {
@@ -69,6 +70,16 @@ void IdCard::setCompany(QString company) {
 }
 QString IdCard::getCompany() {
     return this->company;
+}
+
+const QString &IdCard::getSerialNumber() const
+{
+    return serialNumber;
+}
+
+void IdCard::setSerialNumber(const QString &newSerialNumber)
+{
+    serialNumber = newSerialNumber;
 }
 
 bool IdCard::operator==(const IdCard &other) const{

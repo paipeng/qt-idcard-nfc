@@ -27,6 +27,9 @@ public:
     void setCompany(QString company);
     QString getCompany();
 
+    const QString &getSerialNumber() const;
+    void setSerialNumber(const QString &newSerialNumber);
+
 signals:
 
 private:
@@ -34,6 +37,7 @@ private:
 
     QString name;
     QString company;
+    QString serialNumber;
     QDate expireDate;
 };
 
