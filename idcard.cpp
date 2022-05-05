@@ -11,6 +11,11 @@ IdCard::IdCard(): IdCard(NULL) {
 
 }
 
+IdCard::IdCard(long id, QString name) {
+    setId(id);
+    setName(name);
+}
+
 IdCard::IdCard(long id, QString name, const QDate& expireDate):IdCard(NULL) {
     setId(id);
     setName(name);
@@ -23,9 +28,9 @@ IdCard::IdCard(QString name, const QDate& expireDate):IdCard(NULL) {
 }
 
 IdCard::IdCard(const IdCard &other):IdCard(NULL) {
-
     setId(other.id);
     setName(other.name);
+    setExpireDate(other.expireDate);
 }
 
 void IdCard::setName(QString name) {
@@ -42,14 +47,17 @@ long IdCard::getId() {
     return this->id;
 }
 
-void IdCard::setExpireDate(const QDate &date) {
+void IdCard::setExpireDate(QDate date) {
     //date.
-    qDebug() << "setExpireDate:" << date;
-    this->expireDate = date;
-     qDebug() << "setExpireDate:" << expireDate;
+    //qDebug() << "setExpireDate:" << date;
+    //this->expireDate = date.toString("yyyy-MM-dd");//QDate::fromString(date.toString("yyyy-MM-dd"), "yyyy-MM-dd");
+    //qDebug() << "setExpireDate:" << expireDate;
+    //this->expireDate = date;
+    this->expireDate = date;//QDate::fromString(date.toString("yyyy-MM-dd"), "yyyy-MM-dd");
 }
 const QDate IdCard::getExpireDate() {
-    return this->expireDate;
+    //qDebug() << "getExpireDate: " << &expireDate;
+    return expireDate;//QDate::fromString(expireDate, "yyyy-MM-dd");;
 }
 
 bool IdCard::operator==(const IdCard &other) const{

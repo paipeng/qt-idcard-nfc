@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QTableView>
-#include <QStandardItem>>
+#include <QStandardItem>
 
 #include <QDebug>
 
@@ -35,25 +35,28 @@ void MainWindow::insert() {
 }
 
 void MainWindow::query() {
-    QList<IdCard> idCards = sqliteEngine->query();
     QStandardItemModel *model = new QStandardItemModel();
 
-    model->setColumnCount(2);
+    model->setColumnCount(3);
     model->setHeaderData(0,Qt::Horizontal,tr("id"));
     model->setHeaderData(1,Qt::Horizontal,tr("name"));
+    model->setHeaderData(2,Qt::Horizontal,tr("expire"));
 
+    const QList<IdCard> idCards = sqliteEngine->query();
     QStandardItem * item = NULL;
     foreach(IdCard idCard, idCards ) {
         int index = idCards.indexOf(idCard);
-        qDebug() << idCard.getId() << " " << idCard.getName();
+        qDebug() << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate();
         item = new QStandardItem(QString("%1").arg(idCard.getId()));
         model->setItem(index, 0, item);
         item = new QStandardItem(QString("%1").arg(idCard.getName()));
         model->setItem(index, 1, item);
+        item = new QStandardItem(QString("%1").arg(idCard.getExpireDate().toString("yyyy-MM-dd")));
+        model->setItem(index, 2, item);
     }
 
     ui->tableView->setModel(model);
-    ui->tableView->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+    ui->tableView->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter);
     ui->tableView->setColumnWidth(0,101);
     ui->tableView->setColumnWidth(1,102);
     ui->tableView->setShowGrid(true);
@@ -65,6 +68,7 @@ void MainWindow::initTableView() {
     model->setColumnCount(2);
     model->setHeaderData(0,Qt::Horizontal,tr("id"));
     model->setHeaderData(1,Qt::Horizontal,tr("name"));
+    model->setHeaderData(2,Qt::Horizontal,tr("expire"));
 
 
     ui->tableView->setModel(model);
