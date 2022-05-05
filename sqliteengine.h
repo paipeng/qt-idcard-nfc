@@ -16,7 +16,7 @@ public:
     void initDB();
     void close();
 
-    void insert();
+    void insert(IdCard &idCard);
     QList<IdCard> query();
 
 signals:

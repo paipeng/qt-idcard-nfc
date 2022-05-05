@@ -21,7 +21,17 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::insert() {
-    sqliteEngine->insert();
+    qDebug() << "insert: " << ui->nameLineEdit->text();
+
+    ui->expireDateEdit->date();
+    ;
+    const QDate date = ui->expireDateEdit->date();
+    IdCard idCard(ui->nameLineEdit->text(), date);
+
+
+    qDebug() << "insert: " << idCard.getExpireDate();
+
+    sqliteEngine->insert(idCard);
 }
 
 void MainWindow::query() {

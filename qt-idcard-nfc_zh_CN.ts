@@ -19,12 +19,20 @@
         <translation type="unfinished">查询</translation>
     </message>
     <message>
+        <location filename="mainwindow.ui" line="96"/>
+        <source>expire</source>
+        <translation type="unfinished">过期日期</translation>
+    </message>
+    <message>
         <location filename="mainwindow.cpp" line="32"/>
+        <location filename="mainwindow.cpp" line="56"/>
         <source>id</source>
         <translation type="unfinished">序号</translation>
     </message>
     <message>
+        <location filename="mainwindow.ui" line="63"/>
         <location filename="mainwindow.cpp" line="33"/>
+        <location filename="mainwindow.cpp" line="57"/>
         <source>name</source>
         <translation type="unfinished">姓名</translation>
     </message>

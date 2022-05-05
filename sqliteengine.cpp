@@ -45,7 +45,7 @@ void SqliteEngine::initDB() {
     }
 
     QSqlQuery sql_query;
-    QString create_sql = "create table idcard (id int primary key, name varchar(30), expire int)";
+    QString create_sql = "create table idcard (id INTEGER primary key AUTOINCREMENT, name varchar(30) not null, expire date not null)";
     sql_query.prepare(create_sql);
     if(!sql_query.exec()) {
         qDebug() << "Error: Fail to create table." << sql_query.lastError();
@@ -54,19 +54,20 @@ void SqliteEngine::initDB() {
     }
 }
 
-void SqliteEngine::insert() {
-    qDebug() << "SQLite insert";
+void SqliteEngine::insert(IdCard& idCard) {
+    qDebug() << "SQLite insert: " << idCard.getExpireDate() << " name: " << idCard.getName();
     QSqlQuery sql_query;
-    QString insert_sql = "insert into idcard values (?, ?, ?)";
+    QString insert_sql = "insert into idcard(name, expire) values (:name, :expire)";
     sql_query.prepare(insert_sql);
-    sql_query.addBindValue(2);
-    sql_query.addBindValue("Peng");
-    sql_query.addBindValue(100);
+    sql_query.bindValue(":name", idCard.getName());
+    sql_query.bindValue(":expire", idCard.getExpireDate());
+
     if(!sql_query.exec()) {
         qDebug() << sql_query.lastError();
     } else {
         qDebug() << "inserted!";
     }
+    qDebug() << sql_query.lastQuery();
 }
 QList<IdCard> SqliteEngine::query() {
     qDebug() << "SQLite query";
@@ -81,7 +82,9 @@ QList<IdCard> SqliteEngine::query() {
         while(sql_query.next()) {
             long id = sql_query.value(0).toLongLong();
             QString name = sql_query.value(1).toString();
-            IdCard idCard(id, name);
+            QString expireDate = sql_query.value(2).toString();
+            QDate date = QDate::currentDate();
+            IdCard idCard(id, name, date);
             //IdCard idcard;
             //qDebug()<<QString("id:%1    name:%2").arg(id).arg(name);
             idCards.append(idCard);

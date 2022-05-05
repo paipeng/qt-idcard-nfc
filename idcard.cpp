@@ -1,22 +1,32 @@
 #include "idcard.h"
-#if 1
-IdCard::IdCard(QObject *parent) : QObject(parent)
-{
+
+#include <QDebug>
+
+
+IdCard::IdCard(QObject *parent) : QObject(parent), id(0) {
 
 }
-#endif
 
-IdCard::IdCard(long id, QString name):IdCard(NULL) {
+IdCard::IdCard(): IdCard(NULL) {
+
+}
+
+IdCard::IdCard(long id, QString name, const QDate& expireDate):IdCard(NULL) {
     setId(id);
     setName(name);
+    setExpireDate(expireDate);
 }
-#if 1
+
+IdCard::IdCard(QString name, const QDate& expireDate):IdCard(NULL) {
+    setName(name);
+    setExpireDate(expireDate);
+}
+
 IdCard::IdCard(const IdCard &other):IdCard(NULL) {
 
     setId(other.id);
     setName(other.name);
 }
-#endif
 
 void IdCard::setName(QString name) {
     this->name = name;
@@ -31,6 +41,17 @@ void IdCard::setId(long id) {
 long IdCard::getId() {
     return this->id;
 }
+
+void IdCard::setExpireDate(const QDate &date) {
+    //date.
+    qDebug() << "setExpireDate:" << date;
+    this->expireDate = date;
+     qDebug() << "setExpireDate:" << expireDate;
+}
+const QDate IdCard::getExpireDate() {
+    return this->expireDate;
+}
+
 bool IdCard::operator==(const IdCard &other) const{
     return this->id == other.id;
 };
