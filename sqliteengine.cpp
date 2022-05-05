@@ -68,17 +68,25 @@ void SqliteEngine::insert() {
         qDebug() << "inserted!";
     }
 }
-void SqliteEngine::query() {
+QList<IdCard> SqliteEngine::query() {
     qDebug() << "SQLite query";
+    QList<IdCard> idCards;
     QSqlQuery sql_query;
     QString select_sql = "select id, name from idcard";
     if(!sql_query.exec(select_sql)) {
         qDebug()<<sql_query.lastError();
+        return idCards;
     } else {
+
         while(sql_query.next()) {
-            int id = sql_query.value(0).toInt();
+            long id = sql_query.value(0).toLongLong();
             QString name = sql_query.value(1).toString();
-            qDebug()<<QString("id:%1    name:%2").arg(id).arg(name);
+            IdCard idCard(id, name);
+            //IdCard idcard;
+            //qDebug()<<QString("id:%1    name:%2").arg(id).arg(name);
+            idCards.append(idCard);
+            qDebug() << idCard.getId() << " >> " << idCard.getName();
         }
+        return idCards;
     }
 }

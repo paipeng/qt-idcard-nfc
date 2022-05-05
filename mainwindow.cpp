@@ -4,6 +4,8 @@
 #include <QTableView>
 #include <QStandardItem>>
 
+#include <QDebug>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow) {
@@ -23,7 +25,11 @@ void MainWindow::insert() {
 }
 
 void MainWindow::query() {
-    sqliteEngine->query();
+    QList<IdCard> idCards = sqliteEngine->query();
+
+    foreach(IdCard idCard, idCards ) {
+        qDebug() << idCard.getId() << " " << idCard.getName();
+    }
 }
 
 void MainWindow::initTableView() {
