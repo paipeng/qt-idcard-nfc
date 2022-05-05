@@ -28,6 +28,7 @@ void MainWindow::insert() {
     const QDate date = ui->expireDateEdit->date();
     IdCard idCard(ui->nameLineEdit->text(), date);
 
+    idCard.setCompany(ui->companyLineEdit->text());
 
     qDebug() << "insert: " << idCard.getExpireDate();
 
@@ -37,22 +38,26 @@ void MainWindow::insert() {
 void MainWindow::query() {
     QStandardItemModel *model = new QStandardItemModel();
 
-    model->setColumnCount(3);
+    model->setColumnCount(4);
     model->setHeaderData(0,Qt::Horizontal,tr("id"));
     model->setHeaderData(1,Qt::Horizontal,tr("name"));
-    model->setHeaderData(2,Qt::Horizontal,tr("expire"));
+    model->setHeaderData(2,Qt::Horizontal,tr("company"));
+    model->setHeaderData(3,Qt::Horizontal,tr("expire"));
 
     const QList<IdCard> idCards = sqliteEngine->query();
     QStandardItem * item = NULL;
+    qDebug() << "idCards count: " << idCards.size();
     foreach(IdCard idCard, idCards ) {
         int index = idCards.indexOf(idCard);
-        qDebug() << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate();
+        qDebug() << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate() << " " << idCard.getCompany();
         item = new QStandardItem(QString("%1").arg(idCard.getId()));
         model->setItem(index, 0, item);
         item = new QStandardItem(QString("%1").arg(idCard.getName()));
         model->setItem(index, 1, item);
-        item = new QStandardItem(QString("%1").arg(idCard.getExpireDate().toString("yyyy-MM-dd")));
-        model->setItem(index, 2, item);
+        //item = new QStandardItem(QString("%1").arg(idCard.getCompany()));
+        //model->setItem(index, 2, item);
+        //item = new QStandardItem(QString("%1").arg(idCard.getExpireDate().toString("yyyy-MM-dd")));
+        //model->setItem(index, 3, item);
     }
 
     ui->tableView->setModel(model);
