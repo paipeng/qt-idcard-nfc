@@ -31,3 +31,6 @@ void IdCard::setId(long id) {
 long IdCard::getId() {
     return this->id;
 }
+bool IdCard::operator==(const IdCard &other) const{
+    return this->id == other.id;
+};

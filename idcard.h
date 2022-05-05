@@ -10,7 +10,8 @@ public:
     explicit IdCard(QObject *parent = nullptr);
     IdCard(long id, QString name);
     IdCard(const IdCard &other);
-    IdCard &operator=(IdCard &other);
+    IdCard& operator=(const IdCard &other);
+    bool operator==(const IdCard &other) const;
 
     void setName(QString name);
     QString getName();
