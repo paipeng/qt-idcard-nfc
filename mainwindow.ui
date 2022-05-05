@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="insertPushButton">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>500</y>
+      <x>650</x>
+      <y>230</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -142,6 +142,19 @@
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="printPushButton">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>270</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>print</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -189,9 +202,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>printPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>print()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>687</x>
+     <y>304</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>insert()</slot>
   <slot>query()</slot>
+  <slot>print()</slot>
  </slots>
 </ui>

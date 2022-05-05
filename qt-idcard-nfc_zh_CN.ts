@@ -20,32 +20,38 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="96"/>
-        <location filename="mainwindow.cpp" line="52"/>
-        <location filename="mainwindow.cpp" line="89"/>
+        <location filename="mainwindow.cpp" line="54"/>
+        <location filename="mainwindow.cpp" line="94"/>
         <source>expire</source>
         <translation type="unfinished">过期日期</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="109"/>
-        <location filename="mainwindow.cpp" line="51"/>
+        <location filename="mainwindow.cpp" line="53"/>
         <source>company</source>
         <translation type="unfinished">公司</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="132"/>
+        <location filename="mainwindow.cpp" line="51"/>
         <source>serial_number</source>
         <translation type="unfinished">证卡序号</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="49"/>
-        <location filename="mainwindow.cpp" line="87"/>
+        <location filename="mainwindow.ui" line="155"/>
+        <source>print</source>
+        <translation type="unfinished">打印</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="50"/>
+        <location filename="mainwindow.cpp" line="92"/>
         <source>id</source>
         <translation type="unfinished">序号</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="63"/>
-        <location filename="mainwindow.cpp" line="50"/>
-        <location filename="mainwindow.cpp" line="88"/>
+        <location filename="mainwindow.cpp" line="52"/>
+        <location filename="mainwindow.cpp" line="93"/>
         <source>name</source>
         <translation type="unfinished">姓名</translation>
     </message>

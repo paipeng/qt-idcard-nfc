@@ -23,6 +23,7 @@ private slots:
     void insert();
     void query();
     void initTableView();
+    void print();
 private:
     Ui::MainWindow *ui;
     SqliteEngine * sqliteEngine;

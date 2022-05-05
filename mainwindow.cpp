@@ -107,3 +107,15 @@ void MainWindow::initTableView() {
     ui->tableView->setShowGrid(true);
 
 }
+
+void MainWindow::print() {
+    QItemSelectionModel *select = ui->tableView->selectionModel();
+    QModelIndexList selection = select->selectedRows();
+    qDebug() << "print " << selection;
+
+    for(int i=0; i< selection.count(); i++)
+    {
+        QModelIndex index = selection.at(i);
+        qDebug() << index.row();
+    }
+}
