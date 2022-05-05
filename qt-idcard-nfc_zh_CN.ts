@@ -20,19 +20,27 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="96"/>
+        <location filename="mainwindow.cpp" line="44"/>
+        <location filename="mainwindow.cpp" line="74"/>
         <source>expire</source>
         <translation type="unfinished">过期日期</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="32"/>
-        <location filename="mainwindow.cpp" line="56"/>
+        <location filename="mainwindow.ui" line="109"/>
+        <location filename="mainwindow.cpp" line="43"/>
+        <source>company</source>
+        <translation type="unfinished">公司</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="41"/>
+        <location filename="mainwindow.cpp" line="72"/>
         <source>id</source>
         <translation type="unfinished">序号</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="63"/>
-        <location filename="mainwindow.cpp" line="33"/>
-        <location filename="mainwindow.cpp" line="57"/>
+        <location filename="mainwindow.cpp" line="42"/>
+        <location filename="mainwindow.cpp" line="73"/>
         <source>name</source>
         <translation type="unfinished">姓名</translation>
     </message>

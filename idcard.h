@@ -24,12 +24,16 @@ public:
     void setExpireDate(QDate date);
     const QDate getExpireDate();
 
+    void setCompany(QString company);
+    QString getCompany();
+
 signals:
 
 private:
     long id;
 
     QString name;
+    QString company;
     QDate expireDate;
 };
 
