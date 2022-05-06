@@ -10,17 +10,19 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    barcodeencoder.cpp \
     idcard.cpp \
     main.cpp \
     mainwindow.cpp \
     sqliteengine.cpp
 
 HEADERS += \
+    barcodeencoder.h \
     idcard.h \
     mainwindow.h \
     sqliteengine.h
 
-
+# decoder/reader
 HEADERS += \
     zxing/BarcodeFormat.h \
     zxing/BitHacks.h \
@@ -37,6 +39,17 @@ HEADERS += \
     zxing/StructuredAppend.h \
     zxing/TextUtfEncoding.h \
     zxing/ZXContainerAlgorithms.h
+
+# encoder/writer
+HEADERS += \
+    zxing/Matrix.h \
+    zxing/BitMatrix.h \
+    zxing/CharacterSet.h \
+    zxing/CharacterSetECI.h \
+    zxing/ZXConfig.h \
+    zxing/MultiFormatWriter.h
+
+
 FORMS += \
     mainwindow.ui
 
