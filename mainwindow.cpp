@@ -4,6 +4,7 @@
 #include <QTableView>
 #include <QStandardItem>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QFile>
 
@@ -60,10 +61,14 @@ void MainWindow::query() {
     QStandardItem * item = NULL;
     qDebug() << "idCards count: " << idCards.size();
     int index = 0;
+
+    QJsonArray jsonArray;
+
     foreach(IdCard idCard, idCards ) {
         QJsonObject json;
         idCard.write(json);
         qDebug() << "json: " << json;
+        jsonArray.append(json);
 
         QJsonDocument document;
         document.setObject( json );
@@ -125,6 +130,27 @@ void MainWindow::query() {
         //break;
         index ++;
     }
+
+
+    QJsonDocument document;
+    document.setArray(jsonArray);
+    QByteArray bytes = document.toJson( QJsonDocument::Indented );
+    QString path = "C:\\pngsuite\\idcards.json";
+    QFile file( path );
+    if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
+    {
+        QTextStream iStream( &file );
+        iStream.setCodec( "utf-8" );
+        iStream << bytes;
+        file.close();
+    }
+    else
+    {
+        qDebug() << "file open failed: " << path << endl;
+    }
+
+
+
     //model->setItem(0, 0, new QStandardItem(QString("%1").arg(1212)));
 
 
