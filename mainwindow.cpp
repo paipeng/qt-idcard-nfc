@@ -4,6 +4,8 @@
 #include <QTableView>
 #include <QStandardItem>
 #include <QJsonObject>
+#include <QJsonDocument>
+#include <QFile>
 
 #include <QDebug>
 
@@ -62,9 +64,27 @@ void MainWindow::query() {
         QJsonObject json;
         idCard.write(json);
         qDebug() << "json: " << json;
-        //IdCard tt(NULL);
-        //tt.read(json);
-        //qDebug() << "json -> object: " << tt.toString();
+
+        QJsonDocument document;
+        document.setObject( json );
+        QByteArray bytes = document.toJson( QJsonDocument::Indented );
+        QString path = "C:\\pngsuite\\idcard.json";
+        QFile file( path );
+        if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
+        {
+            QTextStream iStream( &file );
+            iStream.setCodec( "utf-8" );
+            iStream << bytes;
+            file.close();
+        }
+        else
+        {
+            qDebug() << "file open failed: " << path << endl;
+        }
+
+        IdCard tt(NULL);
+        tt.read(json);
+        qDebug() << "json -> object: " << tt.getExpireDate();
         //int index = idCards.indexOf(idCard);
         qDebug() << index << "  -- " << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate() << " " << idCard.getCompany();
         item = new QStandardItem(QString("%1").arg(idCard.getId()));
