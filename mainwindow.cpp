@@ -3,6 +3,7 @@
 
 #include <QTableView>
 #include <QStandardItem>
+#include <QJsonObject>
 
 #include <QDebug>
 
@@ -58,6 +59,12 @@ void MainWindow::query() {
     qDebug() << "idCards count: " << idCards.size();
     int index = 0;
     foreach(IdCard idCard, idCards ) {
+        QJsonObject json;
+        idCard.write(json);
+        qDebug() << "json: " << json;
+        //IdCard tt(NULL);
+        //tt.read(json);
+        //qDebug() << "json -> object: " << tt.toString();
         //int index = idCards.indexOf(idCard);
         qDebug() << index << "  -- " << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate() << " " << idCard.getCompany();
         item = new QStandardItem(QString("%1").arg(idCard.getId()));
