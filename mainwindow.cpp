@@ -82,9 +82,33 @@ void MainWindow::query() {
             qDebug() << "file open failed: " << path << endl;
         }
 
-        IdCard tt(NULL);
-        tt.read(json);
-        qDebug() << "json -> object: " << tt.getExpireDate();
+
+        if( file.open( QIODevice::ReadOnly ) )
+        {
+            QByteArray bytes = file.readAll();
+            file.close();
+
+            QJsonParseError jsonError;
+            QJsonDocument document = QJsonDocument::fromJson( bytes, &jsonError );
+            if( jsonError.error != QJsonParseError::NoError )
+            {
+                qDebug() << "fromJson failed: " << jsonError.errorString() << endl;
+                return ;
+            }
+            if( document.isObject() )
+            {
+                QJsonObject jsonObj = document.object();
+                //...
+                IdCard tt(NULL);
+                tt.read(json);
+                qDebug() << "json -> object: " << tt.getExpireDate();
+            }
+        }
+
+
+
+
+
         //int index = idCards.indexOf(idCard);
         qDebug() << index << "  -- " << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate() << " " << idCard.getCompany();
         item = new QStandardItem(QString("%1").arg(idCard.getId()));
