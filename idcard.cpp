@@ -99,7 +99,7 @@ void IdCard::read(const QJsonObject &json) {
 }
 
 void IdCard::write(QJsonObject &json) const {
-    json["id"] = QJsonValue::fromVariant(QVariant::fromValue(id));
+    json["id"] = (int)id;//QJsonValue::fromVariant(QVariant::fromValue(id));
     json["name"] = name;
     json["company"] = company;
     json["expireDate"] = expireDate.toString(DATE_FORMAT);
