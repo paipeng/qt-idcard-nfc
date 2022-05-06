@@ -10,6 +10,8 @@
 
 #include <QDebug>
 
+#include "barcodeencoder.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow) {
@@ -18,6 +20,12 @@ MainWindow::MainWindow(QWidget *parent)
     //sqliteEngine->initDB();
     initTableView();
     query();
+
+
+
+    BarcodeEncoder barcodeEncoder;
+
+    barcodeEncoder.encode("TEST1234");
 }
 
 MainWindow::~MainWindow() {
