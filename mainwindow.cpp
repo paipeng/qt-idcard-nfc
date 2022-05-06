@@ -69,7 +69,7 @@ void MainWindow::query() {
         model->setItem(index, 2, item);
         item = new QStandardItem(QString("%1").arg(idCard.getCompany()));
         model->setItem(index, 3, item);
-        item = new QStandardItem(QString("%1").arg(idCard.getExpireDate().toString("yyyy-MM-dd")));
+        item = new QStandardItem(QString("%1").arg(idCard.getExpireDate().toString(DATE_FORMAT)));
         model->setItem(index, 4, item);
         //break;
         index ++;

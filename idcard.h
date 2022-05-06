@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QDate>
 
+#define DATE_FORMAT "yyyy-MM-dd"
+
 class IdCard : public QObject
 {
     Q_OBJECT
