@@ -1,7 +1,7 @@
 #include "idcard.h"
 
 #include <QDebug>
-
+#include <QJsonObject>
 
 IdCard::IdCard(QObject *parent) : QObject(parent), id(0) {
 
@@ -82,6 +82,33 @@ void IdCard::setSerialNumber(const QString &newSerialNumber)
     serialNumber = newSerialNumber;
 }
 
+void IdCard::read(const QJsonObject &json) {
+    if (json.contains("name") && json["name"].isString())
+        name = json["name"].toString();
+
+    if (json.contains("company") && json["company"].isString())
+        company = json["company"].toString();
+
+    if (json.contains("serialNumber") && json["serialNumber"].isString())
+        serialNumber = json["serialNumber"].toString();
+    if (json.contains("id") && json["id"].isDouble())
+        id = json["id"].toInt();
+    if (json.contains("expireDate") && json["expireDate"].isString())
+        this->expireDate = QDate::fromString(json["expireDate"].toString(), DATE_FORMAT);
+        //mClassType = ClassType(json["classType"].toInt());
+}
+
+void IdCard::write(QJsonObject &json) const {
+    json["id"] = QJsonValue::fromVariant(QVariant::fromValue(id));
+    json["name"] = name;
+    json["company"] = company;
+    json["expireDate"] = expireDate.toString(DATE_FORMAT);
+    json["serialNumber"] = serialNumber;
+}
+
+void IdCard::toString() {
+
+}
 bool IdCard::operator==(const IdCard &other) const{
     return this->id == other.id && this->name != other.name;
 };

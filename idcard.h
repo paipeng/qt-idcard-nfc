@@ -32,6 +32,10 @@ public:
     const QString &getSerialNumber() const;
     void setSerialNumber(const QString &newSerialNumber);
 
+    void read(const QJsonObject &json);
+    void write(QJsonObject &json) const;
+
+    void toString();
 signals:
 
 private:
