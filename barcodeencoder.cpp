@@ -87,7 +87,7 @@ QImage BarcodeEncoder::encodeToImage(const QString &data) {
 
         qDebug() << "qrcode size: " << bitmap.width() << "-" << bitmap.height();
 
-        QImage image(bitmap.width(),bitmap.height(), QImage::Format_ARGB32);
+        QImage image(bitmap.width(),bitmap.height(), QImage::Format_RGB888);
 
         for(int i=0;i<bitmap.height();++i){
             for(int j=0;j<bitmap.width();++j) {

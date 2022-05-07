@@ -145,11 +145,18 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
     // gen qrcode
     QImage qrCodeImage = BarcodeEncoder::encodeToImage(idCard.getSerialNumber());
 
-    image = HPDF_LoadRawImageFromMem(pdf, qrCodeImage.bits(), qrCodeImage.width(), qrCodeImage.height(), HPDF_CS_DEVICE_RGB, 32);
+    qrCodeImage.save("C:\\pngsuite\\qrcode_test.bmp");
 #if 0
+    uchar* ptr = qrCodeImage.bits();
+    for (int i = 0; i < qrCodeImage.height(); i++) {
+        for (int j = 0; j < qrCodeImage.width(); j++) {
+            qDebug() << ptr[i*qrCodeImage.width()+j];
+        }
+    }
+#endif
+    image = HPDF_LoadRawImageFromMem(pdf, qrCodeImage.bits(), qrCodeImage.width(), qrCodeImage.height(), HPDF_CS_DEVICE_RGB, 8);
 
     HPDF_Page_DrawImage (page, image, 400, HPDF_Page_GetHeight (page) - 200, qrCodeImage.width(), qrCodeImage.height());
-#endif
 
 
 
