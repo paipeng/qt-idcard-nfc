@@ -7,7 +7,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QFile>
-
+#include <QVariant>
 #include <QDebug>
 
 #include "barcodeencoder.h"
@@ -77,12 +77,7 @@ void MainWindow::query() {
 
     QJsonArray jsonArray;
 
-    PDFWriter pdfWriter;
     foreach(IdCard idCard, idCards ) {
-        QString fileName = "C:\\pngsuite\\idcard_";
-        fileName += idCard.getSerialNumber();
-        fileName += ".pdf";
-        pdfWriter.generateIdCard(idCard, fileName);
 #if 0
         QJsonObject json;
         idCard.write(json);
@@ -212,6 +207,36 @@ void MainWindow::print() {
     for(int i=0; i< selection.count(); i++)
     {
         QModelIndex index = selection.at(i);
-        qDebug() << index.row();
+        qDebug() << "selected row index: " << index.row() << "data: " << index.data();
+#if 0
+        QStandardItemModel *model = (QStandardItemModel*)ui->tableView->model();
+        QStandardItem *item = model->item(index.row(), 1);
+        qDebug() << "item: " << item;
+#endif
+        QVariant variant = index.data();
+        qDebug() << "variant: " << variant;
+        int value = 0;
+        qDebug() << "variant type: " << variant.type() << " value: " << variant.toString();
+        if (variant.type() == QVariant::Int) {
+            value = variant.toInt();
+        } else if (variant.type() == QVariant::String) {
+            value = variant.toString().toInt();
+        } else if (variant.type() == QVariant::Invalid) {
+            value = variant.toString().toInt();
+        }
+        //int value = variant.toInt();
+        IdCard idCard = sqliteEngine->getIdCardById(value);
+        if (idCard.getId() > 0) {
+            qDebug() << "print to pdf";
+            PDFWriter pdfWriter;
+
+            QString fileName = "C:\\pngsuite\\idcard_";
+            fileName += idCard.getSerialNumber();
+            fileName += ".pdf";
+            pdfWriter.generateIdCard(idCard, fileName);
+        }
     }
+
+
+
 }

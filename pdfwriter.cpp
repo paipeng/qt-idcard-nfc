@@ -146,7 +146,7 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
     HPDF_Page_SetRGBFill (page, 1.0, 0.0, 0.0);
     HPDF_Page_SetTextRenderingMode (page, HPDF_FILL);
     HPDF_Page_BeginText (page);
-    HPDF_Page_SetFontAndSize (page, font, 60);
+    HPDF_Page_SetFontAndSize (page, font, 40);
     HPDF_Page_MoveTextPos (page, 120, HPDF_Page_GetHeight (page) - 100);
     QString title("编码打印测试");
     HPDF_Page_ShowText (page, title.toStdString().data());

@@ -18,6 +18,7 @@ public:
 
     void insert(IdCard &idCard);
     QList<IdCard> query();
+    IdCard getIdCardById(long id);
 
 signals:
 private:
