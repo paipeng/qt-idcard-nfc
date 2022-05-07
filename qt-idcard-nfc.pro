@@ -1,6 +1,8 @@
 QT       += core gui
 QT       += sql
 
+QT += multimedia multimediawidgets
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -26,57 +28,60 @@ HEADERS += \
 
 # decoder/reader
 HEADERS += \
-    zxing/BarcodeFormat.h \
-    zxing/BitHacks.h \
-    zxing/ByteArray.h \
-    zxing/DecodeHints.h \
-    zxing/DecodeStatus.h \
-    zxing/Flags.h \
-    zxing/GTIN.h \
-    zxing/ImageView.h \
-    zxing/Point.h \
-    zxing/Quadrilateral.h \
-    zxing/ReadBarcode.h \
-    zxing/Result.h \
-    zxing/StructuredAppend.h \
-    zxing/TextUtfEncoding.h \
-    zxing/ZXContainerAlgorithms.h
+    include/zxing/BarcodeFormat.h \
+    include/zxing/BitHacks.h \
+    include/zxing/ByteArray.h \
+    include/zxing/DecodeHints.h \
+    include/zxing/DecodeStatus.h \
+    include/zxing/Flags.h \
+    include/zxing/GTIN.h \
+    include/zxing/ImageView.h \
+    include/zxing/Point.h \
+    include/zxing/Quadrilateral.h \
+    include/zxing/ReadBarcode.h \
+    include/zxing/Result.h \
+    include/zxing/StructuredAppend.h \
+    include/zxing/TextUtfEncoding.h \
+    include/zxing/ZXContainerAlgorithms.h
 
 # encoder/writer
 HEADERS += \
-    zxing/Matrix.h \
-    zxing/BitMatrix.h \
-    zxing/CharacterSet.h \
-    zxing/CharacterSetECI.h \
-    zxing/ZXConfig.h \
-    zxing/MultiFormatWriter.h
+    include/zxing/Matrix.h \
+    include/zxing/BitMatrix.h \
+    include/zxing/CharacterSet.h \
+    include/zxing/CharacterSetECI.h \
+    include/zxing/ZXConfig.h \
+    include/zxing/MultiFormatWriter.h
 
 # libharu
 HEADERS += \
-    libharu/hpdf.h \
-    libharu/hpdf_config.h \
-    libharu/hpdf_version.h \
-    libharu/hpdf_consts.h \
-    libharu/hpdf_doc.h \
-    libharu/hpdf_error.h \
-    libharu/hpdf_pdfa.h \
-    libharu/hpdf_catalog.h \
-    libharu/hpdf_objects.h \
-    libharu/hpdf_encoder.h \
-    libharu/hpdf_streams.h \
-    libharu/hpdf_list.h \
-    libharu/hpdf_types.h \
-    libharu/hpdf_mmgr.h \
-    libharu/hpdf_encrypt.h \
-    libharu/hpdf_image.h \
-    libharu/hpdf_pages.h \
-    libharu/hpdf_gstate.h \
-    libharu/hpdf_font.h \
-    libharu/hpdf_fontdef.h \
-    libharu/hpdf_ext_gstate.h \
-    libharu/hpdf_outline.h
+    include/libharu/hpdf.h \
+    include/libharu/hpdf_config.h \
+    include/libharu/hpdf_version.h \
+    include/libharu/hpdf_consts.h \
+    include/libharu/hpdf_doc.h \
+    include/libharu/hpdf_error.h \
+    include/libharu/hpdf_pdfa.h \
+    include/libharu/hpdf_catalog.h \
+    include/libharu/hpdf_objects.h \
+    include/libharu/hpdf_encoder.h \
+    include/libharu/hpdf_streams.h \
+    include/libharu/hpdf_list.h \
+    include/libharu/hpdf_types.h \
+    include/libharu/hpdf_mmgr.h \
+    include/libharu/hpdf_encrypt.h \
+    include/libharu/hpdf_image.h \
+    include/libharu/hpdf_pages.h \
+    include/libharu/hpdf_gstate.h \
+    include/libharu/hpdf_font.h \
+    include/libharu/hpdf_fontdef.h \
+    include/libharu/hpdf_ext_gstate.h \
+    include/libharu/hpdf_outline.h
 
 
+HEADERS += \
+    include/cpcamera/cpcamera.h \
+    include/cpcamera/cp-camera_global.h
 
 FORMS += \
     mainwindow.ui
@@ -91,12 +96,13 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libs/x64/release/ -lZXing -llibhpdf -llibpng16 -lzlib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libs/x64/debug/ -lZXing -llibhpdfd -llibpng16d -lzlibd
-else:unix: LIBS += -L$$PWD/libs/x64/ -lZXing -llibhpdf -llibpng16 -lzlib
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libs/x64/release/ -lZXing -llibhpdf -llibpng16 -lzlib -lcp-camera
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libs/x64/debug/ -lZXing -llibhpdfd -llibpng16d -lzlibd -lcp-camera
+else:unix: LIBS += -L$$PWD/libs/x64/ -lZXing -llibhpdf -llibpng16 -lzlib -lcp-camera
 
 INCLUDEPATH += $$PWD/libs/x64
 DEPENDPATH += $$PWD/libs/x64
-INCLUDEPATH += $$PWD/zxing
-INCLUDEPATH += $$PWD/libharu
+INCLUDEPATH += $$PWD/include/zxing
+INCLUDEPATH += $$PWD/include/libharu
+INCLUDEPATH += $$PWD/include/cpcamera
 

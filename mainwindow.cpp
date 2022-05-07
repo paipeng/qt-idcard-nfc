@@ -15,7 +15,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow) {
+    , ui(new Ui::MainWindow), camera1(0, this) {
     ui->setupUi(this);
     sqliteEngine = new SqliteEngine();
     //sqliteEngine->initDB();
@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     query();
 
 
+    initCameras();
 
     //BarcodeEncoder barcodeEncoder;
     //barcodeEncoder.encode("TEST1234");
@@ -236,7 +237,34 @@ void MainWindow::print() {
             pdfWriter.generateIdCard(idCard, fileName);
         }
     }
+}
+
+void MainWindow::initCameras() {
+    qDebug() << "initCameras";
+    const QList<QCameraInfo> availableCameras = CPCamera::getAvailableCamersInfos();
+
+    int index = 0;
+    for (const QCameraInfo &cameraInfo : availableCameras) {
+        qDebug() << "cameraInfo: " << cameraInfo.description();
+        //ui->camera1ComboBox->addItem(cameraInfo.description(), index);
+        //ui->camera2ComboBox->addItem(cameraInfo.description(), index);
+        index ++;
+    }
+}
+
+void MainWindow::startCamera1() {
+    qDebug() << "startCamera1";
+
+}
 
 
+
+void MainWindow::cameraState(int cameraId, int state) {
+
+}
+void MainWindow::processCapturedImage(int cameraId, const QImage& img) {
+
+}
+void MainWindow::cameraReadyForCapture(int cameraId, bool ready) {
 
 }
