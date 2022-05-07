@@ -24,13 +24,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    BarcodeEncoder barcodeEncoder;
+    //BarcodeEncoder barcodeEncoder;
+    //barcodeEncoder.encode("TEST1234");
 
-    barcodeEncoder.encode("TEST1234");
 
+    //PDFWriter pdfWriter;
+    //pdfWriter.test("C:\\pngsuite\\code.pdf");
 
-    PDFWriter pdfWriter;
-    pdfWriter.test("C:\\pngsuite\\code.pdf");
 }
 
 MainWindow::~MainWindow() {
@@ -77,7 +77,13 @@ void MainWindow::query() {
 
     QJsonArray jsonArray;
 
+    PDFWriter pdfWriter;
     foreach(IdCard idCard, idCards ) {
+        QString fileName = "C:\\pngsuite\\idcard_";
+        fileName += idCard.getSerialNumber();
+        fileName += ".pdf";
+        pdfWriter.generateIdCard(idCard, fileName);
+#if 0
         QJsonObject json;
         idCard.write(json);
         qDebug() << "json: " << json;
@@ -122,7 +128,7 @@ void MainWindow::query() {
                 qDebug() << "json -> object: " << tt.getExpireDate();
             }
         }
-
+#endif
 
 
 

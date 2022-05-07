@@ -73,6 +73,34 @@ int BarcodeEncoder::encode(QString data) {
     return 0;
 }
 
+QImage BarcodeEncoder::encodeToImage(const QString &data) {
+    BarcodeFormat format;
+    CharacterSet encoding = CharacterSet::UTF8;
+    format = BarcodeFormat::QRCode;
+
+    int width = 80, height = 80;
+    int margin = 0;
+    int eccLevel = -1;
+    try {
+        auto writer = MultiFormatWriter(format).setMargin(margin).setEncoding(encoding).setEccLevel(eccLevel);
+        auto bitmap = ToMatrix<uint8_t>(writer.encode(TextUtfEncoding::FromUtf8(data.toStdString()), width, height));
+
+        qDebug() << "qrcode size: " << bitmap.width() << "-" << bitmap.height();
+
+        QImage image(bitmap.width(),bitmap.height(), QImage::Format_ARGB32);
+
+        for(int i=0;i<bitmap.height();++i){
+            for(int j=0;j<bitmap.width();++j) {
+                //qDebug() << bitmap.get(j,i) << " -";
+                image.setPixel(j, i, qRgb(bitmap.get(j,i), bitmap.get(j,i), bitmap.get(j,i)));
+            }
+        }
+        return image;
+    } catch (const std::exception& e) {
+        qDebug() << e.what();
+        return QImage();
+    }
+}
 
 void BarcodeEncoder::decode(const QImage& image) {
     DecodeHints hints;

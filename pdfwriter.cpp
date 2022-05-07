@@ -2,6 +2,9 @@
 
 #include "hpdf.h"
 
+#include "barcodeencoder.h"
+
+#include <QDebug>
 
 jmp_buf env;
 
@@ -76,6 +79,91 @@ PDFWriter::PDFWriter(QObject *parent) : QObject(parent)
 
 }
 
+int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
+    qDebug() << "generateIdCard: " << fileName;
+    HPDF_Doc  pdf;
+    HPDF_Font font;
+    HPDF_Page page;
+
+    HPDF_Image image;
+
+    HPDF_Destination dst;
+    float dpi;
+
+    pdf = HPDF_New (error_handler, NULL);
+    if (!pdf) {
+       printf ("error: cannot create PdfDoc object\n");
+       return 1;
+    }
+
+    /* error-handler */
+    if (setjmp(env)) {
+       HPDF_Free (pdf);
+       return 1;
+    }
+
+    HPDF_SetCompressionMode (pdf, HPDF_COMP_ALL);
+    HPDF_UseCNSFonts(pdf);
+    HPDF_UseCNSEncodings(pdf);
+#if 0
+    font = HPDF_GetFont (pdf, "Simsun", "GB-EUC-H");
+#else
+    //HPDF_UseUTFEncodings(pdf);
+    //HPDF_SetCurrentEncoder(pdf, "UTF-8");
+
+    /* create default-font */
+    HPDF_UseUTFEncodings(pdf);
+    HPDF_SetCurrentEncoder(pdf, "UTF-8");
+    const char* font_name = HPDF_LoadTTFontFromFile(pdf, "C:\\Users\\paipeng\\git\\libharu\\demo\\ttfont\\FZQTJW.TTF", HPDF_TRUE);
+    font = HPDF_GetFont(pdf, font_name, "UTF-8");
+#endif
+    /* add a new page object. */
+    page = HPDF_AddPage (pdf);
+
+
+    HPDF_Page_SetSize(page, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT);
+
+    dst = HPDF_Page_CreateDestination (page);
+    HPDF_Destination_SetXYZ (dst, 0, HPDF_Page_GetHeight (page), 1);
+    HPDF_SetOpenAction(pdf, dst);
+
+
+    HPDF_Page_SetRGBFill (page, 1.0, 0.0, 0.0);
+    HPDF_Page_SetTextRenderingMode (page, HPDF_FILL);
+    HPDF_Page_BeginText (page);
+    HPDF_Page_SetFontAndSize (page, font, 60);
+    HPDF_Page_MoveTextPos (page, 120, HPDF_Page_GetHeight (page) - 100);
+    QString title("编码打印测试");
+    HPDF_Page_ShowText (page, title.toStdString().data());
+    HPDF_Page_EndText (page);
+
+    HPDF_Page_SetFontAndSize (page, font, 20);
+
+
+
+    qDebug() << "IdCard serialnumber: " << idCard.getSerialNumber();
+    // gen qrcode
+    QImage qrCodeImage = BarcodeEncoder::encodeToImage(idCard.getSerialNumber());
+
+    image = HPDF_LoadRawImageFromMem(pdf, qrCodeImage.bits(), qrCodeImage.width(), qrCodeImage.height(), HPDF_CS_DEVICE_RGB, 32);
+#if 0
+
+    HPDF_Page_DrawImage (page, image, 400, HPDF_Page_GetHeight (page) - 200, qrCodeImage.width(), qrCodeImage.height());
+#endif
+
+
+
+
+
+    qDebug() << "save pdf to file";
+
+    /* save the document to a file */
+    HPDF_SaveToFile (pdf, fileName.toStdString().data());
+
+    /* clean up */
+    HPDF_Free (pdf);
+    return 0;
+}
 int PDFWriter::test(QString fileName) {
     HPDF_Doc  pdf;
     HPDF_Font font;
