@@ -14,12 +14,14 @@ SOURCES += \
     idcard.cpp \
     main.cpp \
     mainwindow.cpp \
+    pdfwriter.cpp \
     sqliteengine.cpp
 
 HEADERS += \
     barcodeencoder.h \
     idcard.h \
     mainwindow.h \
+    pdfwriter.h \
     sqliteengine.h
 
 # decoder/reader
