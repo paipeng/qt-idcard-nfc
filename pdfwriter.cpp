@@ -74,6 +74,21 @@ draw_image (HPDF_Doc     pdf,
     HPDF_Page_EndText (page);
 }
 
+
+void
+draw_rect (HPDF_Page     page,
+           double        x,
+           double        y,
+           const char   *label)
+{
+    HPDF_Page_BeginText (page);
+    HPDF_Page_MoveTextPos (page, x, y - 10);
+    HPDF_Page_ShowText (page, label);
+    HPDF_Page_EndText (page);
+
+    HPDF_Page_Rectangle(page, x, y - 40, 220, 25);
+}
+
 PDFWriter::PDFWriter(QObject *parent) : QObject(parent)
 {
 
@@ -137,7 +152,7 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
     HPDF_Page_ShowText (page, title.toStdString().data());
     HPDF_Page_EndText (page);
 
-    HPDF_Page_SetFontAndSize (page, font, 20);
+    HPDF_Page_SetFontAndSize (page, font, 10);
 
 
 
@@ -161,6 +176,37 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
 
 
 
+    dpi = 600;
+    draw_image(pdf, "code_1bit.bmp", 100, HPDF_Page_GetHeight(page) - 550, dpi,
+        "1bit");
+
+    draw_image(pdf, "code_rgb.bmp", 200, HPDF_Page_GetHeight(page) - 550, dpi,
+        "rgb");
+    draw_image(pdf, "code_gray.bmp", 300, HPDF_Page_GetHeight(page) - 550, dpi,
+        "gray");
+
+    dpi = 1200;
+    draw_image(pdf, "code_1bit_2x.bmp", 100, HPDF_Page_GetHeight(page) - 450, dpi,
+        "1bit 2x");
+
+    draw_image(pdf, "code_rgb_2x.bmp", 200, HPDF_Page_GetHeight(page) - 450, dpi,
+        "rgb 2x");
+    draw_image(pdf, "code_gray_2x.bmp", 300, HPDF_Page_GetHeight(page) - 450, dpi,
+        "gray 2x");
+
+
+    /* print the lines of the page. */
+    HPDF_Page_SetLineWidth (page, 1);
+    HPDF_Page_Rectangle (page, 20, 20, HPDF_Page_GetWidth(page) - 40,
+                HPDF_Page_GetHeight (page) - 40);
+    HPDF_Page_Stroke (page);
+
+    HPDF_Page_SetLineWidth (page, 2);
+    HPDF_Page_SetRGBStroke (page, 0.0, 0.0, 0.5);
+
+    //HPDF_Page_SetLineJoin (page, HPDF_MITER_JOIN);
+    draw_rect(page, 100, 140, "rect");
+    HPDF_Page_Stroke (page);
 
     qDebug() << "save pdf to file";
 
