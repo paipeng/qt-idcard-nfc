@@ -129,8 +129,13 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
     /* create default-font */
     HPDF_UseUTFEncodings(pdf);
     HPDF_SetCurrentEncoder(pdf, "UTF-8");
-    const char* font_name = HPDF_LoadTTFontFromFile(pdf, "C:\\Users\\paipeng\\git\\libharu\\demo\\ttfont\\FZQTJW.TTF", HPDF_TRUE);
+
+    QString fontPath = "C:\\Users\\paipeng\\git\\libharu\\demo\\ttfont\\FZQTJW.TTF";
+    fontPath = "C:\\\\Users\\\\paipeng\\\\git\\\\qt-idcard-nfc\\\\fonts\\\\HYCuYuanF.ttf";
+    qDebug() << "fontPath: " << fontPath << " -> " << fontPath.toStdString().data();
+    const char* font_name = HPDF_LoadTTFontFromFile(pdf, fontPath.toStdString().data(), HPDF_TRUE);
     font = HPDF_GetFont(pdf, font_name, "UTF-8");
+    qDebug() << "font loaded";
 #endif
     /* add a new page object. */
     page = HPDF_AddPage (pdf);
