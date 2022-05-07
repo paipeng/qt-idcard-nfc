@@ -51,6 +51,32 @@ HEADERS += \
     zxing/ZXConfig.h \
     zxing/MultiFormatWriter.h
 
+# libharu
+HEADERS += \
+    libharu/hpdf.h \
+    libharu/hpdf_config.h \
+    libharu/hpdf_version.h \
+    libharu/hpdf_consts.h \
+    libharu/hpdf_doc.h \
+    libharu/hpdf_error.h \
+    libharu/hpdf_pdfa.h \
+    libharu/hpdf_catalog.h \
+    libharu/hpdf_objects.h \
+    libharu/hpdf_encoder.h \
+    libharu/hpdf_streams.h \
+    libharu/hpdf_list.h \
+    libharu/hpdf_types.h \
+    libharu/hpdf_mmgr.h \
+    libharu/hpdf_encrypt.h \
+    libharu/hpdf_image.h \
+    libharu/hpdf_pages.h \
+    libharu/hpdf_gstate.h \
+    libharu/hpdf_font.h \
+    libharu/hpdf_fontdef.h \
+    libharu/hpdf_ext_gstate.h \
+    libharu/hpdf_outline.h
+
+
 
 FORMS += \
     mainwindow.ui
@@ -65,11 +91,12 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libs/x64/release/ -lZXing
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libs/x64/debug/ -lZXing
-else:unix: LIBS += -L$$PWD/libs/x64/ -lZXing
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libs/x64/release/ -lZXing -llibhpdf -llibpng16 -lzlib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libs/x64/debug/ -lZXing -llibhpdfd -llibpng16d -lzlibd
+else:unix: LIBS += -L$$PWD/libs/x64/ -lZXing -llibhpdf -llibpng16 -lzlib
 
 INCLUDEPATH += $$PWD/libs/x64
 DEPENDPATH += $$PWD/libs/x64
 INCLUDEPATH += $$PWD/zxing
+INCLUDEPATH += $$PWD/libharu
 
