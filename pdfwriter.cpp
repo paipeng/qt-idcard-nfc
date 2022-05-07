@@ -104,6 +104,7 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
 
     HPDF_Destination dst;
     float dpi;
+    HPDF_REAL x, y;
 
     pdf = HPDF_New (error_handler, NULL);
     if (!pdf) {
@@ -179,8 +180,51 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
     HPDF_Page_DrawImage (page, image, 400, HPDF_Page_GetHeight (page) - 200, qrCodeImage.width(), qrCodeImage.height());
 
 
+    HPDF_Page_SetFontAndSize (page, font, 20);
+    HPDF_Page_SetRGBFill (page, 0.0, 0.0, 0.0);
 
+    x = 80;
+    y = HPDF_Page_GetHeight (page) - 200;
+    HPDF_Page_BeginText (page);
+    HPDF_Page_MoveTextPos (page, x,  y);
+    HPDF_Page_ShowText (page, "姓名");
+    HPDF_Page_EndText (page);
+    HPDF_Page_BeginText (page);
+    HPDF_Page_MoveTextPos (page, x + 150, y);
+    HPDF_Page_ShowText (page, idCard.getName().toStdString().data());
+    HPDF_Page_EndText (page);
 
+    y -= 30;
+    HPDF_Page_BeginText (page);
+    HPDF_Page_MoveTextPos (page, x, y);
+    HPDF_Page_ShowText (page, "单位");
+    HPDF_Page_EndText (page);
+    HPDF_Page_BeginText (page);
+    HPDF_Page_MoveTextPos (page, x + 150, y);
+    HPDF_Page_ShowText (page, idCard.getCompany().toStdString().data());
+    HPDF_Page_EndText (page);
+
+    y -= 30;
+    HPDF_Page_BeginText (page);
+    HPDF_Page_MoveTextPos (page, x, y);
+    HPDF_Page_ShowText (page, "证卡编号");
+    HPDF_Page_EndText (page);
+    HPDF_Page_BeginText (page);
+    HPDF_Page_MoveTextPos (page, x + 150, y);
+    HPDF_Page_ShowText (page, idCard.getSerialNumber().toStdString().data());
+    HPDF_Page_EndText (page);
+
+    y -= 30;
+    HPDF_Page_BeginText (page);
+    HPDF_Page_MoveTextPos (page, x, y);
+    HPDF_Page_ShowText (page, "有效日期");
+    HPDF_Page_EndText (page);
+    HPDF_Page_BeginText (page);
+    HPDF_Page_MoveTextPos (page, x + 150, y);
+    HPDF_Page_ShowText (page, idCard.getExpireDate().toString(DATE_FORMAT).toStdString().data());
+    HPDF_Page_EndText (page);
+
+#if 0
     dpi = 600;
     draw_image(pdf, "code_1bit.bmp", 100, HPDF_Page_GetHeight(page) - 550, dpi,
         "1bit");
@@ -198,7 +242,7 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
         "rgb 2x");
     draw_image(pdf, "code_gray_2x.bmp", 300, HPDF_Page_GetHeight(page) - 450, dpi,
         "gray 2x");
-
+#endif
 
     /* print the lines of the page. */
     HPDF_Page_SetLineWidth (page, 1);

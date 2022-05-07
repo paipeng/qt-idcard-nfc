@@ -20,14 +20,14 @@ public:
     bool operator==(const IdCard &other) const;
 
     void setName(QString name);
-    QString getName();
+    const QString& getName() const;
     void setId(long id);
     long getId();
     void setExpireDate(QDate date);
-    const QDate getExpireDate();
+    const QDate getExpireDate() const;
 
     void setCompany(QString company);
-    QString getCompany();
+    QString getCompany() const;
 
     const QString &getSerialNumber() const;
     void setSerialNumber(const QString &newSerialNumber);

@@ -39,7 +39,7 @@ void IdCard::setName(QString name) {
     this->name = name;
 }
 
-QString IdCard::getName() {
+const QString &IdCard::getName() const{
     return this->name;
 }
 
@@ -60,7 +60,7 @@ void IdCard::setExpireDate(QDate date) {
     this->expireDate = date;//QDate::fromString(date.toString("yyyy-MM-dd"), "yyyy-MM-dd");
 }
 
-const QDate IdCard::getExpireDate() {
+const QDate IdCard::getExpireDate() const {
     //qDebug() << "getExpireDate: " << &expireDate;
     return expireDate;//QDate::fromString(expireDate, "yyyy-MM-dd");;
 }
@@ -68,7 +68,7 @@ const QDate IdCard::getExpireDate() {
 void IdCard::setCompany(QString company) {
     this->company = company;
 }
-QString IdCard::getCompany() {
+QString IdCard::getCompany() const {
     return this->company;
 }
 
