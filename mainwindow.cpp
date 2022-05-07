@@ -11,6 +11,7 @@
 #include <QDebug>
 
 #include "barcodeencoder.h"
+#include "pdfwriter.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -26,6 +27,10 @@ MainWindow::MainWindow(QWidget *parent)
     BarcodeEncoder barcodeEncoder;
 
     barcodeEncoder.encode("TEST1234");
+
+
+    PDFWriter pdfWriter;
+    pdfWriter.test("C:\\pngsuite\\code.pdf");
 }
 
 MainWindow::~MainWindow() {

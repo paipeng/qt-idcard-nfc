@@ -8,7 +8,7 @@ class PDFWriter : public QObject
     Q_OBJECT
 public:
     explicit PDFWriter(QObject *parent = nullptr);
-
+    int test(QString fileName);
 signals:
 
 };
