@@ -321,7 +321,23 @@ void MainWindow::updateBarcodeDecodeResult(int decodeState) {
 }
 
 void MainWindow::getDeviceList(QStringList deviceNameList) {
-
+    qDebug() << "getDeviceList";
+    int index = 0;
+    for (QString device : deviceNameList) {
+        qDebug() << "device: " << device << " len: " << device.length();
+        if (device.length() > 0) {
+            ui->deviceComboBox->addItem(device, index++);
+            //qDebug() << "device--: " << device.data();
+        }
+    }
+    if (index > 0) {
+        ui->nfcPushButton->setDisabled(false);
+        ui->statusbar->showMessage(QString("device Ready"));
+    } else {
+        QString errStr;
+        errStr.sprintf("no device found %d", index);
+        QMessageBox::critical(NULL, "critical", errStr, QMessageBox::Ok, QMessageBox::Ok);
+    }
 }
 
 void MainWindow::updateStatusBarMessage(QString message) {
@@ -329,7 +345,19 @@ void MainWindow::updateStatusBarMessage(QString message) {
 }
 
 void MainWindow::receiveResponse(unsigned char* data, int data_len) {
-
+    qDebug() << "receiveResponse len: " << data_len;
+    if (data_len != MAX_RESPONSE) {
+        // convert data -> hex
+        QString response;
+        for (int i = 0; i < data_len; i++) {
+            QString hex;
+            hex.sprintf("%02X ", data[i]);
+            response.append(hex);
+        }
+        // show
+        qDebug() << response;
+        //ui->responseTextEdit->setText(response);
+    }
 }
 
 void MainWindow::addLog(unsigned char* data, int data_len, int direction) {
@@ -338,4 +366,34 @@ void MainWindow::addLog(unsigned char* data, int data_len, int direction) {
 
 void MainWindow::addLog2(QString text, int state) {
 
+}
+
+void MainWindow::readNFC() {
+    qDebug() << "connect: " << nfc.isDeviceConnected();
+    if (nfc.isDeviceConnected()) {
+        int ret = nfc.disconnectDevice();
+
+        if (ret == 0){
+            //updateDeviceState(0);
+        }
+    } else {
+        qDebug() << "connectDevice: " << ui->deviceComboBox->currentIndex();
+        if (nfc.connectDevice(ui->deviceComboBox->currentIndex()) == 0) {
+            switch (nfc.getProtocolType()) {
+                case SCARD_PROTOCOL_T0:
+                    ui->statusbar->showMessage(QString("SCardConnect ok Protocol Type = T0"));
+                    break;
+                case SCARD_PROTOCOL_T1:
+                    ui->statusbar->showMessage(QString("SCardConnect ok Protocol Type = T1"));
+                    break;
+                default:
+                    QString msg;
+                    msg.sprintf("SCardConnect ok Protocol Type: %d", nfc.getProtocolType());
+                    ui->statusbar->showMessage(msg);
+                    break;
+            }
+            nfc.readUID();
+            //updateDeviceState(1);
+        }
+    }
 }

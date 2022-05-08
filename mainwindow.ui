@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>954</width>
+    <height>644</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,7 +46,7 @@
       <x>10</x>
       <y>40</y>
       <width>511</width>
-      <height>501</height>
+      <height>541</height>
      </rect>
     </property>
    </widget>
@@ -159,7 +159,7 @@
     <property name="geometry">
      <rect>
       <x>540</x>
-      <y>330</y>
+      <y>410</y>
       <width>241</width>
       <height>161</height>
      </rect>
@@ -181,8 +181,8 @@
    <widget class="QPushButton" name="scanPushButton">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>270</y>
+      <x>800</x>
+      <y>530</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -191,13 +191,36 @@
      <string>scan</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="nfcPushButton">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>310</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>nfc</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="deviceComboBox">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>310</y>
+      <width>261</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>954</width>
      <height>23</height>
     </rect>
    </property>
@@ -278,11 +301,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>nfcPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>readNFC()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>687</x>
+     <y>344</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>476</x>
+     <y>321</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>insert()</slot>
   <slot>query()</slot>
   <slot>print()</slot>
   <slot>scan()</slot>
+  <slot>readNFC()</slot>
  </slots>
 </ui>

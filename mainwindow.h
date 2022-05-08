@@ -30,6 +30,7 @@ private slots:
     void initTableView();
     void print();
     void scan();
+    void readNFC();
     void initCameras();
     void startCamera1();
     void updateBarcodeDecodeResult(int decodeState);
