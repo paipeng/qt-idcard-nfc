@@ -155,6 +155,42 @@
      <string>print</string>
     </property>
    </widget>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>330</y>
+      <width>241</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="page">
+     <widget class="CPCameraViewfinder" name="cpCameraViewFinder" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>231</width>
+        <height>141</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_2"/>
+   </widget>
+   <widget class="QPushButton" name="scanPushButton">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>270</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>scan</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -168,6 +204,14 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CPCameraViewfinder</class>
+   <extends>QWidget</extends>
+   <header location="global">cpcameraviewfinder.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
@@ -218,10 +262,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>scanPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>scan()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>597</x>
+     <y>304</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>insert()</slot>
   <slot>query()</slot>
   <slot>print()</slot>
+  <slot>scan()</slot>
  </slots>
 </ui>

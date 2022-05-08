@@ -25,6 +25,7 @@ private slots:
     void query();
     void initTableView();
     void print();
+    void scan();
     void initCameras();
     void startCamera1();
 

@@ -239,6 +239,10 @@ void MainWindow::print() {
     }
 }
 
+void MainWindow::scan() {
+    startCamera1();
+}
+
 void MainWindow::initCameras() {
     qDebug() << "initCameras";
     const QList<QCameraInfo> availableCameras = CPCamera::getAvailableCamersInfos();
@@ -249,12 +253,14 @@ void MainWindow::initCameras() {
         //ui->camera1ComboBox->addItem(cameraInfo.description(), index);
         //ui->camera2ComboBox->addItem(cameraInfo.description(), index);
         index ++;
+        camera1.setCamera(cameraInfo, ui->cpCameraViewFinder);
+        break;
     }
 }
 
 void MainWindow::startCamera1() {
     qDebug() << "startCamera1";
-
+    camera1.startCamera();
 }
 
 

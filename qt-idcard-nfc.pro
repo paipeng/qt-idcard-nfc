@@ -81,7 +81,8 @@ HEADERS += \
 
 HEADERS += \
     include/cpcamera/cpcamera.h \
-    include/cpcamera/cp-camera_global.h
+    include/cpcamera/cp-camera_global.h \
+    include/cpcamera/cpcameraviewfinder.h
 
 FORMS += \
     mainwindow.ui
@@ -90,6 +91,8 @@ TRANSLATIONS += \
     qt-idcard-nfc_zh_CN.ts
 CONFIG += lrelease
 CONFIG += embed_translations
+
+DEFINES += CPCAMERA_LIBRARY
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
