@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "sqliteengine.h"
 #include "cpcamera.h"
+#include "barcodedecoder.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,6 +29,7 @@ private slots:
     void scan();
     void initCameras();
     void startCamera1();
+    void updateBarcodeDecodeResult(int decodeState);
 
 private:
 
@@ -40,5 +42,7 @@ private:
     Ui::MainWindow *ui;
     SqliteEngine * sqliteEngine;
     CPCamera camera1;
+    BarcodeDecoder barcodeDecoder;
+    QElapsedTimer timer;
 };
 #endif // MAINWINDOW_H

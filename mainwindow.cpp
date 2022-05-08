@@ -22,6 +22,9 @@ MainWindow::MainWindow(QWidget *parent)
     initTableView();
     query();
 
+    QObject::connect(&barcodeDecoder, &BarcodeDecoder::updateBarcodeDecodeResult, this, &MainWindow::updateBarcodeDecodeResult);
+    barcodeDecoder.start();
+    barcodeDecoder.setPriority(QThread::LowestPriority);
 
     initCameras();
 
@@ -281,8 +284,37 @@ void MainWindow::cameraState(int cameraId, int state) {
 
 }
 void MainWindow::processCapturedImage(int cameraId, const QImage& img) {
-
+    qDebug() << "processCapturedImage: " << cameraId << " img: " << img.width() << "-" << img.height();
+    timer.start();
+    if (cameraId == 0) {
+        barcodeDecoder.setImage(img);
+    }
 }
 void MainWindow::cameraReadyForCapture(int cameraId, bool ready) {
+    qDebug() << "cameraReadyForCapture: " << cameraId << " state: " << ready;
+
+    if (ready) {
+        camera1.takeImage();
+    }
+}
+
+
+void MainWindow::updateBarcodeDecodeResult(int decodeState) {
+    Q_UNUSED(decodeState);
+    qint64 t = timer.elapsed();
+
+    qDebug() << "updateBarcodeDecodeResult: " << decodeState << " elapsed time: " << t;
+
+    if (decodeState == 0) {
+        for (auto&& result : barcodeDecoder.decodeResults) {
+            //Beep(800, 2000);
+            qDebug() << "RESULT: " << result.text();
+            QString text = QString::fromWCharArray(result.text().c_str());
+            ui->serialNumberLineEdit->setText(text);
+            break;
+        }
+    } else {
+        ui->serialNumberLineEdit->setText(QString(""));
+    }
 
 }
