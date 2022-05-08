@@ -252,9 +252,11 @@ void MainWindow::initCameras() {
         qDebug() << "cameraInfo: " << cameraInfo.description();
         //ui->camera1ComboBox->addItem(cameraInfo.description(), index);
         //ui->camera2ComboBox->addItem(cameraInfo.description(), index);
+        if (index != 0) {
+            camera1.setCamera(cameraInfo, ui->cpCameraViewFinder);
+            break;
+        }
         index ++;
-        camera1.setCamera(cameraInfo, ui->cpCameraViewFinder);
-        break;
     }
 }
 
@@ -266,6 +268,16 @@ void MainWindow::startCamera1() {
 
 
 void MainWindow::cameraState(int cameraId, int state) {
+    qDebug() << "cameraState: " << cameraId << " state: " << state;
+    if (state == 0) {
+        ui->scanPushButton->setText(tr("scan"));
+    } else if (state == 1) {
+        ui->scanPushButton->setText(tr("scan"));
+        //camera2AutoCapture = true;
+    } else if (state == 2) {
+        ui->scanPushButton->setText(tr("stop"));
+
+    }
 
 }
 void MainWindow::processCapturedImage(int cameraId, const QImage& img) {

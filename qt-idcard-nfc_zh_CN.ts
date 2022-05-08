@@ -44,6 +44,8 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="191"/>
+        <location filename="mainwindow.cpp" line="273"/>
+        <location filename="mainwindow.cpp" line="275"/>
         <source>scan</source>
         <translation type="unfinished">扫码</translation>
     </message>
@@ -52,6 +54,11 @@
         <location filename="mainwindow.cpp" line="184"/>
         <source>id</source>
         <translation type="unfinished">序号</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="278"/>
+        <source>stop</source>
+        <translation type="unfinished">停止扫码</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="63"/>
