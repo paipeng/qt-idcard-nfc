@@ -15,7 +15,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), camera1(0, this) {
+    , ui(new Ui::MainWindow), camera1(0, this), nfc(this) {
     ui->setupUi(this);
     sqliteEngine = new SqliteEngine();
     //sqliteEngine->initDB();
@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     //PDFWriter pdfWriter;
     //pdfWriter.test("C:\\pngsuite\\code.pdf");
 
+    nfc.openDevice();
 }
 
 MainWindow::~MainWindow() {
@@ -316,5 +317,25 @@ void MainWindow::updateBarcodeDecodeResult(int decodeState) {
     } else {
         ui->serialNumberLineEdit->setText(QString(""));
     }
+
+}
+
+void MainWindow::getDeviceList(QStringList deviceNameList) {
+
+}
+
+void MainWindow::updateStatusBarMessage(QString message) {
+
+}
+
+void MainWindow::receiveResponse(unsigned char* data, int data_len) {
+
+}
+
+void MainWindow::addLog(unsigned char* data, int data_len, int direction) {
+
+}
+
+void MainWindow::addLog2(QString text, int state) {
 
 }

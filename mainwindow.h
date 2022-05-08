@@ -5,12 +5,13 @@
 #include "sqliteengine.h"
 #include "cpcamera.h"
 #include "barcodedecoder.h"
+#include "nfc.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow, CameraInterface
+class MainWindow : public QMainWindow, CameraInterface, SmartCardInterface
 {
     Q_OBJECT
 
@@ -39,10 +40,19 @@ private:
     void cameraReadyForCapture(int cameraId, bool ready) override;
 
 private:
+    void getDeviceList(QStringList deviceNameList) override;
+    void updateStatusBarMessage(QString message) override;
+    void receiveResponse(unsigned char* data, int data_len) override;
+    void addLog(unsigned char* data, int data_len, int direction) override;
+    void addLog2(QString text, int state) override;
+
+private:
     Ui::MainWindow *ui;
     SqliteEngine * sqliteEngine;
     CPCamera camera1;
     BarcodeDecoder barcodeDecoder;
     QElapsedTimer timer;
+
+    NFC nfc;
 };
 #endif // MAINWINDOW_H

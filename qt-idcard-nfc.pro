@@ -101,13 +101,19 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libs/x64/release/ -lZXing -llibhpdf -llibpng16 -lzlib -lcp-camera
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libs/x64/debug/ -lZXing -llibhpdfd -llibpng16d -lzlibd -lcp-camera
-else:unix: LIBS += -L$$PWD/libs/x64/ -lZXing -llibhpdf -llibpng16 -lzlib -lcp-camera
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libs/x64/release/ -lZXing -llibhpdf -llibpng16 -lzlib -lcp-camera -lqt-smartcard
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libs/x64/debug/ -lZXing -llibhpdfd -llibpng16d -lzlibd -lcp-camera -lqt-smartcard
+else:unix: LIBS += -L$$PWD/libs/x64/ -lZXing -llibhpdf -llibpng16 -lzlib -lcp-camera -lqt-smartcard
 
 INCLUDEPATH += $$PWD/libs/x64
 DEPENDPATH += $$PWD/libs/x64
 INCLUDEPATH += $$PWD/include/zxing
 INCLUDEPATH += $$PWD/include/libharu
 INCLUDEPATH += $$PWD/include/cpcamera
+
+
+DEFINES += CP_SMARTCARD_LIBRARY
+INCLUDEPATH += $$PWD/../qt-smartcard
+
+
 
