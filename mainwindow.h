@@ -5,6 +5,8 @@
 #include "sqliteengine.h"
 #include "cpcamera.h"
 #include "barcodedecoder.h"
+
+#define CP_SMARTCARD_LIBRARY 0
 #include "nfc.h"
 
 QT_BEGIN_NAMESPACE

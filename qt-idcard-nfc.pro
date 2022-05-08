@@ -112,7 +112,7 @@ INCLUDEPATH += $$PWD/include/libharu
 INCLUDEPATH += $$PWD/include/cpcamera
 
 
-DEFINES += CP_SMARTCARD_LIBRARY
+#DEFINES += CP_SMARTCARD_LIBRARY
 INCLUDEPATH += $$PWD/../qt-smartcard
 
 
