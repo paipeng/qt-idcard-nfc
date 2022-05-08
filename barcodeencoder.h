@@ -12,7 +12,6 @@ class BarcodeEncoder : public QObject
 public:
     explicit BarcodeEncoder(QObject *parent = nullptr);
     int encode(QString data);
-    void decode(const QImage& image);
     static QImage encodeToImage(const QString &data);
 signals:
 public:

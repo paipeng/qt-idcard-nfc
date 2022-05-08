@@ -101,18 +101,3 @@ QImage BarcodeEncoder::encodeToImage(const QString &data) {
         return QImage();
     }
 }
-
-void BarcodeEncoder::decode(const QImage& image) {
-    DecodeHints hints;
-    hints.setEanAddOnSymbol(EanAddOnSymbol::Read);
-
-    ImageView imageView{image.bits(), image.width(), image.height(), ImageFormat::RGBX};
-
-    Results decodeResults = ReadBarcodes(imageView, hints);
-
-    // if we did not find anything, insert a dummy to produce some output for each file
-    int ret = 0;
-    if (decodeResults.empty())
-        ret = -1;
-
-}
