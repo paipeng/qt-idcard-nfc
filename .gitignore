@@ -56,3 +56,9 @@ build-qt-idcard-nfc-Desktop_Qt_5_12_12_MSVC2017_64bit-Release/
 fonts/
 release/
 debug/
+.qmake.stash
+idcard.db
+Makefile
+Makefile.Debug
+Makefile.Release
+ui_mainwindow.h
