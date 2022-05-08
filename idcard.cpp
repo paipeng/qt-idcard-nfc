@@ -33,6 +33,7 @@ IdCard::IdCard(const IdCard &other):IdCard(NULL) {
     setExpireDate(other.expireDate);
     setCompany(other.company);
     setSerialNumber(other.serialNumber);
+    setChipUID(other.chipUID);
 }
 
 void IdCard::setName(QString name) {
@@ -108,6 +109,16 @@ void IdCard::write(QJsonObject &json) const {
 
 void IdCard::toString() {
 
+}
+
+const QString &IdCard::getChipUID() const
+{
+    return chipUID;
+}
+
+void IdCard::setChipUID(const QString &newChipUID)
+{
+    chipUID = newChipUID;
 }
 bool IdCard::operator==(const IdCard &other) const{
     return this->id == other.id && this->name != other.name;

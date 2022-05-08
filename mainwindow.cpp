@@ -68,12 +68,13 @@ void MainWindow::query() {
     } else {
         model->clear();
     }
-    model->setColumnCount(5);
+    model->setColumnCount(6);
     model->setHeaderData(0,Qt::Horizontal,tr("id"));
     model->setHeaderData(1,Qt::Horizontal,tr("serial_number"));
     model->setHeaderData(2,Qt::Horizontal,tr("name"));
     model->setHeaderData(3,Qt::Horizontal,tr("company"));
     model->setHeaderData(4,Qt::Horizontal,tr("expire"));
+    model->setHeaderData(5,Qt::Horizontal,tr("chip_uid"));
 
     const QList<IdCard> idCards = sqliteEngine->query();
     QStandardItem * item = NULL;
@@ -134,7 +135,8 @@ void MainWindow::query() {
 
 
         //int index = idCards.indexOf(idCard);
-        qDebug() << index << "  -- " << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate() << " " << idCard.getCompany();
+        qDebug() << index << "  -- " << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate() << " " << idCard.getCompany()
+                 << " " << idCard.getChipUID();
         item = new QStandardItem(QString("%1").arg(idCard.getId()));
         model->setItem(index, 0, item);
 
@@ -146,6 +148,8 @@ void MainWindow::query() {
         model->setItem(index, 3, item);
         item = new QStandardItem(QString("%1").arg(idCard.getExpireDate().toString(DATE_FORMAT)));
         model->setItem(index, 4, item);
+        item = new QStandardItem(QString("%1").arg(idCard.getChipUID()));
+        model->setItem(index, 5, item);
         //break;
         index ++;
     }
@@ -178,16 +182,18 @@ void MainWindow::query() {
 
     //ui->tableView->setColumnWidth(0,101);
     //ui->tableView->setColumnWidth(1,102);
+    ui->tableView->setColumnWidth(5,180);
     //ui->tableView->setShowGrid(true);
     //ui->tableView->show();
 }
 
 void MainWindow::initTableView() {
     QStandardItemModel *model = new QStandardItemModel();
-    model->setColumnCount(2);
+    model->setColumnCount(4);
     model->setHeaderData(0,Qt::Horizontal,tr("id"));
     model->setHeaderData(1,Qt::Horizontal,tr("name"));
     model->setHeaderData(2,Qt::Horizontal,tr("expire"));
+    model->setHeaderData(3,Qt::Horizontal,tr("chip_uid"));
 
 
     model->setItem(0, 0, new QStandardItem(QString("%1").arg(1212)));
@@ -204,7 +210,41 @@ void MainWindow::initTableView() {
 
 }
 
-void MainWindow::print() {
+void MainWindow::print() {    
+    IdCard idCard = getSelectedIdCard();
+    if (idCard.getId() > 0) {
+        qDebug() << "print to pdf";
+        PDFWriter pdfWriter;
+
+        QString fileName = "C:\\pngsuite\\idcard_";
+        fileName += idCard.getSerialNumber();
+        fileName += ".pdf";
+        pdfWriter.generateIdCard(idCard, fileName);
+    }
+}
+
+void MainWindow::tableViewClicked(QModelIndex index) {
+    qDebug() << "tableViewClicked: " << index;
+    QVariant variant = index.data();
+    qDebug() << "variant: " << variant;
+    if (variant.type() == QVariant::String) {
+        IdCard idCard = sqliteEngine->getIdCardById(variant.toString().toInt());
+        updateInputTextField(idCard);
+    }
+}
+
+void MainWindow::clear() {
+    qDebug() << "clear";
+    ui->nameLineEdit->setText("");
+    ui->expireDateEdit->setDate(QDate::fromString("2022-01-01", DATE_FORMAT));
+    ui->companyLineEdit->setText("");
+    ui->serialNumberLineEdit->setText("");
+}
+void MainWindow::scan() {
+    startCamera1();
+}
+
+IdCard MainWindow::getSelectedIdCard() const {
     QItemSelectionModel *select = ui->tableView->selectionModel();
     QModelIndexList selection = select->selectedRows();
     qDebug() << "print " << selection;
@@ -230,21 +270,25 @@ void MainWindow::print() {
             value = variant.toString().toInt();
         }
         //int value = variant.toInt();
-        IdCard idCard = sqliteEngine->getIdCardById(value);
-        if (idCard.getId() > 0) {
-            qDebug() << "print to pdf";
-            PDFWriter pdfWriter;
-
-            QString fileName = "C:\\pngsuite\\idcard_";
-            fileName += idCard.getSerialNumber();
-            fileName += ".pdf";
-            pdfWriter.generateIdCard(idCard, fileName);
-        }
+        return sqliteEngine->getIdCardById(value);
+    }
+    return IdCard(NULL);
+}
+void MainWindow::updateIdCardChipUID(QString chipUID) {
+    qDebug() << "updateIdCardChipUID: " << chipUID;
+    IdCard idCard = getSelectedIdCard();
+    if (idCard.getId() > 0) {
+        IdCard idCard2 = sqliteEngine->updateChipUID(idCard, chipUID);
     }
 }
 
-void MainWindow::scan() {
-    startCamera1();
+void MainWindow::updateInputTextField(IdCard idCard) {
+    qDebug() << "updateInputTextField: " << idCard.getId();
+    ui->nameLineEdit->setText(idCard.getName());
+    ui->expireDateEdit->setDate(idCard.getExpireDate());
+    ui->companyLineEdit->setText(idCard.getCompany());
+    ui->serialNumberLineEdit->setText(idCard.getSerialNumber());
+    ui->chipUIDLineEdit->setText(idCard.getChipUID());
 }
 
 void MainWindow::initCameras() {
@@ -346,17 +390,21 @@ void MainWindow::updateStatusBarMessage(QString message) {
 
 void MainWindow::receiveResponse(unsigned char* data, int data_len) {
     qDebug() << "receiveResponse len: " << data_len;
-    if (data_len != MAX_RESPONSE) {
+    if (data_len != MAX_RESPONSE && data_len > 2) {
         // convert data -> hex
         QString response;
-        for (int i = 0; i < data_len; i++) {
+        for (int i = 0; i < data_len-2; i++) {
             QString hex;
-            hex.sprintf("%02X ", data[i]);
+            hex.sprintf("%02X", data[i]);
             response.append(hex);
         }
         // show
         qDebug() << response;
-        //ui->responseTextEdit->setText(response);
+
+        ui->chipUIDLineEdit->setText(response);
+
+        // update idcard
+        updateIdCardChipUID(response);
     }
 }
 

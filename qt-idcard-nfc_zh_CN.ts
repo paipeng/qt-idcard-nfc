@@ -21,7 +21,7 @@
     <message>
         <location filename="mainwindow.ui" line="96"/>
         <location filename="mainwindow.cpp" line="76"/>
-        <location filename="mainwindow.cpp" line="190"/>
+        <location filename="mainwindow.cpp" line="193"/>
         <source>expire</source>
         <translation type="unfinished">过期日期</translation>
     </message>
@@ -44,8 +44,8 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="191"/>
-        <location filename="mainwindow.cpp" line="277"/>
-        <location filename="mainwindow.cpp" line="279"/>
+        <location filename="mainwindow.cpp" line="309"/>
+        <location filename="mainwindow.cpp" line="311"/>
         <source>scan</source>
         <translation type="unfinished">扫码</translation>
     </message>
@@ -55,20 +55,32 @@
         <translation type="unfinished">读取NFC</translation>
     </message>
     <message>
+        <location filename="mainwindow.ui" line="240"/>
+        <location filename="mainwindow.cpp" line="77"/>
+        <location filename="mainwindow.cpp" line="194"/>
+        <source>chip_uid</source>
+        <translation type="unfinished">芯片序号</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="253"/>
+        <source>clear</source>
+        <translation type="unfinished">清除</translation>
+    </message>
+    <message>
         <location filename="mainwindow.cpp" line="72"/>
-        <location filename="mainwindow.cpp" line="188"/>
+        <location filename="mainwindow.cpp" line="191"/>
         <source>id</source>
         <translation type="unfinished">序号</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="282"/>
+        <location filename="mainwindow.cpp" line="314"/>
         <source>stop</source>
         <translation type="unfinished">停止扫码</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="63"/>
         <location filename="mainwindow.cpp" line="74"/>
-        <location filename="mainwindow.cpp" line="189"/>
+        <location filename="mainwindow.cpp" line="192"/>
         <source>name</source>
         <translation type="unfinished">姓名</translation>
     </message>

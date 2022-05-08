@@ -36,6 +36,9 @@ public:
     void write(QJsonObject &json) const;
 
     void toString();
+    const QString &getChipUID() const;
+    void setChipUID(const QString &newChipUID);
+
 signals:
 
 private:
@@ -45,6 +48,7 @@ private:
     QString company;
     QString serialNumber;
     QDate expireDate;
+    QString chipUID;
 };
 
 #endif // IDCARD_H

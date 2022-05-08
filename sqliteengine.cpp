@@ -45,7 +45,13 @@ void SqliteEngine::initDB() {
     }
 
     QSqlQuery sql_query;
-    QString create_sql = "create table idcard (id INTEGER primary key AUTOINCREMENT, serial_number varchar(32) not null, name varchar(30) not null, company varchar(64) not null, expire date not null)";
+    QString create_sql = "create table idcard (\
+                            id INTEGER primary key AUTOINCREMENT, \
+                            serial_number varchar(32) not null, \
+                            name varchar(30) not null, \
+                            company varchar(64) not null, \
+                            chip_uid varchar(16), \
+                            expire date not null)";
     sql_query.prepare(create_sql);
     if(!sql_query.exec()) {
         qDebug() << "Error: Fail to create table." << sql_query.lastError();
@@ -76,7 +82,7 @@ QList<IdCard> SqliteEngine::query() {
     qDebug() << "SQLite query";
     QList<IdCard> idCards;
     QSqlQuery sql_query;
-    QString select_sql = "select id, name, company, expire, serial_number from idcard";
+    QString select_sql = "select id, name, company, expire, serial_number, chip_uid from idcard";
     if(!sql_query.exec(select_sql)) {
         qDebug() << sql_query.lastError();
         return idCards;
@@ -88,10 +94,12 @@ QList<IdCard> SqliteEngine::query() {
             QString expireDate = sql_query.value(3).toString();
             QDate date = QDate::fromString(expireDate, DATE_FORMAT);
             QString serialNumber = sql_query.value(4).toString();
-
+            QString chipUID = sql_query.value(5).toString();
+            qDebug() << "chipUID: " << chipUID;
             IdCard idCard(id, name, date);
             idCard.setCompany(company);
             idCard.setSerialNumber(serialNumber);
+            idCard.setChipUID(chipUID);
             idCards.append(idCard);
         }
         return idCards;
@@ -101,7 +109,7 @@ QList<IdCard> SqliteEngine::query() {
 IdCard SqliteEngine::getIdCardById(long id) {
     qDebug() << "getIdCardById: " << id;
     QSqlQuery sql_query;
-    QString select_sql = "select id, name, company, expire, serial_number from idcard where id =:id";
+    QString select_sql = "select id, name, company, expire, serial_number, chip_uid from idcard where id =:id";
     sql_query.prepare(select_sql);
     sql_query.bindValue(":id", (int)id);
     if(!sql_query.exec()) {
@@ -116,11 +124,35 @@ IdCard SqliteEngine::getIdCardById(long id) {
             QDate date = QDate::fromString(expireDate, DATE_FORMAT);
             QString serialNumber = sql_query.value(4).toString();
 
+            QString chipUID = sql_query.value(5).toString();
+
             IdCard idCard(id, name, date);
             idCard.setCompany(company);
             idCard.setSerialNumber(serialNumber);
+            idCard.setChipUID(chipUID);
             return idCard;
         }
         return IdCard(NULL);
+    }
+}
+
+IdCard SqliteEngine::updateChipUID(IdCard idCard, QString chipUID) {
+    qDebug() << "updateChipUID: " << chipUID;
+    QSqlQuery sql_query;
+    QString select_sql = "update idcard set chip_uid=:chipUID where id =:id";
+    sql_query.prepare(select_sql);
+    qDebug() << "1";
+    sql_query.bindValue(":chipUID", chipUID);
+    qDebug() << "2";
+    sql_query.bindValue(":id", (int)idCard.getId());
+    qDebug() << "3";
+    qDebug() << "before update " << sql_query.lastQuery();
+    if(!sql_query.exec()) {
+        qDebug() << "sqlite error: " << sql_query.lastError();
+        return IdCard(NULL);
+    } else {
+        qDebug() << "updateChipUID success " << sql_query.lastQuery();
+        idCard.setChipUID(chipUID);
+        return idCard;
     }
 }

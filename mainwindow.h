@@ -34,8 +34,13 @@ private slots:
     void initCameras();
     void startCamera1();
     void updateBarcodeDecodeResult(int decodeState);
+    void tableViewClicked(QModelIndex index);
+    void clear();
 
 private:
+    void updateIdCardChipUID(QString chipUID);
+    IdCard getSelectedIdCard() const;
+    void updateInputTextField(IdCard idCard);
 
 private:
     void cameraState(int cameraId, int state) override;
