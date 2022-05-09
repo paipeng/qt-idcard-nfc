@@ -256,6 +256,19 @@
      <string>clear</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="writeNFCPushButton">
+    <property name="geometry">
+     <rect>
+      <x>970</x>
+      <y>340</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>write_nfc</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -391,6 +404,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>writeNFCPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>writeNFC()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1007</x>
+     <y>374</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>527</x>
+     <y>321</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>insert()</slot>
@@ -400,5 +429,6 @@
   <slot>readNFC()</slot>
   <slot>tableViewClicked(QModelIndex)</slot>
   <slot>clear()</slot>
+  <slot>writeNFC()</slot>
  </slots>
 </ui>

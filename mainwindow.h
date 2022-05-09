@@ -36,6 +36,7 @@ private slots:
     void updateBarcodeDecodeResult(int decodeState);
     void tableViewClicked(QModelIndex index);
     void clear();
+    void writeNFC();
 
 private:
     void updateIdCardChipUID(QString chipUID);

@@ -164,7 +164,7 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
 
     qDebug() << "IdCard serialnumber: " << idCard.getSerialNumber();
     // gen qrcode
-    QImage qrCodeImage = BarcodeEncoder::encodeToImage(idCard.getSerialNumber());
+    QImage qrCodeImage = BarcodeEncoder::encodeToImage(idCard.getSerialNumber() + " " + idCard.getChipUID());
 
     qrCodeImage.save("C:\\pngsuite\\qrcode_test.bmp");
 #if 0

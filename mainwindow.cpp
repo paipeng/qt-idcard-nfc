@@ -445,3 +445,10 @@ void MainWindow::readNFC() {
         }
     }
 }
+
+void MainWindow::writeNFC() {
+    qDebug() << "writeNFC";
+    if (nfc.isDeviceConnected()) {
+        nfc.write(0, "");
+    }
+}
