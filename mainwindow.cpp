@@ -491,6 +491,12 @@ void MainWindow::readNFC() {
                     qDebug() << "ndef: " << text;
                     IdCard idCard = convertStringToIdCard(text);
                     qDebug() << "name: " << idCard.getName();
+                    IdCard idCardDB = sqliteEngine->getIdCardBySerialNumber(idCard.getSerialNumber());
+                    if (compareIdCards(idCard, idCardDB)) {
+                        updateInputTextField(idCardDB);
+                    } else {
+
+                    }
                 }
             }
             //updateDeviceState(1);

@@ -35,3 +35,22 @@ QString convertIdCardToString(const IdCard &idCard) {
                 );
     return data;
 }
+
+bool compareIdCards(IdCard idCard1, IdCard idCard2) {
+    if (idCard1.getSerialNumber() != idCard2.getSerialNumber()) {
+        return false;
+    }
+    if (idCard1.getChipUID() != idCard2.getChipUID()) {
+        return false;
+    }
+    if (idCard1.getName() != idCard2.getName()) {
+        return false;
+    }
+    if (idCard1.getCompany() != idCard2.getCompany()) {
+        return false;
+    }
+    if (idCard1.getExpireDate() != idCard2.getExpireDate()) {
+        return false;
+    }
+    return true;
+}

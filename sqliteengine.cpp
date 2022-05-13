@@ -136,6 +136,36 @@ IdCard SqliteEngine::getIdCardById(long id) {
     }
 }
 
+IdCard SqliteEngine::getIdCardBySerialNumber(QString serialNumber) {
+    qDebug() << "getIdCardBySerialNumber: " << serialNumber;
+    QSqlQuery sql_query;
+    QString select_sql = "select id, name, company, expire, serial_number, chip_uid from idcard where serial_number =:serialNumber";
+    sql_query.prepare(select_sql);
+    sql_query.bindValue(":serialNumber", serialNumber);
+    if(!sql_query.exec()) {
+        qDebug() << sql_query.lastError();
+        return IdCard(NULL);
+    } else {
+        while(sql_query.next()) {
+            long id = sql_query.value(0).toLongLong();
+            QString name = sql_query.value(1).toString();
+            QString company = sql_query.value(2).toString();
+            QString expireDate = sql_query.value(3).toString();
+            QDate date = QDate::fromString(expireDate, DATE_FORMAT);
+            QString serialNumber = sql_query.value(4).toString();
+
+            QString chipUID = sql_query.value(5).toString();
+
+            IdCard idCard(id, name, date);
+            idCard.setCompany(company);
+            idCard.setSerialNumber(serialNumber);
+            idCard.setChipUID(chipUID);
+            return idCard;
+        }
+        return IdCard(NULL);
+    }
+}
+
 IdCard SqliteEngine::updateChipUID(IdCard idCard, QString chipUID) {
     qDebug() << "updateChipUID: " << chipUID;
     QSqlQuery sql_query;

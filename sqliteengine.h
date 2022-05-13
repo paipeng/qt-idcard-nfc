@@ -20,6 +20,7 @@ public:
     QList<IdCard> query();
     IdCard getIdCardById(long id);
     IdCard updateChipUID(IdCard idCard, QString chipUID);
+    IdCard getIdCardBySerialNumber(QString serialNumber);
 
 signals:
 private:
