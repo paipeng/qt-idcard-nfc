@@ -93,6 +93,22 @@
         <translation type="unfinished">停止扫码</translation>
     </message>
     <message>
+        <location filename="mainwindow.cpp" line="524"/>
+        <location filename="mainwindow.cpp" line="527"/>
+        <source>idcard_write_nfc_title</source>
+        <translation type="unfinished">证卡写入NFC芯片</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="524"/>
+        <source>idcard_write_nfc_success</source>
+        <translation type="unfinished">写入成功！</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="527"/>
+        <source>idcard_write_nfc_error</source>
+        <translation type="unfinished">写入失败</translation>
+    </message>
+    <message>
         <location filename="mainwindow.ui" line="66"/>
         <location filename="mainwindow.cpp" line="81"/>
         <location filename="mainwindow.cpp" line="201"/>

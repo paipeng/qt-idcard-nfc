@@ -446,7 +446,7 @@ void MainWindow::addLog2(QString text, int state) {
 }
 
 void MainWindow::readNFC() {
-    qDebug() << "connect: " << nfc.isDeviceConnected();
+    qDebug() << "readNFC connect: " << nfc.isDeviceConnected();
     if (nfc.isDeviceConnected()) {
         int errorCode = nfc.readUID();
         qDebug() << "readUID: " << errorCode;
@@ -520,6 +520,12 @@ void MainWindow::writeNFC() {
         const QString data = convertIdCardToString(idCard);
         qDebug() << "write NDEF data: " << data;
         nfc.writeNDEFText(data.toStdString().data(), (int)strlen(data.toStdString().data()));
+
+        QMessageBox::information(this, tr("idcard_write_nfc_title"), tr("idcard_write_nfc_success"), QMessageBox::Ok);
+
+    } else {
+        QMessageBox::critical(this, tr("idcard_write_nfc_title"), tr("idcard_write_nfc_error"), QMessageBox::Ok);
+
     }
 }
 
