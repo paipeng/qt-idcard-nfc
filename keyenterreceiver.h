@@ -2,6 +2,7 @@
 #define KEYENTERRECEIVER_H
 
 #include <QObject>
+#include <QKeyEvent>
 
 class KeyEnterReceiver : public QObject
 {
@@ -11,7 +12,7 @@ public:
 protected:
     bool eventFilter(QObject* obj, QEvent* event);
 signals:
-
+    Q_SIGNAL void keyEvent(int keyCode, bool shift, bool ctrl, bool alt);
 private:
     bool shift;
     bool ctrl;

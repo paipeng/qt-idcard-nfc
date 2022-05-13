@@ -37,7 +37,13 @@ MainWindow::MainWindow(QWidget *parent)
     //pdfWriter.test("C:\\pngsuite\\code.pdf");
 
     nfc.openDevice();
+
+
+    QObject::connect(&keyEnterReceiver, &KeyEnterReceiver::keyEvent, this, &MainWindow::keyEvent);
+
     this->installEventFilter(&keyEnterReceiver);
+
+
 }
 
 MainWindow::~MainWindow() {
@@ -547,3 +553,7 @@ void MainWindow::writeNFC() {
     }
 }
 
+void MainWindow::keyEvent(int keyCode, bool shift, bool ctrl, bool alt) {
+    Q_UNUSED(keyCode);
+    qDebug() << "keyEvent: " << keyCode << " shift: " << shift << " ctrl: " << ctrl << " alt: " << alt;
+}

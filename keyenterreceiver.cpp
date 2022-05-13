@@ -2,8 +2,11 @@
 
 #include <QKeyEvent>
 #include <QDebug>
-KeyEnterReceiver::KeyEnterReceiver(QObject *parent) : QObject(parent), shift(false), ctrl(false), alt(false)
-{
+KeyEnterReceiver::KeyEnterReceiver(QObject *parent) :
+    QObject(parent),
+    shift(false),
+    ctrl(false),
+    alt(false) {
 
 }
 
@@ -14,6 +17,7 @@ bool KeyEnterReceiver::eventFilter(QObject* obj, QEvent* event) {
         qDebug() << "key pressed: " << key->key();
         if ( (key->key()==Qt::Key_Enter) || (key->key()==Qt::Key_Return) ) {
             //Enter or return was pressed
+            //emit keyEvent(key->key(), shift, ctrl, alt);
         } else if (key->key()==Qt::Key_Shift) {
             shift = true;
         } else if (key->key()==Qt::Key_Control) {
@@ -21,8 +25,10 @@ bool KeyEnterReceiver::eventFilter(QObject* obj, QEvent* event) {
         } else if (key->key()==Qt::Key_Alt) {
             alt = true;
         } else {
+            emit keyEvent(key->key(), shift, ctrl, alt);
             return QObject::eventFilter(obj, event);
         }
+
         return true;
     } else if (event->type()==QEvent::KeyRelease) {
         QKeyEvent* key = static_cast<QKeyEvent*>(event);
@@ -33,6 +39,8 @@ bool KeyEnterReceiver::eventFilter(QObject* obj, QEvent* event) {
             ctrl = false;
         } else if (key->key()==Qt::Key_Alt) {
             alt = false;
+        } else {
+            emit keyEvent(key->key(), shift, ctrl, alt);
         }
     } else {
         return QObject::eventFilter(obj, event);

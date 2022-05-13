@@ -38,6 +38,7 @@ private slots:
     void tableViewClicked(QModelIndex index);
     void clear();
     void writeNFC();
+    void keyEvent(int keyCode, bool shift, bool ctrl, bool alt);
 
 private:
     void updateIdCardChipUID(QString chipUID);
