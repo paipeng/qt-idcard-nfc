@@ -484,13 +484,15 @@ void MainWindow::readNFC() {
                 // convert data -> hex
                 unsigned char * data2 = nfc.getResponseBuffer();
                 unsigned long data_len2 = nfc.getResponseLength();
-                QString response;
-                for (int i = 0; i < data_len2-2; i++) {
-                    QString hex;
-                    hex.sprintf("%02X", data2[i]);
-                    response.append(hex);
+                if (data_len2 > 2) {
+                    QString response;
+                    for (int i = 0; i < data_len2-2; i++) {
+                        QString hex;
+                        hex.sprintf("%02X", data2[i]);
+                        response.append(hex);
+                    }
+                    updateIdCardChipUID(response);
                 }
-                updateIdCardChipUID(response);
                 // read ndef data
                 int payload_type;
                 unsigned char* data = NULL;
