@@ -441,10 +441,15 @@ void MainWindow::addLog2(QString text, int state) {
 void MainWindow::readNFC() {
     qDebug() << "connect: " << nfc.isDeviceConnected();
     if (nfc.isDeviceConnected()) {
-        int ret = nfc.disconnectDevice();
-
-        if (ret == 0){
-            //updateDeviceState(0);
+        int errorCode = nfc.readUID();
+        qDebug() << "readUID: " << errorCode;
+        if (errorCode == 0x9000) {
+            // read ndef data
+            int payload_type;
+            unsigned char* data = NULL;
+            int data_len = 0;
+            data = nfc.readNDEFText(&payload_type, &data_len);
+            qDebug() << "readNDEFText: " << data_len;
         }
     } else {
         qDebug() << "connectDevice: " << ui->deviceComboBox->currentIndex();
@@ -462,7 +467,29 @@ void MainWindow::readNFC() {
                     ui->statusbar->showMessage(msg);
                     break;
             }
-            nfc.readUID();
+            int errorCode = nfc.readUID();
+            qDebug() << "readUID: " << errorCode;
+            if (errorCode == 0x9000) {
+                // read ndef data
+                int payload_type;
+                unsigned char* data = NULL;
+                int data_len = 0;
+                data = nfc.readNDEFText(&payload_type, &data_len);
+                qDebug() << "readNDEFText: " << " data_len: " << data_len;
+                if (data != NULL) {
+                    qDebug() << "data: " << data_len;
+                    for (int i = 0; i < 10; i++) {
+                        QString t;
+                        t.sprintf("0x%02X ", data[i]);
+                        qDebug() << "data: " << t;
+                    }
+                    //QString text(std::string((char*)data));
+                    std::string str = (char*)data;
+                    QString text = QString::fromStdString(str);
+                    free(data);
+                    qDebug() << "ndef: " << text;
+                }
+            }
             //updateDeviceState(1);
         }
     }
