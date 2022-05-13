@@ -14,6 +14,7 @@ CONFIG += c++11
 SOURCES += \
     barcodeencoder.cpp \
     barcodedecoder.cpp \
+    common-util.cpp \
     idcard.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 HEADERS += \
     barcodeencoder.h \
     barcodedecoder.h \
+    common-util.h \
     idcard.h \
     mainwindow.h \
     pdfwriter.h \

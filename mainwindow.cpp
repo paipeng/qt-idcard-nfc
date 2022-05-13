@@ -12,6 +12,7 @@
 
 #include "barcodeencoder.h"
 #include "pdfwriter.h"
+#include "common-util.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -488,6 +489,8 @@ void MainWindow::readNFC() {
                     QString text = QString::fromStdString(str);
                     free(data);
                     qDebug() << "ndef: " << text;
+                    IdCard idCard = convertStringToIdCard(text);
+                    qDebug() << "name: " << idCard.getName();
                 }
             }
             //updateDeviceState(1);
@@ -495,20 +498,16 @@ void MainWindow::readNFC() {
     }
 }
 
+
+
 void MainWindow::writeNFC() {
     qDebug() << "writeNFC";
     if (nfc.isDeviceConnected()) {
         IdCard idCard = getSelectedIdCard();
         // convert IdCard object to text data
-        QString data = QString("姓名: %1\n单位: %2\n证卡编号: %3\n过期日期: %4\n芯片序号: %5").arg(
-                    idCard.getName(),
-                    idCard.getCompany(),
-                    idCard.getSerialNumber(),
-                    idCard.getExpireDate().toString(DATE_FORMAT),
-                    idCard.getChipUID()
-                    );
+        const QString data = convertIdCardToString(idCard);
         qDebug() << "write NDEF data: " << data;
-        nfc.writeNDEFText(data.toStdString().data(), strlen(data.toStdString().data()));
+        nfc.writeNDEFText(data.toStdString().data(), (int)strlen(data.toStdString().data()));
     }
 }
 
