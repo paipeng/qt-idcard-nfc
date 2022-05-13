@@ -285,7 +285,11 @@ void MainWindow::updateIdCardChipUID(QString chipUID) {
     qDebug() << "updateIdCardChipUID: " << chipUID;
     IdCard idCard = getSelectedIdCard();
     if (idCard.getId() > 0) {
-        IdCard idCard2 = sqliteEngine->updateChipUID(idCard, chipUID);
+        if (idCard.getChipUID().size() <= 0) {
+            IdCard idCard2 = sqliteEngine->updateChipUID(idCard, chipUID);
+        } else {
+            // do nothing
+        }
     }
 }
 
@@ -411,7 +415,7 @@ void MainWindow::receiveResponse(unsigned char* data, int data_len) {
         ui->chipUIDLineEdit->setText(response);
 
         // update idcard
-        updateIdCardChipUID(response);
+        //updateIdCardChipUID(response);
     }
 }
 
@@ -477,6 +481,16 @@ void MainWindow::readNFC() {
             int errorCode = nfc.readUID();
             qDebug() << "readUID: " << errorCode;
             if (errorCode == 0x9000) {
+                // convert data -> hex
+                unsigned char * data2 = nfc.getResponseBuffer();
+                unsigned long data_len2 = nfc.getResponseLength();
+                QString response;
+                for (int i = 0; i < data_len2-2; i++) {
+                    QString hex;
+                    hex.sprintf("%02X", data2[i]);
+                    response.append(hex);
+                }
+                updateIdCardChipUID(response);
                 // read ndef data
                 int payload_type;
                 unsigned char* data = NULL;
