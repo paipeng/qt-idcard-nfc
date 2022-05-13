@@ -60,7 +60,7 @@ void SqliteEngine::initDB() {
     }
 }
 
-void SqliteEngine::insert(IdCard& idCard) {
+int SqliteEngine::insert(IdCard& idCard) {
     qDebug() << "SQLite insert: " << idCard.getExpireDate() << " name: " << idCard.getName() << " " << idCard.getCompany();
     QSqlQuery sql_query;
     QString insert_sql = "insert into idcard(name, company, serial_number, expire) values (:name, :company, :serialNumber, :expire)";
@@ -72,10 +72,13 @@ void SqliteEngine::insert(IdCard& idCard) {
 
     if(!sql_query.exec()) {
         qDebug() << sql_query.lastError();
+        qDebug() << sql_query.lastQuery();
+        return sql_query.lastError().number();
     } else {
         qDebug() << "inserted!";
+        qDebug() << sql_query.lastQuery();
+        return 0;
     }
-    qDebug() << sql_query.lastQuery();
 }
 
 QList<IdCard> SqliteEngine::query() {

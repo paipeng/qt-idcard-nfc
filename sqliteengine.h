@@ -16,7 +16,7 @@ public:
     void initDB();
     void close();
 
-    void insert(IdCard &idCard);
+    int insert(IdCard &idCard);
     QList<IdCard> query();
     IdCard getIdCardById(long id);
     IdCard updateChipUID(IdCard idCard, QString chipUID);
