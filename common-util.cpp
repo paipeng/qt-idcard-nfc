@@ -6,9 +6,15 @@
 IdCard convertStringToIdCard(QString text) {
     IdCard idCard(NULL);
     QStringList strList = text.split("\n");
+    if (strList.size() <= 1) {
+        return idCard;
+    }
     foreach(QString str, strList) {
         qDebug() << "str: " << str;
         QStringList strList2 = str.split(": ");
+        if (strList2.size() <= 1) {
+            continue;
+        }
         qDebug() << "key: " << strList2[0] << " value: " << strList2[1];
         if (strList2[0] == "姓名") {
             idCard.setName(strList2[1]);
