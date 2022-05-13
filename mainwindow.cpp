@@ -409,11 +409,33 @@ void MainWindow::receiveResponse(unsigned char* data, int data_len) {
 }
 
 void MainWindow::addLog(unsigned char* data, int data_len, int direction) {
+    QString text;
+    if (direction == 0) {
+        text.append("<font color=\"green\">");
+        text.append("C-APDU -- ");
+    } else {
+        text.append("<font color=\"blue\">");
+        text.append("R-APDU -- ");
+    }
 
+    for (int i = 0; i < data_len; i++) {
+        QString c;
+        c.sprintf("0x%02X ", data[i]);
+        text.append(c);
+    }
+    text.append(" (");
+    text.append(QString::number(data_len));
+    text.append(")");
+
+
+    text.append("</font>");
+
+    qDebug() << "addLog: " << text;
+    //ui->logTextEdit->append(text);
 }
 
 void MainWindow::addLog2(QString text, int state) {
-
+    qDebug() << "addLog2: " << text << " state: " << state;
 }
 
 void MainWindow::readNFC() {
