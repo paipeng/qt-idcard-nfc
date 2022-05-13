@@ -80,7 +80,7 @@ QImage BarcodeEncoder::encodeToImage(const QString &data) {
 
     int width = 80, height = 80;
     int margin = 0;
-    int eccLevel = -1;
+    int eccLevel = 8;
     try {
         auto writer = MultiFormatWriter(format).setMargin(margin).setEncoding(encoding).setEccLevel(eccLevel);
         auto bitmap = ToMatrix<uint8_t>(writer.encode(TextUtfEncoding::FromUtf8(data.toStdString()), width, height));
