@@ -16,7 +16,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), camera1(0, this), nfc(this) {
+    , ui(new Ui::MainWindow), camera1(0, this), nfc(this), keyEnterReceiver(this) {
     ui->setupUi(this);
     sqliteEngine = new SqliteEngine();
     //sqliteEngine->initDB();
@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
     //pdfWriter.test("C:\\pngsuite\\code.pdf");
 
     nfc.openDevice();
+    this->installEventFilter(&keyEnterReceiver);
 }
 
 MainWindow::~MainWindow() {

@@ -5,6 +5,7 @@
 #include "sqliteengine.h"
 #include "cpcamera.h"
 #include "barcodedecoder.h"
+#include "keyenterreceiver.h"
 
 #define CP_SMARTCARD_LIBRARY 0
 #include "nfc.h"
@@ -63,5 +64,6 @@ private:
     QElapsedTimer timer;
 
     NFC nfc;
+    KeyEnterReceiver keyEnterReceiver;
 };
 #endif // MAINWINDOW_H

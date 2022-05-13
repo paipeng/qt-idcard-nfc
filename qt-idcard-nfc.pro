@@ -16,6 +16,7 @@ SOURCES += \
     barcodedecoder.cpp \
     common-util.cpp \
     idcard.cpp \
+    keyenterreceiver.cpp \
     main.cpp \
     mainwindow.cpp \
     pdfwriter.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     barcodedecoder.h \
     common-util.h \
     idcard.h \
+    keyenterreceiver.h \
     mainwindow.h \
     pdfwriter.h \
     sqliteengine.h
