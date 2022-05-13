@@ -6,7 +6,7 @@
     <message>
         <location filename="mainwindow.ui" line="17"/>
         <source>MainWindow</source>
-        <translation type="unfinished">IdCard证卡制作</translation>
+        <translation type="unfinished">IdCard证卡制作(NFC/CPU/IC)</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="30"/>
@@ -20,20 +20,20 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="99"/>
-        <location filename="mainwindow.cpp" line="76"/>
-        <location filename="mainwindow.cpp" line="195"/>
+        <location filename="mainwindow.cpp" line="83"/>
+        <location filename="mainwindow.cpp" line="202"/>
         <source>expire</source>
         <translation type="unfinished">过期日期</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="112"/>
-        <location filename="mainwindow.cpp" line="75"/>
+        <location filename="mainwindow.cpp" line="82"/>
         <source>company</source>
         <translation type="unfinished">公司</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="135"/>
-        <location filename="mainwindow.cpp" line="73"/>
+        <location filename="mainwindow.cpp" line="80"/>
         <source>serial_number</source>
         <translation type="unfinished">证卡序号</translation>
     </message>
@@ -44,8 +44,8 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="194"/>
-        <location filename="mainwindow.cpp" line="321"/>
-        <location filename="mainwindow.cpp" line="323"/>
+        <location filename="mainwindow.cpp" line="328"/>
+        <location filename="mainwindow.cpp" line="330"/>
         <source>scan</source>
         <translation type="unfinished">扫码</translation>
     </message>
@@ -56,8 +56,8 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="243"/>
-        <location filename="mainwindow.cpp" line="77"/>
-        <location filename="mainwindow.cpp" line="196"/>
+        <location filename="mainwindow.cpp" line="84"/>
+        <location filename="mainwindow.cpp" line="203"/>
         <source>chip_uid</source>
         <translation type="unfinished">芯片序号</translation>
     </message>
@@ -72,20 +72,30 @@
         <translation type="unfinished">写入NFC</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="72"/>
-        <location filename="mainwindow.cpp" line="193"/>
+        <location filename="mainwindow.cpp" line="63"/>
+        <source>idcard_insert_title</source>
+        <translation type="unfinished">证卡保存</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="63"/>
+        <source>idcard_insert_success</source>
+        <translation type="unfinished">新证卡保存成功！</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="79"/>
+        <location filename="mainwindow.cpp" line="200"/>
         <source>id</source>
         <translation type="unfinished">序号</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="326"/>
+        <location filename="mainwindow.cpp" line="333"/>
         <source>stop</source>
         <translation type="unfinished">停止扫码</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="66"/>
-        <location filename="mainwindow.cpp" line="74"/>
-        <location filename="mainwindow.cpp" line="194"/>
+        <location filename="mainwindow.cpp" line="81"/>
+        <location filename="mainwindow.cpp" line="201"/>
         <source>name</source>
         <translation type="unfinished">姓名</translation>
     </message>

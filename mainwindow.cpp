@@ -57,7 +57,13 @@ void MainWindow::insert() {
 
     qDebug() << "insert: " << idCard.getExpireDate();
 
-    sqliteEngine->insert(idCard);
+    if (sqliteEngine->insert(idCard) == 0) {
+        // insert success
+        // show alert message dialog
+        QMessageBox::information(this, tr("idcard_insert_title"), tr("idcard_insert_success"), QMessageBox::Ok);
+        // upload table
+        query();
+    }
 }
 
 void MainWindow::query() {
