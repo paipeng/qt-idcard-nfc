@@ -48,22 +48,23 @@ MainWindow::~MainWindow() {
 void MainWindow::insert() {
     qDebug() << "insert: " << ui->nameLineEdit->text();
 
-    ui->expireDateEdit->date();
-    ;
-    const QDate date = ui->expireDateEdit->date();
-    IdCard idCard(ui->nameLineEdit->text(), date);
+    if (ui->nameLineEdit->text().size() > 0 && ui->companyLineEdit->text().size() > 0 &&
+            ui->serialNumberLineEdit->text().size() > 0) {
+        const QDate date = ui->expireDateEdit->date();
+        IdCard idCard(ui->nameLineEdit->text(), date);
 
-    idCard.setCompany(ui->companyLineEdit->text());
-    idCard.setSerialNumber(ui->serialNumberLineEdit->text());
+        idCard.setCompany(ui->companyLineEdit->text());
+        idCard.setSerialNumber(ui->serialNumberLineEdit->text());
 
-    qDebug() << "insert: " << idCard.getExpireDate();
+        qDebug() << "insert: " << idCard.getExpireDate();
 
-    if (sqliteEngine->insert(idCard) == 0) {
-        // insert success
-        // show alert message dialog
-        QMessageBox::information(this, tr("idcard_insert_title"), tr("idcard_insert_success"), QMessageBox::Ok);
-        // upload table
-        query();
+        if (sqliteEngine->insert(idCard) == 0) {
+            // insert success
+            // show alert message dialog
+            QMessageBox::information(this, tr("idcard_insert_title"), tr("idcard_insert_success"), QMessageBox::Ok);
+            // upload table
+            query();
+        }
     }
 }
 
