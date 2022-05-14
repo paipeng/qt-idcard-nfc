@@ -244,20 +244,26 @@ void MainWindow::print() {
         QString fileName = "C:\\pngsuite\\idcard_";
         fileName += idCard.getSerialNumber();
         fileName += ".pdf";
-        pdfWriter.generateIdCard(idCard, fileName);
+        try {
+            if (pdfWriter.generateIdCard(idCard, fileName) == 0) {
+                int ret = QMessageBox::information(this, tr("idcard_print_title"),
+                                         tr("idcard_print_success"), QMessageBox::Ok, QMessageBox::Close);
+                switch (ret) {
+                   case QMessageBox::Ok:
+                       // TODO open pdf
+                        QDesktopServices::openUrl(QUrl::fromLocalFile(fileName));
+                       break;
+                   default:
+                       // should never be reached
+                       break;
+                 }
+            } else {
+               QMessageBox::critical(this, tr("idcard_print_title"), tr("idcard_print_error"), QMessageBox::Ok);
+            }
 
-        int ret = QMessageBox::information(this, tr("idcard_print_title"),
-                                 tr("idcard_print_success"), QMessageBox::Ok, QMessageBox::Close);
-        switch (ret) {
-           case QMessageBox::Ok:
-               // TODO open pdf
-                QDesktopServices::openUrl(QUrl::fromLocalFile(fileName));
-               break;
-           default:
-               // should never be reached
-               break;
-         }
-
+        } catch(...) {
+           qDebug() << "generateIdCard error";
+        }
     }
 }
 

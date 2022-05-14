@@ -49,8 +49,8 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="194"/>
-        <location filename="mainwindow.cpp" line="363"/>
-        <location filename="mainwindow.cpp" line="365"/>
+        <location filename="mainwindow.cpp" line="369"/>
+        <location filename="mainwindow.cpp" line="371"/>
         <source>scan</source>
         <translation type="unfinished">扫码</translation>
     </message>
@@ -104,6 +104,7 @@
     </message>
     <message>
         <location filename="mainwindow.cpp" line="249"/>
+        <location filename="mainwindow.cpp" line="261"/>
         <source>idcard_print_title</source>
         <translation type="unfinished">证卡打印</translation>
     </message>
@@ -113,63 +114,68 @@
         <translation type="unfinished">成功生成证卡打印文件</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="368"/>
+        <location filename="mainwindow.cpp" line="261"/>
+        <source>idcard_print_error</source>
+        <translation type="unfinished">证卡生成PDF失败</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="374"/>
         <source>stop</source>
         <translation type="unfinished">停止扫码</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="576"/>
+        <location filename="mainwindow.cpp" line="586"/>
         <source>write_nfc_idcard</source>
         <translation type="unfinished">写入芯片</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="577"/>
+        <location filename="mainwindow.cpp" line="587"/>
         <source>write_nfc_data</source>
         <translation type="unfinished">请把打印好的证卡放到芯片读写器上，再使用二维码扫码枪扫描证卡上的二维码，系统在查询有效后写入证卡数据到芯片内</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="611"/>
-        <location filename="mainwindow.cpp" line="614"/>
-        <location filename="mainwindow.cpp" line="618"/>
-        <location filename="mainwindow.cpp" line="622"/>
-        <location filename="mainwindow.cpp" line="627"/>
-        <location filename="mainwindow.cpp" line="630"/>
-        <location filename="mainwindow.cpp" line="634"/>
+        <location filename="mainwindow.cpp" line="621"/>
+        <location filename="mainwindow.cpp" line="624"/>
+        <location filename="mainwindow.cpp" line="628"/>
+        <location filename="mainwindow.cpp" line="632"/>
+        <location filename="mainwindow.cpp" line="637"/>
+        <location filename="mainwindow.cpp" line="640"/>
+        <location filename="mainwindow.cpp" line="644"/>
         <source>idcard_write_nfc_title</source>
         <translation type="unfinished">证卡写入NFC芯片</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="611"/>
+        <location filename="mainwindow.cpp" line="621"/>
         <source>idcard_write_nfc_success</source>
         <translation type="unfinished">写入成功！</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="614"/>
+        <location filename="mainwindow.cpp" line="624"/>
         <source>idcard_chip_uid_invalid</source>
         <translation type="unfinished">芯片UID与证卡不一致</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="618"/>
+        <location filename="mainwindow.cpp" line="628"/>
         <source>idcard_get_smartcard_uid_error</source>
         <translation type="unfinished">读取芯片UID失败</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="622"/>
+        <location filename="mainwindow.cpp" line="632"/>
         <source>idcard_no_smartcard_found</source>
         <translation type="unfinished">没有识别到芯片</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="627"/>
+        <location filename="mainwindow.cpp" line="637"/>
         <source>idcard_data_invalid</source>
         <translation type="unfinished">没有查询到证卡数据</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="630"/>
+        <location filename="mainwindow.cpp" line="640"/>
         <source>qrcode_invalid</source>
         <translation type="unfinished">二维码数据无效</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="634"/>
+        <location filename="mainwindow.cpp" line="644"/>
         <source>nfc_device_not_connected</source>
         <translation type="unfinished">芯片读写器没有连接成功</translation>
     </message>
