@@ -30,7 +30,7 @@
      <string>insert</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="queryPushButton">
+   <widget class="QPushButton" name="loadPushButton">
     <property name="geometry">
      <rect>
       <x>590</x>
@@ -40,7 +40,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>query</string>
+     <string>load</string>
     </property>
    </widget>
    <widget class="QTableView" name="tableView">
@@ -269,6 +269,19 @@
      <string>write_nfc</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="queryPushButton">
+    <property name="geometry">
+     <rect>
+      <x>970</x>
+      <y>270</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>query</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -309,10 +322,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>queryPushButton</sender>
+   <sender>loadPushButton</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>query()</slot>
+   <slot>load()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>247</x>
@@ -420,6 +433,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>queryPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>query()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1007</x>
+     <y>304</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>527</x>
+     <y>321</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>insert()</slot>
@@ -430,5 +459,6 @@
   <slot>tableViewClicked(QModelIndex)</slot>
   <slot>clear()</slot>
   <slot>writeNFC()</slot>
+  <slot>load()</slot>
  </slots>
 </ui>

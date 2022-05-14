@@ -28,6 +28,7 @@ private:
 private slots:
     void insert();
     void query();
+    void load();
     void initTableView();
     void print();
     void scan();

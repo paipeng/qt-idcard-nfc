@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     sqliteEngine = new SqliteEngine();
     //sqliteEngine->initDB();
     initTableView();
-    query();
+    load();
 
     QObject::connect(&barcodeDecoder, &BarcodeDecoder::updateBarcodeDecodeResult, this, &MainWindow::updateBarcodeDecodeResult);
     barcodeDecoder.start();
@@ -69,12 +69,12 @@ void MainWindow::insert() {
             // show alert message dialog
             QMessageBox::information(this, tr("idcard_insert_title"), tr("idcard_insert_success"), QMessageBox::Ok);
             // upload table
-            query();
+            load();
         }
     }
 }
 
-void MainWindow::query() {
+void MainWindow::load() {
     QStandardItemModel *model;
 
     model = (QStandardItemModel*)ui->tableView->model();
@@ -145,10 +145,6 @@ void MainWindow::query() {
             }
         }
 #endif
-
-
-
-
         //int index = idCards.indexOf(idCard);
         qDebug() << index << "  -- " << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate() << " " << idCard.getCompany()
                  << " " << idCard.getChipUID();
@@ -169,7 +165,6 @@ void MainWindow::query() {
         index ++;
     }
 
-
     QJsonDocument document;
     document.setArray(jsonArray);
     QByteArray bytes = document.toJson( QJsonDocument::Indented );
@@ -186,9 +181,6 @@ void MainWindow::query() {
     {
         qDebug() << "file open failed: " << path << endl;
     }
-
-
-
     //model->setItem(0, 0, new QStandardItem(QString("%1").arg(1212)));
 
 
@@ -200,6 +192,24 @@ void MainWindow::query() {
     ui->tableView->setColumnWidth(5,180);
     //ui->tableView->setShowGrid(true);
     //ui->tableView->show();
+}
+
+void MainWindow::query() {
+    bool ok;
+    QString text = QInputDialog::getText(this, tr("query_idcard"),
+                                        tr("query_data"), QLineEdit::Normal,
+                                        "", &ok);
+    // QDir::home().dirName()
+    if (ok && !text.isEmpty()) {
+        qDebug() << "text: " << text;
+        QStringList str = text.split(" ");
+        if (str.size() == 2) {
+            IdCard idCard = sqliteEngine->getIdCardBySerialNumber(str[0]);
+            if (idCard.getId() > 0) {
+                updateInputTextField(idCard);
+            }
+        }
+    }
 }
 
 void MainWindow::initTableView() {
@@ -235,6 +245,19 @@ void MainWindow::print() {
         fileName += idCard.getSerialNumber();
         fileName += ".pdf";
         pdfWriter.generateIdCard(idCard, fileName);
+
+        int ret = QMessageBox::information(this, tr("idcard_print_title"),
+                                 tr("idcard_print_success"), QMessageBox::Ok, QMessageBox::Close);
+        switch (ret) {
+           case QMessageBox::Ok:
+               // TODO open pdf
+                QDesktopServices::openUrl(QUrl::fromLocalFile(fileName));
+               break;
+           default:
+               // should never be reached
+               break;
+         }
+
     }
 }
 
