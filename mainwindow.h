@@ -45,6 +45,7 @@ private:
     void updateIdCardChipUID(QString chipUID);
     IdCard getSelectedIdCard() const;
     void updateInputTextField(IdCard idCard);
+    int connectSmartCardDevice();
 
 private:
     void cameraState(int cameraId, int state) override;

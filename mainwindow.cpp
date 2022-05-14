@@ -472,16 +472,40 @@ void MainWindow::addLog(unsigned char* data, int data_len, int direction) {
 
     text.append("</font>");
 
-    qDebug() << "addLog: " << text;
+    //qDebug() << "addLog: " << text;
     //ui->logTextEdit->append(text);
 }
 
 void MainWindow::addLog2(QString text, int state) {
-    qDebug() << "addLog2: " << text << " state: " << state;
+    //qDebug() << "addLog2: " << text << " state: " << state;
+}
+
+
+int MainWindow::connectSmartCardDevice() {
+    qDebug() << "connectSmartCardDevice: " << ui->deviceComboBox->currentIndex();
+    if (nfc.connectDevice(ui->deviceComboBox->currentIndex()) == 0) {
+        switch (nfc.getProtocolType()) {
+            case SCARD_PROTOCOL_T0:
+                ui->statusbar->showMessage(QString("SCardConnect ok Protocol Type = T0"));
+                break;
+            case SCARD_PROTOCOL_T1:
+                ui->statusbar->showMessage(QString("SCardConnect ok Protocol Type = T1"));
+                break;
+            default:
+                QString msg;
+                msg.sprintf("SCardConnect ok Protocol Type: %d", nfc.getProtocolType());
+                ui->statusbar->showMessage(msg);
+                break;
+        }
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
 void MainWindow::readNFC() {
     qDebug() << "readNFC connect: " << nfc.isDeviceConnected();
+    nfc.disconnectDevice();
     if (nfc.isDeviceConnected()) {
         int errorCode = nfc.readUID();
         qDebug() << "readUID: " << errorCode;
@@ -494,21 +518,7 @@ void MainWindow::readNFC() {
             qDebug() << "readNDEFText: " << data_len;
         }
     } else {
-        qDebug() << "connectDevice: " << ui->deviceComboBox->currentIndex();
-        if (nfc.connectDevice(ui->deviceComboBox->currentIndex()) == 0) {
-            switch (nfc.getProtocolType()) {
-                case SCARD_PROTOCOL_T0:
-                    ui->statusbar->showMessage(QString("SCardConnect ok Protocol Type = T0"));
-                    break;
-                case SCARD_PROTOCOL_T1:
-                    ui->statusbar->showMessage(QString("SCardConnect ok Protocol Type = T1"));
-                    break;
-                default:
-                    QString msg;
-                    msg.sprintf("SCardConnect ok Protocol Type: %d", nfc.getProtocolType());
-                    ui->statusbar->showMessage(msg);
-                    break;
-            }
+        if (connectSmartCardDevice() == 0) {
             int errorCode = nfc.readUID();
             qDebug() << "readUID: " << errorCode;
             if (errorCode == 0x9000) {
@@ -531,14 +541,16 @@ void MainWindow::readNFC() {
                 data = nfc.readNDEFText(&payload_type, &data_len);
                 qDebug() << "readNDEFText: " << " data_len: " << data_len;
                 if (data != NULL) {
+#if 0
                     qDebug() << "data: " << data_len;
                     for (int i = 0; i < 10; i++) {
                         QString t;
                         t.sprintf("0x%02X ", data[i]);
                         qDebug() << "data: " << t;
                     }
+#endif
                     //QString text(std::string((char*)data));
-                    std::string str = (char*)data;
+                    std::string str((char*)data, data_len);
                     QString text = QString::fromStdString(str);
                     free(data);
                     qDebug() << "ndef: " << text;
@@ -557,22 +569,73 @@ void MainWindow::readNFC() {
     }
 }
 
-
-
 void MainWindow::writeNFC() {
     qDebug() << "writeNFC";
+    nfc.disconnectDevice();
+    if (!nfc.isDeviceConnected()) {
+        connectSmartCardDevice();
+    }
     if (nfc.isDeviceConnected()) {
-        IdCard idCard = getSelectedIdCard();
-        // convert IdCard object to text data
-        const QString data = convertIdCardToString(idCard);
-        qDebug() << "write NDEF data: " << data;
-        nfc.writeNDEFText(data.toStdString().data(), (int)strlen(data.toStdString().data()));
+        bool ok;
+        QString text = QInputDialog::getText(this, tr("write_nfc_idcard"),
+                                            tr("write_nfc_data"), QLineEdit::Normal,
+                                            "", &ok);
+        // QDir::home().dirName()
+        if (ok && !text.isEmpty()) {
+            qDebug() << "text: " << text;
+            QStringList str = text.split(" ");
+            if (str.size() == 2) {
+                IdCard idCard = sqliteEngine->getIdCardBySerialNumber(str[0]);
+                // check chip uid
+                if (idCard.getId() > 0) {
+                    int errorCode = nfc.readUID();
+                    qDebug() << "readUID: " << errorCode;
+                    if (errorCode == 0x9000) {
+                        // convert data -> hex
+                        unsigned char * data2 = nfc.getResponseBuffer();
+                        unsigned long data_len2 = nfc.getResponseLength();
+                        if (data_len2 > 2) {
+                            QString response;
+                            for (int i = 0; i < data_len2-2; i++) {
+                                QString hex;
+                                hex.sprintf("%02X", data2[i]);
+                                response.append(hex);
+                            }
 
-        QMessageBox::information(this, tr("idcard_write_nfc_title"), tr("idcard_write_nfc_success"), QMessageBox::Ok);
+                            if (idCard.getChipUID() == str[1] && str[1] == response) {
+                                updateInputTextField(idCard);
 
+
+                                //IdCard idCard = getSelectedIdCard();
+                                // convert IdCard object to text data
+                                const QString data = convertIdCardToString(idCard);
+                                qDebug() << "write NDEF data: " << data;
+                                nfc.writeNDEFText(data.toStdString().data(), (int)strlen(data.toStdString().data()));
+
+                                QMessageBox::information(this, tr("idcard_write_nfc_title"), tr("idcard_write_nfc_success"), QMessageBox::Ok);
+
+                            } else {
+                                QMessageBox::critical(this, tr("idcard_write_nfc_title"), tr("idcard_chip_uid_invalid"), QMessageBox::Ok);
+
+                            }
+                        } else {
+                            QMessageBox::critical(this, tr("idcard_write_nfc_title"), tr("idcard_get_smartcard_uid_error"), QMessageBox::Ok);
+
+                        }
+                    } else {
+                        QMessageBox::critical(this, tr("idcard_write_nfc_title"), tr("idcard_no_smartcard_found"), QMessageBox::Ok);
+                    }
+
+
+                } else {
+                    QMessageBox::critical(this, tr("idcard_write_nfc_title"), tr("idcard_data_invalid"), QMessageBox::Ok);
+                }
+            } else {
+                QMessageBox::critical(this, tr("idcard_write_nfc_title"), tr("qrcode_invalid"), QMessageBox::Ok);
+            }
+        }
     } else {
-        QMessageBox::critical(this, tr("idcard_write_nfc_title"), tr("idcard_write_nfc_error"), QMessageBox::Ok);
-
+        QMessageBox::critical(this, tr("idcard_write_nfc_title"), tr("nfc_device_not_connected"), QMessageBox::Ok);
     }
 }
 
