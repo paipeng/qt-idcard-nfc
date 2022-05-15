@@ -43,19 +43,25 @@ QString convertIdCardToString(const IdCard &idCard) {
 }
 
 bool compareIdCards(IdCard idCard1, IdCard idCard2) {
+    qDebug() << "compareIdCards";
     if (idCard1.getSerialNumber() != idCard2.getSerialNumber()) {
+        qDebug() << "serialNumber diff";
         return false;
     }
     if (idCard1.getChipUID() != idCard2.getChipUID()) {
+        qDebug() << "chiUid diff";
         return false;
     }
     if (idCard1.getName() != idCard2.getName()) {
+        qDebug() << "name diff";
         return false;
     }
     if (idCard1.getCompany() != idCard2.getCompany()) {
+        qDebug() << "company diff";
         return false;
     }
     if (idCard1.getExpireDate() != idCard2.getExpireDate()) {
+        qDebug() << "expire date diff";
         return false;
     }
     return true;
