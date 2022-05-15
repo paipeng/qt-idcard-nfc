@@ -570,7 +570,7 @@ void MainWindow::readNFC() {
                     }
 #endif
                     //QString text(std::string((char*)data));
-                    std::string str((char*)data, data_len);
+                    std::string str((char*)data, data_len-3);
                     QString text = QString::fromStdString(str);
                     free(data);
                     qDebug() << "ndef: " << text;
