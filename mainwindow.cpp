@@ -678,21 +678,29 @@ void MainWindow::keyEvent(int keyCode, bool shift, bool ctrl, bool alt) {
 
 
 void MainWindow::toggleWatch() {
-
+    if (watcher->isRunning()) {
+        if (!watcher->stop()) {
+            QMessageBox::warning(0, tr("WARNGING"), tr("Failed to stop"));
+        }
+    } else {
+        if (!watcher->start()) {
+            QMessageBox::warning(0, tr("WARNGING"), tr("Failed to start"));
+        }
+    }
 }
 
 void MainWindow::showDetail(bool show) {
-
 }
 
 void MainWindow::slotDeviceAdded(const QString &dev) {
-
+    qDebug("tid=%#x: add %s", (quintptr) QThread::currentThreadId(), qPrintable(dev));
 }
 
 void MainWindow::slotDeviceRemoved(const QString &dev) {
-
+    qDebug("tid=%#x: remove %s", (quintptr) QThread::currentThreadId(), qPrintable(dev));
 }
 
 void MainWindow::slotDeviceChanged(const QString &dev) {
+    qDebug("tid=%#x: change %s", (quintptr) QThread::currentThreadId(), qPrintable(dev));
 
 }
