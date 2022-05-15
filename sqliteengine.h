@@ -21,6 +21,7 @@ public:
     IdCard getIdCardById(long id);
     IdCard updateChipUID(IdCard idCard, QString chipUID);
     IdCard getIdCardBySerialNumber(QString serialNumber);
+    IdCard getIdCardByChipUID(QString chipUID);
 
 signals:
 private:
