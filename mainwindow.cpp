@@ -264,6 +264,8 @@ void MainWindow::print() {
         } catch(...) {
            qDebug() << "generateIdCard error";
         }
+    } else {
+        QMessageBox::critical(this, tr("idcard_print_title"), tr("no_idcard_in_tableview_selected"), QMessageBox::Ok);
     }
 }
 
@@ -324,9 +326,16 @@ void MainWindow::updateIdCardChipUID(QString chipUID) {
     if (idCard.getId() > 0) {
         if (idCard.getChipUID().size() <= 0) {
             IdCard idCard2 = sqliteEngine->updateChipUID(idCard, chipUID);
+            updateInputTextField(idCard2);
+            QMessageBox::information(this, tr("idcard_write_chip_uid_title"), tr("idcard_write_chip_uid"), QMessageBox::Ok);
+            load();
         } else {
             // do nothing
+            QMessageBox::critical(this, tr("idcard_write_chip_uid_title"), tr("invalid_idcard_in_tableview_selected"), QMessageBox::Ok);
+
         }
+    } else {
+        QMessageBox::critical(this, tr("idcard_write_chip_uid_title"), tr("no_idcard_in_tableview_selected"), QMessageBox::Ok);
     }
 }
 
