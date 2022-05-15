@@ -264,6 +264,18 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
     HPDF_Page_ShowText (page, idCard.getExpireDate().toString(DATE_FORMAT).toLocal8Bit());
     HPDF_Page_EndText (page);
 
+
+    HPDF_Page_SetFontAndSize (page, font, 8);
+    HPDF_Page_SetRGBFill (page, 1.0, 0.0, 0.0);
+    y -= 20;
+    HPDF_Page_BeginText (page);
+    HPDF_Page_MoveTextPos (page, x, y);
+    HPDF_Page_ShowText (page, QString("芯片序号").toLocal8Bit());
+    HPDF_Page_EndText (page);
+    HPDF_Page_BeginText (page);
+    HPDF_Page_MoveTextPos (page, x + 70, y);
+    HPDF_Page_ShowText (page, idCard.getChipUID().toLocal8Bit());
+    HPDF_Page_EndText (page);
 #if 0
     dpi = 600;
     draw_image(pdf, "code_1bit.bmp", 100, HPDF_Page_GetHeight(page) - 550, dpi,
