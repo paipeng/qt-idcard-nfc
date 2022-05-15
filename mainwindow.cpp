@@ -547,7 +547,12 @@ void MainWindow::readNFC() {
                         hex.sprintf("%02X", data2[i]);
                         response.append(hex);
                     }
-                    updateIdCardChipUID(response);
+                    IdCard idCard3 = sqliteEngine->getIdCardByChipUID(response);
+                    if (idCard3.getId() <= 0) {
+                        updateIdCardChipUID(response);
+                    } else {
+                        qDebug() << "chip uid already registered!";
+                    }
                 }
                 // read ndef data
                 int payload_type;
