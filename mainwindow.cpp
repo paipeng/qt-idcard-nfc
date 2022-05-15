@@ -70,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() {
     delete sqliteEngine;
     delete ui;
+    delete watcher;
 }
 
 void MainWindow::insert() {
@@ -704,5 +705,5 @@ void MainWindow::slotDeviceRemoved(const QString &dev) {
 
 void MainWindow::slotDeviceChanged(const QString &dev) {
     qDebug("tid=%#x: change %s", (quintptr) QThread::currentThreadId(), qPrintable(dev));
-
+    // TODO check USB (camera, smartcard reader, qrcode scanner, printer)
 }
