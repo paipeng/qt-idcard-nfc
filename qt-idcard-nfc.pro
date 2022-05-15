@@ -123,4 +123,9 @@ win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../qt-smartcard/release/ -
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../qt-smartcard/debug/ -lqt-smartcard
 else:unix: LIBS += -L$$PWD/libs/x64/ -lqt-smartcard
 
+INCLUDEPATH += $$PWD/../qdevicewatcher/src
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../qdevicewatcher/out/lib_win_/ -lQDeviceWatcher2
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../qdevicewatcher/out/lib_win_/ -lQDeviceWatcher2
+else:unix: LIBS += -L$$PWD/libs/x64/ -lqt-smartcard
+
 

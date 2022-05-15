@@ -14,6 +14,8 @@
 #include "pdfwriter.h"
 #include "common-util.h"
 
+#include "qdevicewatcher.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow), camera1(0, this), nfc(this), keyEnterReceiver(this) {
@@ -44,6 +46,23 @@ MainWindow::MainWindow(QWidget *parent)
     this->installEventFilter(&keyEnterReceiver);
 
 
+    watcher = new QDeviceWatcher;
+    watcher->appendEventReceiver(this);
+    connect(watcher,
+            SIGNAL(deviceAdded(QString)),
+            this,
+            SLOT(slotDeviceAdded(QString)),
+            Qt::DirectConnection);
+    connect(watcher,
+            SIGNAL(deviceChanged(QString)),
+            this,
+            SLOT(slotDeviceChanged(QString)),
+            Qt::DirectConnection);
+    connect(watcher,
+            SIGNAL(deviceRemoved(QString)),
+            this,
+            SLOT(slotDeviceRemoved(QString)),
+            Qt::DirectConnection);
 }
 
 MainWindow::~MainWindow() {
@@ -561,14 +580,6 @@ void MainWindow::readNFC() {
                 data = nfc.readNDEFText(&payload_type, &data_len);
                 qDebug() << "readNDEFText: " << " data_len: " << data_len;
                 if (data != NULL) {
-#if 0
-                    qDebug() << "data: " << data_len;
-                    for (int i = 0; i < 10; i++) {
-                        QString t;
-                        t.sprintf("0x%02X ", data[i]);
-                        qDebug() << "data: " << t;
-                    }
-#endif
                     //QString text(std::string((char*)data));
                     std::string str((char*)data, data_len-3);
                     QString text = QString::fromStdString(str);
@@ -663,4 +674,25 @@ void MainWindow::writeNFC() {
 void MainWindow::keyEvent(int keyCode, bool shift, bool ctrl, bool alt) {
     Q_UNUSED(keyCode);
     qDebug() << "keyEvent: " << keyCode << " shift: " << shift << " ctrl: " << ctrl << " alt: " << alt;
+}
+
+
+void MainWindow::toggleWatch() {
+
+}
+
+void MainWindow::showDetail(bool show) {
+
+}
+
+void MainWindow::slotDeviceAdded(const QString &dev) {
+
+}
+
+void MainWindow::slotDeviceRemoved(const QString &dev) {
+
+}
+
+void MainWindow::slotDeviceChanged(const QString &dev) {
+
 }

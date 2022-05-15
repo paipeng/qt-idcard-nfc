@@ -14,6 +14,8 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+class QDeviceWatcher;
+
 class MainWindow : public QMainWindow, CameraInterface, SmartCardInterface
 {
     Q_OBJECT
@@ -41,6 +43,13 @@ private slots:
     void writeNFC();
     void keyEvent(int keyCode, bool shift, bool ctrl, bool alt);
 
+
+public slots:
+    void toggleWatch();
+    void showDetail(bool show);
+    void slotDeviceAdded(const QString &dev);
+    void slotDeviceRemoved(const QString &dev);
+    void slotDeviceChanged(const QString &dev);
 private:
     void updateIdCardChipUID(QString chipUID);
     IdCard getSelectedIdCard() const;
@@ -68,5 +77,7 @@ private:
 
     NFC nfc;
     KeyEnterReceiver keyEnterReceiver;
+
+    QDeviceWatcher *watcher;
 };
 #endif // MAINWINDOW_H
