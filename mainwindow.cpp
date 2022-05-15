@@ -63,6 +63,8 @@ MainWindow::MainWindow(QWidget *parent)
             this,
             SLOT(slotDeviceRemoved(QString)),
             Qt::DirectConnection);
+
+    toggleWatch();
 }
 
 MainWindow::~MainWindow() {
