@@ -49,8 +49,8 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="194"/>
-        <location filename="mainwindow.cpp" line="376"/>
         <location filename="mainwindow.cpp" line="378"/>
+        <location filename="mainwindow.cpp" line="380"/>
         <source>scan</source>
         <translation type="unfinished">扫码</translation>
     </message>
@@ -105,6 +105,7 @@
     <message>
         <location filename="mainwindow.cpp" line="249"/>
         <location filename="mainwindow.cpp" line="261"/>
+        <location filename="mainwindow.cpp" line="268"/>
         <source>idcard_print_title</source>
         <translation type="unfinished">证卡打印</translation>
     </message>
@@ -119,31 +120,42 @@
         <translation type="unfinished">证卡生成PDF失败</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="328"/>
-        <location filename="mainwindow.cpp" line="332"/>
-        <location filename="mainwindow.cpp" line="336"/>
+        <location filename="mainwindow.cpp" line="330"/>
+        <location filename="mainwindow.cpp" line="334"/>
+        <location filename="mainwindow.cpp" line="338"/>
         <source>idcard_write_chip_uid_title</source>
         <translation type="unfinished">证卡关联芯片</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="328"/>
+        <location filename="mainwindow.cpp" line="330"/>
         <source>idcard_write_chip_uid</source>
         <translation type="unfinished">证卡关联芯片成功</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="332"/>
+        <location filename="mainwindow.cpp" line="334"/>
         <source>invalid_idcard_in_tableview_selected</source>
         <translation type="unfinished">无效证卡：证卡已关联芯片</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="336"/>
+        <location filename="mainwindow.cpp" line="268"/>
+        <location filename="mainwindow.cpp" line="338"/>
         <source>no_idcard_in_tableview_selected</source>
         <translation type="unfinished">请先选择一证卡信息</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="381"/>
+        <location filename="mainwindow.cpp" line="383"/>
         <source>stop</source>
         <translation type="unfinished">停止扫码</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="575"/>
+        <source>idcard_read_chip_title</source>
+        <translation type="unfinished">读取芯片数据</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="575"/>
+        <source>idcard_chip_uid_not_found</source>
+        <translation type="unfinished">无法查到此芯片数据</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="593"/>

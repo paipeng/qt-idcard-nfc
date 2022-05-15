@@ -575,6 +575,7 @@ void MainWindow::readNFC() {
                     if (compareIdCards(idCard, idCardDB)) {
                         updateInputTextField(idCardDB);
                     } else {
+                        QMessageBox::critical(this, tr("idcard_read_chip_title"), tr("idcard_chip_uid_not_found"), QMessageBox::Ok);
 
                     }
                 }
