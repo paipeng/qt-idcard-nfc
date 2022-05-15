@@ -5,6 +5,7 @@
 #include "barcodeencoder.h"
 
 #include <QDebug>
+#include <QTextCodec>
 
 jmp_buf env;
 
@@ -111,16 +112,20 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
        printf ("error: cannot create PdfDoc object\n");
        return 1;
     }
-
+    qDebug() << "2";
     /* error-handler */
     if (setjmp(env)) {
        HPDF_Free (pdf);
        return 1;
     }
+    qDebug() << "3";
 
     HPDF_SetCompressionMode (pdf, HPDF_COMP_ALL);
+
     HPDF_UseCNSFonts(pdf);
     HPDF_UseCNSEncodings(pdf);
+
+    qDebug() << "4";
 #if 0
     font = HPDF_GetFont (pdf, "Simsun", "GB-EUC-H");
 #else
@@ -128,16 +133,39 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
     //HPDF_SetCurrentEncoder(pdf, "UTF-8");
 
     /* create default-font */
+
+    //HPDF_SetCurrentEncoder(pdf, "GB-EUC-H");
+
+#if 1
     HPDF_UseUTFEncodings(pdf);
     HPDF_SetCurrentEncoder(pdf, "UTF-8");
+    //const char* font_name = HPDF_LoadTTFontFromFile(pdf, "C:\\Users\\paipeng\\git\\libharu\\demo\\ttfont\\FZQTJW.TTF", HPDF_TRUE);
+    //font = HPDF_GetFont(pdf, font_name, "UTF-8");
+    const char* font_name = HPDF_LoadTTFontFromFile(pdf, "C:\\Users\\paipeng\\git\\qt-idcard-nfc\\fonts\\FZDHTJW.TTF", HPDF_FALSE);
+    font = HPDF_GetFont(pdf, font_name, "GB-EUC-H");
 
+#if 0
+    HPDF_UseUTFEncodings(pdf);
+    HPDF_SetCurrentEncoder(pdf, "UTF-8");
     QString fontPath = "C:\\Users\\paipeng\\git\\libharu\\demo\\ttfont\\FZQTJW.TTF";
-    fontPath = "C:\\\\Users\\\\paipeng\\\\git\\\\qt-idcard-nfc\\\\fonts\\\\HYCuYuanF.ttf";
+    fontPath = "C:\\\\Users\\\\paipeng\\\\git\\\\qt-idcard-nfc\\\\fonts\\\\FZDHTJW.TTF";
     qDebug() << "fontPath: " << fontPath << " -> " << fontPath.toStdString().data();
-    const char* font_name = HPDF_LoadTTFontFromFile(pdf, fontPath.toStdString().data(), HPDF_TRUE);
-    font = HPDF_GetFont(pdf, font_name, "UTF-8");
-    qDebug() << "font loaded";
+    qDebug() << "load ttf font from file";
+    const char* font_name = HPDF_LoadTTFontFromFile(pdf, fontPath.toStdString().data(), HPDF_FALSE);
+    std::string str(font_name);
+    QString text = QString::fromStdString(str);
+    qDebug() << "load ttf font success: " << text;
+
+    font = HPDF_GetFont(pdf, font_name, "GBK-EUC-H");
+    //font = HPDF_GetFont(pdf, font_name, "GB-EUC-H");
 #endif
+    qDebug() << "font loaded";
+#else
+    //font = HPDF_GetFont (pdf, "SimSun", "GB-EUC-H");
+    font = HPDF_GetFont(pdf, "SimHei,BoldItalic", "GB-EUC-H");
+#endif
+#endif
+    qDebug() << "selected font: " << font;
     /* add a new page object. */
     page = HPDF_AddPage (pdf);
 
@@ -152,15 +180,28 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
     HPDF_Page_SetRGBFill (page, 1.0, 0.0, 0.0);
     HPDF_Page_SetTextRenderingMode (page, HPDF_FILL);
     HPDF_Page_BeginText (page);
-    HPDF_Page_SetFontAndSize (page, font, 40);
+    HPDF_Page_SetFontAndSize (page, font, 24);
     HPDF_Page_MoveTextPos (page, 120, HPDF_Page_GetHeight (page) - 100);
-    QString title("编码打印测试");
-    HPDF_Page_ShowText (page, title.toStdString().data());
+    QString title("汉字测试12");
+    //const char dt[] = {(char)0xBA, (char)0xBA, (char)0xD7, (char)0xD6, 0x00};
+    //HPDF_Page_ShowText (page, dt);
+
+    //QTextCodec *textCodec = QTextCodec::codecForName("GB18030");
+    HPDF_Page_ShowText (page, title.toLocal8Bit());
     HPDF_Page_EndText (page);
 
     HPDF_Page_SetFontAndSize (page, font, 10);
 
+#if 0
+    const char* dd = "汉字测试";//title.toStdString().data();
+    qDebug() << "title data len: " << strlen(dd);
+    for (int i = 0; i < strlen(dd); i++) {
+        QString t;
+        t.sprintf("0x%02X ", dd[i] & 0xFF);
 
+        qDebug() << t;
+    }
+#endif
 
     qDebug() << "IdCard serialnumber: " << idCard.getSerialNumber();
     // gen qrcode
@@ -180,48 +221,49 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
     HPDF_Page_DrawImage (page, image, 400, HPDF_Page_GetHeight (page) - 200, qrCodeImage.width(), qrCodeImage.height());
 
 
-    HPDF_Page_SetFontAndSize (page, font, 20);
+    HPDF_Page_SetFontAndSize (page, font, 14);
     HPDF_Page_SetRGBFill (page, 0.0, 0.0, 0.0);
+
 
     x = 80;
     y = HPDF_Page_GetHeight (page) - 200;
     HPDF_Page_BeginText (page);
     HPDF_Page_MoveTextPos (page, x,  y);
-    HPDF_Page_ShowText (page, "姓名");
+    HPDF_Page_ShowText (page, QString("姓名").toLocal8Bit());
     HPDF_Page_EndText (page);
     HPDF_Page_BeginText (page);
     HPDF_Page_MoveTextPos (page, x + 150, y);
-    HPDF_Page_ShowText (page, idCard.getName().toStdString().data());
+    HPDF_Page_ShowText (page, idCard.getName().toLocal8Bit());
     HPDF_Page_EndText (page);
 
     y -= 30;
     HPDF_Page_BeginText (page);
     HPDF_Page_MoveTextPos (page, x, y);
-    HPDF_Page_ShowText (page, "单位");
+    HPDF_Page_ShowText (page, QString("单位").toLocal8Bit());
     HPDF_Page_EndText (page);
     HPDF_Page_BeginText (page);
     HPDF_Page_MoveTextPos (page, x + 150, y);
-    HPDF_Page_ShowText (page, idCard.getCompany().toStdString().data());
+    HPDF_Page_ShowText (page, idCard.getCompany().toLocal8Bit());
     HPDF_Page_EndText (page);
 
     y -= 30;
     HPDF_Page_BeginText (page);
     HPDF_Page_MoveTextPos (page, x, y);
-    HPDF_Page_ShowText (page, "证卡编号");
+    HPDF_Page_ShowText (page, QString("证卡编号").toLocal8Bit());
     HPDF_Page_EndText (page);
     HPDF_Page_BeginText (page);
     HPDF_Page_MoveTextPos (page, x + 150, y);
-    HPDF_Page_ShowText (page, idCard.getSerialNumber().toStdString().data());
+    HPDF_Page_ShowText (page, idCard.getSerialNumber().toLocal8Bit());
     HPDF_Page_EndText (page);
 
     y -= 30;
     HPDF_Page_BeginText (page);
     HPDF_Page_MoveTextPos (page, x, y);
-    HPDF_Page_ShowText (page, "有效日期");
+    HPDF_Page_ShowText (page, QString("有效日期").toLocal8Bit());
     HPDF_Page_EndText (page);
     HPDF_Page_BeginText (page);
     HPDF_Page_MoveTextPos (page, x + 150, y);
-    HPDF_Page_ShowText (page, idCard.getExpireDate().toString(DATE_FORMAT).toStdString().data());
+    HPDF_Page_ShowText (page, idCard.getExpireDate().toString(DATE_FORMAT).toLocal8Bit());
     HPDF_Page_EndText (page);
 
 #if 0
