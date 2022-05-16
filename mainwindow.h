@@ -9,10 +9,13 @@
 
 #define CP_SMARTCARD_LIBRARY 0
 #include "nfc.h"
+#include "fm1208.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+#define USE_NFC 0
 
 class QDeviceWatcher;
 
@@ -76,6 +79,7 @@ private:
     QElapsedTimer timer;
 
     NFC nfc;
+    FM1208 fm1208;
     KeyEnterReceiver keyEnterReceiver;
 
     QDeviceWatcher *watcher;
