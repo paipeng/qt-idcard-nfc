@@ -679,7 +679,7 @@ void MainWindow::readNFC() {
                 qDebug() << "name: " << idCard.getName();
                 IdCard idCardDB = sqliteEngine->getIdCardBySerialNumber(idCard.getSerialNumber());
                 if (compareIdCards(idCard, idCardDB)) {
-                    //updateInputTextField(idCardDB);
+                    updateInputTextField(idCardDB);
                 } else {
                     QMessageBox::critical(this, tr("idcard_read_chip_title"), tr("idcard_chip_uid_not_found"), QMessageBox::Ok);
                 }
