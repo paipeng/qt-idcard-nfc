@@ -576,7 +576,9 @@ void MainWindow::readNFC() {
             unsigned char* data = NULL;
             int data_len = 0;
             data = nfc.readNDEFText(&payload_type, &data_len);
-            qDebug() << "readNDEFText: " << data_len;
+            if (data != NULL) {
+                qDebug() << "readNDEFText: " << data_len;
+            }
         }
     } else {
         if (connectSmartCardDevice() == 0) {
@@ -630,76 +632,80 @@ void MainWindow::readNFC() {
     qDebug() << "readNFC connect: " << fm1208.isDeviceConnected();
     fm1208.disconnectDevice();
     if (fm1208.isDeviceConnected()) {
+        fm1208.disconnectDevice();
+    }
+    if (connectSmartCardDevice() == 0) {
         int errorCode = fm1208.readUID();
         qDebug() << "readUID: " << errorCode;
         if (errorCode == 0x9000) {
-            // read ndef data
-            int payload_type;
-            unsigned char* data = NULL;
-            int data_len = 0;
-            data = fm1208.readFileData(&payload_type, &data_len);
-            qDebug() << "readNDEFText: " << data_len;
-            free(data);
-        }
-    } else {
-        if (connectSmartCardDevice() == 0) {
-            int errorCode = fm1208.readUID();
-            qDebug() << "readUID: " << errorCode;
-            if (errorCode == 0x9000) {
-                // convert data -> hex
-                unsigned char * data2 = fm1208.getResponseBuffer();
-                unsigned long data_len2 = fm1208.getResponseLength();
-                if (data_len2 > 2) {
-                    QString response;
-                    for (int i = 0; i < data_len2-2; i++) {
-                        QString hex;
-                        hex.sprintf("%02X", data2[i]);
-                        response.append(hex);
-                    }
-                    IdCard idCard3 = sqliteEngine->getIdCardByChipUID(response);
-                    if (idCard3.getId() <= 0) {
-                        updateIdCardChipUID(response);
-                    } else {
-                        qDebug() << "chip uid already registered!";
-                    }
+            // convert data -> hex
+            unsigned char * data2 = fm1208.getResponseBuffer();
+            unsigned long data_len2 = fm1208.getResponseLength();
+            if (data_len2 > 2) {
+                QString response;
+                for (int i = 0; i < data_len2-2; i++) {
+                    QString hex;
+                    hex.sprintf("%02X", data2[i]);
+                    response.append(hex);
                 }
-                // read ndef data
-                int payload_type;
-                unsigned char* data = NULL;
-                int data_len = 0;
-                data = fm1208.readNDEFText(&payload_type, &data_len);
-                qDebug() << "readNDEFText: " << " data_len: " << data_len;
-                if (data != NULL) {
-                    //QString text(std::string((char*)data));
-                    std::string str((char*)data, data_len-3);
-                    QString text = QString::fromStdString(str);
-                    free(data);
-                    qDebug() << "ndef: " << text;
-                    IdCard idCard = convertStringToIdCard(text);
-                    qDebug() << "name: " << idCard.getName();
-                    IdCard idCardDB = sqliteEngine->getIdCardBySerialNumber(idCard.getSerialNumber());
-                    if (compareIdCards(idCard, idCardDB)) {
-                        updateInputTextField(idCardDB);
-                    } else {
-                        QMessageBox::critical(this, tr("idcard_read_chip_title"), tr("idcard_chip_uid_not_found"), QMessageBox::Ok);
-
-                    }
-                    free(data);
+                IdCard idCard3 = sqliteEngine->getIdCardByChipUID(response);
+                if (idCard3.getId() <= 0) {
+                    updateIdCardChipUID(response);
+                } else {
+                    qDebug() << "chip uid already registered!";
                 }
             }
-            //updateDeviceState(1);
+            // read ndef data
+            short fileId = 0x01;
+            unsigned char* data = fm1208.readFileData(fileId, 0x400);
+            qDebug() << "readNDEFText: " << " data_len: " << strlen((char*)data);
+            if (data != NULL) {
+                //QString text(std::string((char*)data));
+                int dl = 0;
+                for (int i = 0; i < strlen((char*)data); i++) {
+                    dl = i;
+                    if (data[i] == 0x00) {
+                        qDebug() << "found 0x00 " << i;
+
+                        break;
+                    }
+                }
+                qDebug() << "readNDEFText: " << " data_len: " << dl;
+                std::string str((char*)data, dl+1);
+                QString text = QString::fromStdString(str);
+                free(data);
+                qDebug() << "ndef: " << text;
+                IdCard idCard = convertStringToIdCard(text);
+                qDebug() << "name: " << idCard.getName();
+                IdCard idCardDB = sqliteEngine->getIdCardBySerialNumber(idCard.getSerialNumber());
+                if (compareIdCards(idCard, idCardDB)) {
+                    //updateInputTextField(idCardDB);
+                } else {
+                    QMessageBox::critical(this, tr("idcard_read_chip_title"), tr("idcard_chip_uid_not_found"), QMessageBox::Ok);
+                }
+                //free(data);
+            }
         }
+        //updateDeviceState(1);
     }
 #endif
 }
 
 void MainWindow::writeNFC() {
     qDebug() << "writeNFC";
+#if USE_NFC
     nfc.disconnectDevice();
     if (!nfc.isDeviceConnected()) {
         connectSmartCardDevice();
     }
     if (nfc.isDeviceConnected()) {
+#else
+    fm1208.disconnectDevice();
+    if (!fm1208.isDeviceConnected()) {
+        connectSmartCardDevice();
+    }
+    if (fm1208.isDeviceConnected()) {
+#endif
         bool ok;
         QString text = QInputDialog::getText(this, tr("write_nfc_idcard"),
                                             tr("write_nfc_data"), QLineEdit::Normal,
@@ -712,12 +718,22 @@ void MainWindow::writeNFC() {
                 IdCard idCard = sqliteEngine->getIdCardBySerialNumber(str[0]);
                 // check chip uid
                 if (idCard.getId() > 0) {
+#if USE_NFC
                     int errorCode = nfc.readUID();
+#else
+                    int errorCode = fm1208.readUID();
+
+#endif
                     qDebug() << "readUID: " << errorCode;
                     if (errorCode == 0x9000) {
                         // convert data -> hex
+#if USE_NFC
                         unsigned char * data2 = nfc.getResponseBuffer();
                         unsigned long data_len2 = nfc.getResponseLength();
+#else
+                        unsigned char * data2 = fm1208.getResponseBuffer();
+                        unsigned long data_len2 = fm1208.getResponseLength();
+#endif
                         if (data_len2 > 2) {
                             QString response;
                             for (int i = 0; i < data_len2-2; i++) {
@@ -734,8 +750,12 @@ void MainWindow::writeNFC() {
                                 // convert IdCard object to text data
                                 const QString data = convertIdCardToString(idCard);
                                 qDebug() << "write NDEF data: " << data;
+#if USE_NFC
                                 nfc.writeNDEFText(data.toStdString().data(), (int)strlen(data.toStdString().data()));
+#else
+                                fm1208.writeFileData(0x01, 0x400, (unsigned char*)data.toStdString().data(), (int)strlen(data.toStdString().data()));
 
+#endif
                                 QMessageBox::information(this, tr("idcard_write_nfc_title"), tr("idcard_write_nfc_success"), QMessageBox::Ok);
 
                             } else {
@@ -761,6 +781,7 @@ void MainWindow::writeNFC() {
     } else {
         QMessageBox::critical(this, tr("idcard_write_nfc_title"), tr("nfc_device_not_connected"), QMessageBox::Ok);
     }
+
 }
 
 void MainWindow::keyEvent(int keyCode, bool shift, bool ctrl, bool alt) {
