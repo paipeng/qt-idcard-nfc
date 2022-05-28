@@ -97,6 +97,13 @@ void IdCard::read(const QJsonObject &json) {
     if (json.contains("expireDate") && json["expireDate"].isString())
         this->expireDate = QDate::fromString(json["expireDate"].toString(), DATE_FORMAT);
         //mClassType = ClassType(json["classType"].toInt());
+    if (json.contains("chiUID") && json["chiUID"].isDouble())
+        chipUID = json["chipUID"].toString();
+    if (json.contains("passPhoto") && json["passPhoto"].isDouble())
+        passPhoto = json["passPhoto"].toString();
+    if (json.contains("passPhotoWebP") && json["passPhotoWebP"].isDouble())
+        passPhotoWebP = json["passPhotoWebP"].toString();
+
 }
 
 void IdCard::write(QJsonObject &json) const {
@@ -105,6 +112,12 @@ void IdCard::write(QJsonObject &json) const {
     json["company"] = company;
     json["expireDate"] = expireDate.toString(DATE_FORMAT);
     json["serialNumber"] = serialNumber;
+    json["chiUID"] = chipUID;
+
+    json["passPhoto"] = passPhoto;
+    json["passPhotoWebP"] = passPhotoWebP;
+
+
 }
 
 void IdCard::toString() {
@@ -120,6 +133,24 @@ void IdCard::setChipUID(const QString &newChipUID)
 {
     chipUID = newChipUID;
 }
+
+void IdCard::setPassPhoto(QString passPhoto) {
+    this->passPhoto = passPhoto;
+}
+QString IdCard::getPassPhoto() {
+    return this->passPhoto;
+}
+
+void IdCard::setPassPhotoWebP(QString passPhotoWebP) {
+    this->passPhotoWebP = passPhotoWebP;
+}
+
+QString IdCard::getPassPhotoWebP() {
+    return this->passPhotoWebP;
+}
+
 bool IdCard::operator==(const IdCard &other) const{
     return this->id == other.id && this->name != other.name;
-};
+}
+
+

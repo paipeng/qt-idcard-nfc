@@ -51,6 +51,8 @@ void SqliteEngine::initDB() {
                             name varchar(30) not null, \
                             company varchar(64) not null, \
                             chip_uid varchar(16), \
+                            pass_photo varchar(255), \
+                            pass_photo_webp varchar(255), \
                             expire date not null)";
     sql_query.prepare(create_sql);
     if(!sql_query.exec()) {
@@ -63,12 +65,14 @@ void SqliteEngine::initDB() {
 int SqliteEngine::insert(IdCard& idCard) {
     qDebug() << "SQLite insert: " << idCard.getExpireDate() << " name: " << idCard.getName() << " " << idCard.getCompany();
     QSqlQuery sql_query;
-    QString insert_sql = "insert into idcard(name, company, serial_number, expire) values (:name, :company, :serialNumber, :expire)";
+    QString insert_sql = "insert into idcard(name, company, serial_number, expire, pass_photo, pass_photo_webp) values (:name, :company, :serialNumber, :expire, :passPhoto, :passPhotoWebP)";
     sql_query.prepare(insert_sql);
     sql_query.bindValue(":name", idCard.getName());
     sql_query.bindValue(":company", idCard.getCompany());
     sql_query.bindValue(":expire", idCard.getExpireDate());
     sql_query.bindValue(":serialNumber", idCard.getSerialNumber());
+    sql_query.bindValue(":passPhoto", idCard.getPassPhoto());
+    sql_query.bindValue(":passPhotoWebP", idCard.getPassPhotoWebP());
 
     if(!sql_query.exec()) {
         qDebug() << sql_query.lastError();
@@ -85,7 +89,7 @@ QList<IdCard> SqliteEngine::query() {
     qDebug() << "SQLite query";
     QList<IdCard> idCards;
     QSqlQuery sql_query;
-    QString select_sql = "select id, name, company, expire, serial_number, chip_uid from idcard";
+    QString select_sql = "select id, name, company, expire, serial_number, chip_uid, pass_photo, pass_photo_webp from idcard";
     if(!sql_query.exec(select_sql)) {
         qDebug() << sql_query.lastError();
         return idCards;
@@ -99,10 +103,17 @@ QList<IdCard> SqliteEngine::query() {
             QString serialNumber = sql_query.value(4).toString();
             QString chipUID = sql_query.value(5).toString();
             qDebug() << "chipUID: " << chipUID;
+
+            QString passPhoto = sql_query.value(6).toString();
+            QString passPhotoWebP = sql_query.value(7).toString();
             IdCard idCard(id, name, date);
             idCard.setCompany(company);
             idCard.setSerialNumber(serialNumber);
             idCard.setChipUID(chipUID);
+
+            idCard.setPassPhoto(passPhoto);
+            idCard.setPassPhotoWebP(passPhotoWebP);
+
             idCards.append(idCard);
         }
         return idCards;
@@ -112,7 +123,7 @@ QList<IdCard> SqliteEngine::query() {
 IdCard SqliteEngine::getIdCardById(long id) {
     qDebug() << "getIdCardById: " << id;
     QSqlQuery sql_query;
-    QString select_sql = "select id, name, company, expire, serial_number, chip_uid from idcard where id =:id";
+    QString select_sql = "select id, name, company, expire, serial_number, chip_uid, pass_photo, pass_photo_webp from idcard where id =:id";
     sql_query.prepare(select_sql);
     sql_query.bindValue(":id", (int)id);
     if(!sql_query.exec()) {
@@ -128,11 +139,17 @@ IdCard SqliteEngine::getIdCardById(long id) {
             QString serialNumber = sql_query.value(4).toString();
 
             QString chipUID = sql_query.value(5).toString();
+            QString passPhoto = sql_query.value(6).toString();
+            QString passPhotoWebP = sql_query.value(7).toString();
 
             IdCard idCard(id, name, date);
             idCard.setCompany(company);
             idCard.setSerialNumber(serialNumber);
             idCard.setChipUID(chipUID);
+
+            idCard.setPassPhoto(passPhoto);
+            idCard.setPassPhotoWebP(passPhotoWebP);
+
             return idCard;
         }
         return IdCard(NULL);
@@ -142,7 +159,7 @@ IdCard SqliteEngine::getIdCardById(long id) {
 IdCard SqliteEngine::getIdCardBySerialNumber(QString serialNumber) {
     qDebug() << "getIdCardBySerialNumber: " << serialNumber;
     QSqlQuery sql_query;
-    QString select_sql = "select id, name, company, expire, serial_number, chip_uid from idcard where serial_number =:serialNumber";
+    QString select_sql = "select id, name, company, expire, serial_number, chip_uid, pass_photo, pass_photo_webp from idcard where serial_number =:serialNumber";
     sql_query.prepare(select_sql);
     sql_query.bindValue(":serialNumber", serialNumber);
     if(!sql_query.exec()) {
@@ -158,11 +175,15 @@ IdCard SqliteEngine::getIdCardBySerialNumber(QString serialNumber) {
             QString serialNumber = sql_query.value(4).toString();
 
             QString chipUID = sql_query.value(5).toString();
+            QString passPhoto = sql_query.value(6).toString();
+            QString passPhotoWebP = sql_query.value(7).toString();
 
             IdCard idCard(id, name, date);
             idCard.setCompany(company);
             idCard.setSerialNumber(serialNumber);
             idCard.setChipUID(chipUID);
+            idCard.setPassPhoto(passPhoto);
+            idCard.setPassPhotoWebP(passPhotoWebP);
             return idCard;
         }
         return IdCard(NULL);
@@ -172,7 +193,7 @@ IdCard SqliteEngine::getIdCardBySerialNumber(QString serialNumber) {
 IdCard SqliteEngine::getIdCardByChipUID(QString chipUID) {
     qDebug() << "getIdCardByChipUID: " << chipUID;
     QSqlQuery sql_query;
-    QString select_sql = "select id, name, company, expire, serial_number, chip_uid from idcard where chip_uid =:chipUID";
+    QString select_sql = "select id, name, company, expire, serial_number, chip_uid, pass_photo, pass_photo_webp from idcard where chip_uid =:chipUID";
     sql_query.prepare(select_sql);
     sql_query.bindValue(":chipUID", chipUID);
     if(!sql_query.exec()) {
@@ -188,11 +209,15 @@ IdCard SqliteEngine::getIdCardByChipUID(QString chipUID) {
             QString serialNumber = sql_query.value(4).toString();
 
             QString chipUID = sql_query.value(5).toString();
+            QString passPhoto = sql_query.value(6).toString();
+            QString passPhotoWebP = sql_query.value(7).toString();
 
             IdCard idCard(id, name, date);
             idCard.setCompany(company);
             idCard.setSerialNumber(serialNumber);
             idCard.setChipUID(chipUID);
+            idCard.setPassPhoto(passPhoto);
+            idCard.setPassPhotoWebP(passPhotoWebP);
             return idCard;
         }
         return IdCard(NULL);

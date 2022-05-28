@@ -39,6 +39,11 @@ public:
     const QString &getChipUID() const;
     void setChipUID(const QString &newChipUID);
 
+    void setPassPhoto(QString passPhoto);
+    QString getPassPhoto();
+
+    void setPassPhotoWebP(QString passPhotoWebP);
+    QString getPassPhotoWebP();
 signals:
 
 private:
@@ -49,6 +54,8 @@ private:
     QString serialNumber;
     QDate expireDate;
     QString chipUID;
+    QString passPhoto;
+    QString passPhotoWebP;
 };
 
 #endif // IDCARD_H
