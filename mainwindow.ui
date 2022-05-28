@@ -21,7 +21,7 @@
     <property name="geometry">
      <rect>
       <x>890</x>
-      <y>270</y>
+      <y>230</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -57,7 +57,7 @@
     <property name="geometry">
      <rect>
       <x>890</x>
-      <y>60</y>
+      <y>20</y>
       <width>54</width>
       <height>12</height>
      </rect>
@@ -70,7 +70,7 @@
     <property name="geometry">
      <rect>
       <x>950</x>
-      <y>60</y>
+      <y>20</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -80,7 +80,7 @@
     <property name="geometry">
      <rect>
       <x>950</x>
-      <y>180</y>
+      <y>140</y>
       <width>171</width>
       <height>22</height>
      </rect>
@@ -90,7 +90,7 @@
     <property name="geometry">
      <rect>
       <x>890</x>
-      <y>180</y>
+      <y>140</y>
       <width>54</width>
       <height>12</height>
      </rect>
@@ -103,7 +103,7 @@
     <property name="geometry">
      <rect>
       <x>890</x>
-      <y>100</y>
+      <y>60</y>
       <width>54</width>
       <height>12</height>
      </rect>
@@ -116,7 +116,7 @@
     <property name="geometry">
      <rect>
       <x>950</x>
-      <y>100</y>
+      <y>60</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -126,7 +126,7 @@
     <property name="geometry">
      <rect>
       <x>890</x>
-      <y>140</y>
+      <y>100</y>
       <width>54</width>
       <height>12</height>
      </rect>
@@ -139,7 +139,7 @@
     <property name="geometry">
      <rect>
       <x>950</x>
-      <y>140</y>
+      <y>100</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -149,7 +149,7 @@
     <property name="geometry">
      <rect>
       <x>1050</x>
-      <y>270</y>
+      <y>230</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -184,8 +184,8 @@
    <widget class="QPushButton" name="scanPushButton">
     <property name="geometry">
      <rect>
-      <x>940</x>
-      <y>530</y>
+      <x>680</x>
+      <y>320</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -198,7 +198,7 @@
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>310</y>
+      <y>270</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -211,7 +211,7 @@
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>310</y>
+      <y>270</y>
       <width>261</width>
       <height>22</height>
      </rect>
@@ -224,7 +224,7 @@
     <property name="geometry">
      <rect>
       <x>950</x>
-      <y>220</y>
+      <y>180</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -234,7 +234,7 @@
     <property name="geometry">
      <rect>
       <x>890</x>
-      <y>220</y>
+      <y>180</y>
       <width>54</width>
       <height>12</height>
      </rect>
@@ -247,7 +247,7 @@
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>270</y>
+      <y>230</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -260,7 +260,7 @@
     <property name="geometry">
      <rect>
       <x>1050</x>
-      <y>340</y>
+      <y>300</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -273,7 +273,7 @@
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>340</y>
+      <y>300</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -286,9 +286,25 @@
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>50</y>
+      <y>10</y>
       <width>161</width>
       <height>231</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="qt-idcard-nfc.qrc">:/resources/images/passphoto_icon.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="webpLabel">
+    <property name="geometry">
+     <rect>
+      <x>960</x>
+      <y>340</y>
+      <width>161</width>
+      <height>211</height>
      </rect>
     </property>
     <property name="text">
