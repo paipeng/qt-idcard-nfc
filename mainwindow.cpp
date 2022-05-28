@@ -15,6 +15,7 @@
 #include "common-util.h"
 
 #include "qdevicewatcher.h"
+#include "clickablelabel.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -67,6 +68,8 @@ MainWindow::MainWindow(QWidget *parent)
             Qt::DirectConnection);
 
     toggleWatch();
+
+    QObject::connect(ui->photoLabel, SIGNAL(clicked()), this, SLOT(labelClicked()));
 }
 
 MainWindow::~MainWindow() {
@@ -816,4 +819,9 @@ void MainWindow::slotDeviceRemoved(const QString &dev) {
 void MainWindow::slotDeviceChanged(const QString &dev) {
     qDebug("tid=%#x: change %s", (quintptr) QThread::currentThreadId(), qPrintable(dev));
     // TODO check USB (camera, smartcard reader, qrcode scanner, printer)
+}
+
+void MainWindow::labelClicked() {
+    qDebug() << "labelClicked";
+
 }

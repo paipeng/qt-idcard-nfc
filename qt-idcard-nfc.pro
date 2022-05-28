@@ -14,6 +14,7 @@ CONFIG += c++11
 SOURCES += \
     barcodeencoder.cpp \
     barcodedecoder.cpp \
+    clickablelabel.cpp \
     common-util.cpp \
     idcard.cpp \
     keyenterreceiver.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
 HEADERS += \
     barcodeencoder.h \
     barcodedecoder.h \
+    clickablelabel.h \
     common-util.h \
     idcard.h \
     keyenterreceiver.h \

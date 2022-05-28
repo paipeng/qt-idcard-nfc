@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1056</width>
+    <width>1134</width>
     <height>644</height>
    </rect>
   </property>
@@ -20,7 +20,7 @@
    <widget class="QPushButton" name="insertPushButton">
     <property name="geometry">
      <rect>
-      <x>710</x>
+      <x>890</x>
       <y>270</y>
       <width>75</width>
       <height>23</height>
@@ -56,8 +56,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>70</y>
+      <x>890</x>
+      <y>60</y>
       <width>54</width>
       <height>12</height>
      </rect>
@@ -69,8 +69,8 @@
    <widget class="QLineEdit" name="nameLineEdit">
     <property name="geometry">
      <rect>
-      <x>750</x>
-      <y>70</y>
+      <x>950</x>
+      <y>60</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -79,8 +79,8 @@
    <widget class="QDateEdit" name="expireDateEdit">
     <property name="geometry">
      <rect>
-      <x>750</x>
-      <y>190</y>
+      <x>950</x>
+      <y>180</y>
       <width>171</width>
       <height>22</height>
      </rect>
@@ -89,8 +89,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>190</y>
+      <x>890</x>
+      <y>180</y>
       <width>54</width>
       <height>12</height>
      </rect>
@@ -102,8 +102,8 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>110</y>
+      <x>890</x>
+      <y>100</y>
       <width>54</width>
       <height>12</height>
      </rect>
@@ -115,8 +115,8 @@
    <widget class="QLineEdit" name="companyLineEdit">
     <property name="geometry">
      <rect>
-      <x>750</x>
-      <y>110</y>
+      <x>950</x>
+      <y>100</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -125,8 +125,8 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>150</y>
+      <x>890</x>
+      <y>140</y>
       <width>54</width>
       <height>12</height>
      </rect>
@@ -138,8 +138,8 @@
    <widget class="QLineEdit" name="serialNumberLineEdit">
     <property name="geometry">
      <rect>
-      <x>750</x>
-      <y>150</y>
+      <x>950</x>
+      <y>140</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -148,7 +148,7 @@
    <widget class="QPushButton" name="printPushButton">
     <property name="geometry">
      <rect>
-      <x>870</x>
+      <x>1050</x>
       <y>270</y>
       <width>75</width>
       <height>23</height>
@@ -223,8 +223,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>750</x>
-      <y>230</y>
+      <x>950</x>
+      <y>220</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -233,8 +233,8 @@
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>230</y>
+      <x>890</x>
+      <y>220</y>
       <width>54</width>
       <height>12</height>
      </rect>
@@ -246,7 +246,7 @@
    <widget class="QPushButton" name="clearPushButton">
     <property name="geometry">
      <rect>
-      <x>790</x>
+      <x>970</x>
       <y>270</y>
       <width>75</width>
       <height>23</height>
@@ -259,7 +259,7 @@
    <widget class="QPushButton" name="writeNFCPushButton">
     <property name="geometry">
      <rect>
-      <x>970</x>
+      <x>1050</x>
       <y>340</y>
       <width>75</width>
       <height>23</height>
@@ -273,7 +273,7 @@
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>270</y>
+      <y>340</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -282,13 +282,26 @@
      <string>query</string>
     </property>
    </widget>
+   <widget class="ClickableLabel" name="photoLabel">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>50</y>
+      <width>161</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1056</width>
+     <width>1134</width>
      <height>23</height>
     </rect>
    </property>
@@ -301,6 +314,11 @@
    <extends>QWidget</extends>
    <header location="global">cpcameraviewfinder.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ClickableLabel</class>
+   <extends>QLabel</extends>
+   <header>clickablelabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -460,5 +478,6 @@
   <slot>clear()</slot>
   <slot>writeNFC()</slot>
   <slot>load()</slot>
+  <slot>setPhoto()</slot>
  </slots>
 </ui>

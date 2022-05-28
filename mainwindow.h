@@ -45,6 +45,7 @@ private slots:
     void clear();
     void writeNFC();
     void keyEvent(int keyCode, bool shift, bool ctrl, bool alt);
+    void labelClicked();
 
 
 public slots:
