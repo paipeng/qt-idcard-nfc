@@ -2,6 +2,7 @@
 #include "common-util.h"
 #include <QtDebug>
 #include <QDate>
+#include <QFile>
 
 IdCard convertStringToIdCard(QString text) {
     IdCard idCard(NULL);
@@ -66,3 +67,13 @@ bool compareIdCards(IdCard idCard1, IdCard idCard2) {
     }
     return true;
 }
+
+
+QByteArray readFile(const QString &filepath) {
+    QFile file(filepath);
+    if (!file.open(QIODevice::ReadOnly))
+        return QByteArray();
+    QByteArray data = file.readAll();
+    return data;
+}
+

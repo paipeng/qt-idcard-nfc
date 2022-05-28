@@ -810,6 +810,13 @@ void MainWindow::writeNFC() {
 #else
                                 fm1208.writeFileData(0x01, 0x400, (unsigned char*)data.toStdString().data(), (int)strlen(data.toStdString().data()));
 
+
+                                QByteArray byteArray = readFile(idCard.getPassPhotoWebP());
+                                if (byteArray.length() > 0) {
+                                    // file size: 4096 (max)
+                                    fm1208.writeFileData(0x02, byteArray.length(), (unsigned char*)byteArray.data(), (int)byteArray.length());
+
+                                }
 #endif
                                 QMessageBox::information(this, tr("idcard_write_nfc_title"), tr("idcard_write_nfc_success"), QMessageBox::Ok);
 
