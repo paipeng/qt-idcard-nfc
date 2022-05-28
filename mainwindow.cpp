@@ -824,4 +824,16 @@ void MainWindow::slotDeviceChanged(const QString &dev) {
 void MainWindow::labelClicked() {
     qDebug() << "labelClicked";
 
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("open_image"), "/Users/paipeng/Documents", tr("image_file_format"));
+    qDebug() << "selected file: " << fileName;
+
+    QImage image = QImage(fileName);
+    QPixmap pixmap = QPixmap::fromImage(image);
+
+    int w = ui->photoLabel->width();
+    int h = ui->photoLabel->height();
+
+    ui->photoLabel->setPixmap(pixmap.scaled(w,h,Qt::KeepAspectRatio));
+
 }

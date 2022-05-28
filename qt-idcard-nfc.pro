@@ -130,4 +130,7 @@ win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QDeviceWatcher-De
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QDeviceWatcher-Desktop_Qt_5_12_12_MSVC2017_64bit-Release/out/lib_win_/ -lQDeviceWatcher2
 else:unix: LIBS += -L$$PWD/libs/x64/ -lqt-smartcard
 
+RESOURCES += \
+    qt-idcard-nfc.qrc
+
 

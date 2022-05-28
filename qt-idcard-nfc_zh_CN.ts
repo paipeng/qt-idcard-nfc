@@ -224,5 +224,15 @@
         <source>name</source>
         <translation type="unfinished">姓名</translation>
     </message>
+    <message>
+        <location filename="mainwindow.cpp" line="27"/>
+        <source>open_image</source>
+        <translation type="unfinished">选择图片文件</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="27"/>
+        <source>image_file_format</source>
+        <translation type="unfinished">图片文件格式 (*.png *.jpg *.jpeg *.bmp)</translation>
+    </message>
 </context>
 </TS>

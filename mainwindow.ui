@@ -294,6 +294,9 @@
     <property name="text">
      <string/>
     </property>
+    <property name="pixmap">
+     <pixmap resource="qt-idcard-nfc.qrc">:/resources/images/resources/images/passphoto_icon.png</pixmap>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -321,7 +324,9 @@
    <header>clickablelabel.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="qt-idcard-nfc.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>insertPushButton</sender>
