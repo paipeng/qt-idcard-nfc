@@ -110,13 +110,15 @@ void MainWindow::load() {
     } else {
         model->clear();
     }
-    model->setColumnCount(6);
+    model->setColumnCount(8);
     model->setHeaderData(0,Qt::Horizontal,tr("id"));
     model->setHeaderData(1,Qt::Horizontal,tr("serial_number"));
     model->setHeaderData(2,Qt::Horizontal,tr("name"));
     model->setHeaderData(3,Qt::Horizontal,tr("company"));
     model->setHeaderData(4,Qt::Horizontal,tr("expire"));
     model->setHeaderData(5,Qt::Horizontal,tr("chip_uid"));
+    model->setHeaderData(6,Qt::Horizontal,tr("pass_photo"));
+    model->setHeaderData(7,Qt::Horizontal,tr("pass_photo_webp"));
 
     const QList<IdCard> idCards = sqliteEngine->query();
     QStandardItem * item = NULL;
@@ -188,6 +190,11 @@ void MainWindow::load() {
         model->setItem(index, 4, item);
         item = new QStandardItem(QString("%1").arg(idCard.getChipUID()));
         model->setItem(index, 5, item);
+
+        item = new QStandardItem(QString("%1").arg(idCard.getPassPhoto()));
+        model->setItem(index, 6, item);
+        item = new QStandardItem(QString("%1").arg(idCard.getPassPhotoWebP()));
+        model->setItem(index, 7, item);
         //break;
         index ++;
     }
@@ -241,11 +248,13 @@ void MainWindow::query() {
 
 void MainWindow::initTableView() {
     QStandardItemModel *model = new QStandardItemModel();
-    model->setColumnCount(4);
+    model->setColumnCount(6);
     model->setHeaderData(0,Qt::Horizontal,tr("id"));
     model->setHeaderData(1,Qt::Horizontal,tr("name"));
     model->setHeaderData(2,Qt::Horizontal,tr("expire"));
     model->setHeaderData(3,Qt::Horizontal,tr("chip_uid"));
+    model->setHeaderData(4,Qt::Horizontal,tr("pass_photo"));
+    model->setHeaderData(5,Qt::Horizontal,tr("pass_photo_webp"));
 
 
     model->setItem(0, 0, new QStandardItem(QString("%1").arg(1212)));
@@ -796,11 +805,11 @@ void MainWindow::keyEvent(int keyCode, bool shift, bool ctrl, bool alt) {
 void MainWindow::toggleWatch() {
     if (watcher->isRunning()) {
         if (!watcher->stop()) {
-            QMessageBox::warning(0, tr("WARNGING"), tr("Failed to stop"));
+            QMessageBox::warning(0, tr("warning"), tr("failed_to_stop"));
         }
     } else {
         if (!watcher->start()) {
-            QMessageBox::warning(0, tr("WARNGING"), tr("Failed to start"));
+            QMessageBox::warning(0, tr("warning"), tr("failed_to_start"));
         }
     }
 }
