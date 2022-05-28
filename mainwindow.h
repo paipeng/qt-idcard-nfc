@@ -10,6 +10,7 @@
 #define CP_SMARTCARD_LIBRARY 0
 #include "nfc.h"
 #include "fm1208.h"
+#include "cpwebp.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -71,6 +72,7 @@ private:
     void receiveResponse(unsigned char* data, int data_len) override;
     void addLog(unsigned char* data, int data_len, int direction) override;
     void addLog2(QString text, int state) override;
+    void encodeWebP(const QImage& image, const QString& saveFilePath);
 
 private:
     Ui::MainWindow *ui;
@@ -84,5 +86,9 @@ private:
     KeyEnterReceiver keyEnterReceiver;
 
     QDeviceWatcher *watcher;
+
+    QImage passPhotoImage;
+    QString passPhoto;
+    CPWebP cpWebP;
 };
 #endif // MAINWINDOW_H

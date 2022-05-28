@@ -80,23 +80,60 @@ MainWindow::~MainWindow() {
 
 void MainWindow::insert() {
     qDebug() << "insert: " << ui->nameLineEdit->text();
+    qDebug() << QDir().absolutePath();
+    IdCard idCard = getSelectedIdCard();
+    if (idCard.getId() > 0) {
+        // update idcard
+        // update passphoto
+        if (passPhoto.length() > 0) {
+            qDebug() << "passPhoto: " << idCard.getPassPhoto();
+            // if photo set
+            if (idCard.getPassPhoto().length() <= 0) {
+                // add pass photo
+                // copy photo file to project, and renaming with serial_number
+                // path: passphoto
+                QStringList p = passPhoto.split(".");
+                QString imageFileExtension = p[p.length()-1];
+                if (!QDir("passphoto").exists()) {
+                    QDir().mkdir("passphoto");
+                }
+                if (!QDir("passphotowebp").exists()) {
+                    QDir().mkdir("passphotowebp");
+                }
+                QString passPhoto = "passphoto/" + idCard.getSerialNumber() + "." + imageFileExtension;
+                QFile::copy(passPhoto, passPhoto);
+                // convert to webp and save with serial_number
+                // path: passphotowebp
+                QString passPhotoWebP = "passphotowebp/" + idCard.getSerialNumber() + ".webp";
+                encodeWebP(passPhotoImage, QDir().absolutePath() + "/" + passPhotoWebP);
 
-    if (ui->nameLineEdit->text().size() > 0 && ui->companyLineEdit->text().size() > 0 &&
-            ui->serialNumberLineEdit->text().size() > 0) {
-        const QDate date = ui->expireDateEdit->date();
-        IdCard idCard(ui->nameLineEdit->text(), date);
+                //idCard.setPassPhoto(passPhoto);
+                //idCard.setPassPhotoWebP(passPhotoWebP);
 
-        idCard.setCompany(ui->companyLineEdit->text());
-        idCard.setSerialNumber(ui->serialNumberLineEdit->text());
+                sqliteEngine->updatePassPhoto(idCard, passPhoto, passPhotoWebP);
 
-        qDebug() << "insert: " << idCard.getExpireDate();
+            } else if (idCard.getPassPhoto() == passPhoto) {
+                // update
+            }
+        }
+    } else {
+        if (ui->nameLineEdit->text().size() > 0 && ui->companyLineEdit->text().size() > 0 &&
+                ui->serialNumberLineEdit->text().size() > 0) {
+            const QDate date = ui->expireDateEdit->date();
+            IdCard idCard(ui->nameLineEdit->text(), date);
 
-        if (sqliteEngine->insert(idCard) == 0) {
-            // insert success
-            // show alert message dialog
-            QMessageBox::information(this, tr("idcard_insert_title"), tr("idcard_insert_success"), QMessageBox::Ok);
-            // upload table
-            load();
+            idCard.setCompany(ui->companyLineEdit->text());
+            idCard.setSerialNumber(ui->serialNumberLineEdit->text());
+
+            qDebug() << "insert: " << idCard.getExpireDate();
+
+            if (sqliteEngine->insert(idCard) == 0) {
+                // insert success
+                // show alert message dialog
+                QMessageBox::information(this, tr("idcard_insert_title"), tr("idcard_insert_success"), QMessageBox::Ok);
+                // upload table
+                load();
+            }
         }
     }
 }
@@ -312,6 +349,7 @@ void MainWindow::tableViewClicked(QModelIndex index) {
     if (variant.type() == QVariant::String) {
         IdCard idCard = sqliteEngine->getIdCardById(variant.toString().toInt());
         updateInputTextField(idCard);
+        ui->insertPushButton->setText(tr("update"));
     }
 }
 
@@ -321,6 +359,7 @@ void MainWindow::clear() {
     ui->expireDateEdit->setDate(QDate::fromString("2022-01-01", DATE_FORMAT));
     ui->companyLineEdit->setText("");
     ui->serialNumberLineEdit->setText("");
+    ui->insertPushButton->setText(tr("insert"));
 }
 void MainWindow::scan() {
     startCamera1();
@@ -833,16 +872,48 @@ void MainWindow::slotDeviceChanged(const QString &dev) {
 void MainWindow::labelClicked() {
     qDebug() << "labelClicked";
 
-    QString fileName = QFileDialog::getOpenFileName(this,
+    passPhoto = QFileDialog::getOpenFileName(this,
         tr("open_image"), "/Users/paipeng/Documents", tr("image_file_format"));
-    qDebug() << "selected file: " << fileName;
+    qDebug() << "selected file: " << passPhoto;
 
-    QImage image = QImage(fileName);
-    QPixmap pixmap = QPixmap::fromImage(image);
+    passPhotoImage = QImage(passPhoto);
+    QPixmap pixmap = QPixmap::fromImage(passPhotoImage);
 
     int w = ui->photoLabel->width();
     int h = ui->photoLabel->height();
 
     ui->photoLabel->setPixmap(pixmap.scaled(w,h,Qt::KeepAspectRatio));
 
+    IdCard idCard = getSelectedIdCard();
+    if (idCard.getId() > 0) {
+        qDebug() << "passPhoto: " << idCard.getPassPhoto();
+    }
 }
+
+void MainWindow::encodeWebP(const QImage& image, const QString& saveFilePath) {
+    qDebug() << "encodeWebP: " << saveFilePath;
+    int target_size = 4096;
+    int h = 200;
+
+
+    if (true) {
+        QImage img(image);
+        for (int i = 0; i < img.width(); ++i) {
+            for (int j = 0; j < img.height(); j++) {
+                int gray =  qGray(img.pixel(i, j));
+                img.setPixel(i, j, QColor(gray, gray, gray).rgb());
+            }
+        }
+        cpWebP.save(img.scaledToHeight(h, Qt::SmoothTransformation), saveFilePath, target_size);
+    } else {
+        cpWebP.save(image.scaledToHeight(h, Qt::SmoothTransformation), saveFilePath, target_size);
+    }
+
+    /*
+    QImage readImage;
+    cpWebP.read(filepath, &readImage);
+    qDebug() << "read image size: " << readImage.width() << "-" << readImage.height();
+    ui->webpLabel->setPixmap(QPixmap::fromImage(readImage));
+    */
+}
+
