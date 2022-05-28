@@ -139,16 +139,16 @@ void IdCard::setChipUID(const QString &newChipUID)
 void IdCard::setPassPhoto(QString passPhoto) {
     this->passPhoto = passPhoto;
 }
-QString IdCard::getPassPhoto() {
-    return this->passPhoto;
+const QString &IdCard::getPassPhoto() const {
+    return passPhoto;
 }
 
 void IdCard::setPassPhotoWebP(QString passPhotoWebP) {
     this->passPhotoWebP = passPhotoWebP;
 }
 
-QString IdCard::getPassPhotoWebP() {
-    return this->passPhotoWebP;
+const QString & IdCard::getPassPhotoWebP() const {
+    return passPhotoWebP;
 }
 
 bool IdCard::operator==(const IdCard &other) const{

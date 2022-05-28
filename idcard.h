@@ -40,10 +40,10 @@ public:
     void setChipUID(const QString &newChipUID);
 
     void setPassPhoto(QString passPhoto);
-    QString getPassPhoto();
+    const QString & getPassPhoto()  const;
 
     void setPassPhotoWebP(QString passPhotoWebP);
-    QString getPassPhotoWebP();
+    const QString & getPassPhotoWebP()  const;
 signals:
 
 private:

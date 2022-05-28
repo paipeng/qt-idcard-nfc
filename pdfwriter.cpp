@@ -181,7 +181,7 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
     HPDF_Page_SetTextRenderingMode (page, HPDF_FILL);
     HPDF_Page_BeginText (page);
     HPDF_Page_SetFontAndSize (page, font, 24);
-    HPDF_Page_MoveTextPos (page, 90, HPDF_Page_GetHeight (page) - 50);
+    HPDF_Page_MoveTextPos (page, 140, HPDF_Page_GetHeight (page) - 50);
     QString title("证卡");
     //const char dt[] = {(char)0xBA, (char)0xBA, (char)0xD7, (char)0xD6, 0x00};
     //HPDF_Page_ShowText (page, dt);
@@ -216,7 +216,56 @@ int PDFWriter::generateIdCard(const IdCard &idCard, QString fileName) {
 #endif
     image = HPDF_LoadRawImageFromMem(pdf, qrCodeImage.bits(), qrCodeImage.width(), qrCodeImage.height(), HPDF_CS_DEVICE_RGB, 8);
 
-    HPDF_Page_DrawImage (page, image, 120, HPDF_Page_GetHeight (page) - 110, 30, 30);//qrCodeImage.width(), qrCodeImage.height());
+    HPDF_Page_DrawImage (page, image, 150, HPDF_Page_GetHeight (page) - 110, 30, 30);//qrCodeImage.width(), qrCodeImage.height());
+
+
+    // draw pass photo
+    QImage passPhotoImage = QImage(idCard.getPassPhoto());
+    qDebug() << "passPhotoImage: " << passPhotoImage.width() << "-" << passPhotoImage.height() << " " << passPhotoImage.bitPlaneCount();
+    //image = HPDF_LoadJpegImageFromFile(pdf, idCard.getPassPhoto().toStdString().data());//pdf, passPhotoImage.bits(), passPhotoImage.width(), passPhotoImage.height(), HPDF_CS_DEVICE_RGB, 32);
+
+
+
+    bool alpha = passPhotoImage.hasAlphaChannel();
+    unsigned pixel_count = alpha ? 4 : 3;
+    unsigned stride = pixel_count * passPhotoImage.width();
+
+    uint8_t* data = new uint8_t[ stride * passPhotoImage.height() ];
+    if( !data )
+        return false;
+
+    //Make sure the input is in ARGB
+    if( passPhotoImage.format() != QImage::Format_RGB32 && passPhotoImage.format() != QImage::Format_ARGB32 )
+        passPhotoImage = passPhotoImage.convertToFormat( QImage::Format_ARGB32 );
+
+    for( int iy=0; iy<passPhotoImage.height(); ++iy ){
+        const QRgb* in = (const QRgb*)passPhotoImage.constScanLine( iy );
+        uint8_t* out = data + iy*stride;
+
+        for( int ix=0; ix<passPhotoImage.width(); ++ix, ++in ){
+            *(out++) = qRed( *in );
+            *(out++) = qGreen( *in );
+            *(out++) = qBlue( *in );
+            if( alpha )
+                *(out++) = qAlpha( *in );
+        }
+    }
+
+
+
+    image = HPDF_LoadRawImageFromMem(pdf,
+                                    data,
+                                     passPhotoImage.width(),
+                                     passPhotoImage.height(),
+                                     HPDF_CS_DEVICE_RGB,
+                                     8);
+    delete[] data;
+
+    int passPhotoWidth = 90;
+    int passPhotoHeight = passPhotoImage.height() * passPhotoWidth/ passPhotoImage.width();
+    HPDF_Page_DrawImage (page, image, 40, HPDF_Page_GetHeight (page) - passPhotoHeight - 30, passPhotoWidth, passPhotoHeight);//qrCodeImage.width(), qrCodeImage.height());
+
+
 
 
     HPDF_Page_SetFontAndSize (page, font, 10);
