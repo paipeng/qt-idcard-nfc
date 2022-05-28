@@ -73,6 +73,7 @@ private:
     void addLog(unsigned char* data, int data_len, int direction) override;
     void addLog2(QString text, int state) override;
     void encodeWebP(const QImage& image, const QString& saveFilePath);
+    void setPhotoImage(const QString & filePath);
 
 private:
     Ui::MainWindow *ui;

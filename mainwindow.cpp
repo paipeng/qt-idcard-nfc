@@ -213,7 +213,7 @@ void MainWindow::load() {
 #endif
         //int index = idCards.indexOf(idCard);
         qDebug() << index << "  -- " << idCard.getId() << " " << idCard.getName() << " " << idCard.getExpireDate() << " " << idCard.getCompany()
-                 << " " << idCard.getChipUID();
+                 << " " << idCard.getChipUID() << " " << idCard.getPassPhoto();
         item = new QStandardItem(QString("%1").arg(idCard.getId()));
         model->setItem(index, 0, item);
 
@@ -261,6 +261,8 @@ void MainWindow::load() {
     //ui->tableView->setColumnWidth(0,101);
     //ui->tableView->setColumnWidth(1,102);
     ui->tableView->setColumnWidth(5,180);
+    ui->tableView->setColumnWidth(6,180);
+    ui->tableView->setColumnWidth(7,180);
     //ui->tableView->setShowGrid(true);
     //ui->tableView->show();
 }
@@ -421,6 +423,7 @@ void MainWindow::updateInputTextField(IdCard idCard) {
     ui->companyLineEdit->setText(idCard.getCompany());
     ui->serialNumberLineEdit->setText(idCard.getSerialNumber());
     ui->chipUIDLineEdit->setText(idCard.getChipUID());
+    setPhotoImage(idCard.getPassPhoto());
 }
 
 void MainWindow::initCameras() {
@@ -876,17 +879,28 @@ void MainWindow::labelClicked() {
         tr("open_image"), "/Users/paipeng/Documents", tr("image_file_format"));
     qDebug() << "selected file: " << passPhoto;
 
-    passPhotoImage = QImage(passPhoto);
-    QPixmap pixmap = QPixmap::fromImage(passPhotoImage);
+    setPhotoImage(passPhoto);
+}
 
+void MainWindow::setPhotoImage(const QString & filePath) {
     int w = ui->photoLabel->width();
     int h = ui->photoLabel->height();
+    passPhotoImage = QImage(filePath);
 
-    ui->photoLabel->setPixmap(pixmap.scaled(w,h,Qt::KeepAspectRatio));
+    if (!passPhotoImage.isNull()) {
+        QPixmap pixmap = QPixmap::fromImage(passPhotoImage);
 
-    IdCard idCard = getSelectedIdCard();
-    if (idCard.getId() > 0) {
-        qDebug() << "passPhoto: " << idCard.getPassPhoto();
+
+        ui->photoLabel->setPixmap(pixmap.scaled(w,h,Qt::KeepAspectRatio));
+
+        IdCard idCard = getSelectedIdCard();
+        if (idCard.getId() > 0) {
+            qDebug() << "passPhoto: " << idCard.getPassPhoto();
+        }
+    } else {
+        QImage passphoto = QImage(":/resources/images/passphoto_icon.png");
+        QPixmap pixmap = QPixmap::fromImage(passphoto);
+        ui->photoLabel->setPixmap(pixmap.scaled(w,h,Qt::KeepAspectRatio));
     }
 }
 

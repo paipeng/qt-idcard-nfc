@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/resources/images">
+    <qresource prefix="/">
         <file>resources/images/passphoto_icon.png</file>
     </qresource>
 </RCC>
