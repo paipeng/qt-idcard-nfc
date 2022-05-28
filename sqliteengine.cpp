@@ -244,3 +244,27 @@ IdCard SqliteEngine::updateChipUID(IdCard idCard, QString chipUID) {
         return idCard;
     }
 }
+
+IdCard SqliteEngine::updatePassPhoto(IdCard idCard, QString passPhoto, QString passPhotoWebP) {
+    qDebug() << "updatePassPhoto: " << passPhoto << " -> " << passPhotoWebP;
+    QSqlQuery sql_query;
+    QString select_sql = "update idcard set pass_photo=:passPhoto, pass_photo_webp=:passPhotoWebP where id =:id";
+    sql_query.prepare(select_sql);
+    qDebug() << "1";
+    sql_query.bindValue(":passPhoto", passPhoto);
+    sql_query.bindValue(":passPhotoWebP", passPhotoWebP);
+    qDebug() << "2";
+    sql_query.bindValue(":id", (int)idCard.getId());
+    qDebug() << "3";
+    qDebug() << "before update " << sql_query.lastQuery();
+    if(!sql_query.exec()) {
+        qDebug() << "sqlite error: " << sql_query.lastError();
+        return IdCard(NULL);
+    } else {
+        qDebug() << "updateChipUID success " << sql_query.lastQuery();
+
+        idCard.setPassPhoto(passPhoto);
+        idCard.setPassPhotoWebP(passPhotoWebP);
+        return idCard;
+    }
+}

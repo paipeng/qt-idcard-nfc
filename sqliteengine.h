@@ -22,6 +22,7 @@ public:
     IdCard updateChipUID(IdCard idCard, QString chipUID);
     IdCard getIdCardBySerialNumber(QString serialNumber);
     IdCard getIdCardByChipUID(QString chipUID);
+    IdCard updatePassPhoto(IdCard idCard, QString passPhoto, QString passPhotoWebP);
 
 signals:
 private:
