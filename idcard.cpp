@@ -34,6 +34,8 @@ IdCard::IdCard(const IdCard &other):IdCard(NULL) {
     setCompany(other.company);
     setSerialNumber(other.serialNumber);
     setChipUID(other.chipUID);
+    setPassPhoto(other.passPhoto);
+    setPassPhotoWebP(other.passPhotoWebP);
 }
 
 void IdCard::setName(QString name) {
