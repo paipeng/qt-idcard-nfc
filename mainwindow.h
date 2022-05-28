@@ -74,7 +74,7 @@ private:
     void addLog2(QString text, int state) override;
     void encodeWebP(const QImage& image, const QString& saveFilePath);
     void setPhotoImage(const QString & filePath);
-
+    void setPhotoWebPImage(const QString &filePath);
 private:
     Ui::MainWindow *ui;
     SqliteEngine * sqliteEngine;

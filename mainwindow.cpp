@@ -424,6 +424,7 @@ void MainWindow::updateInputTextField(IdCard idCard) {
     ui->serialNumberLineEdit->setText(idCard.getSerialNumber());
     ui->chipUIDLineEdit->setText(idCard.getChipUID());
     setPhotoImage(idCard.getPassPhoto());
+    setPhotoWebPImage(idCard.getPassPhotoWebP());
 }
 
 void MainWindow::initCameras() {
@@ -904,6 +905,19 @@ void MainWindow::setPhotoImage(const QString & filePath) {
     }
 }
 
+void MainWindow::setPhotoWebPImage(const QString &filePath) {
+    qDebug() << "setPhotoWebPImage: " << filePath;
+    QImage readImage;
+    cpWebP.read(filePath, &readImage);
+    qDebug() << "read image size: " << readImage.width() << "-" << readImage.height();
+
+    int w = ui->webpLabel->width();
+    int h = ui->webpLabel->height();
+    QPixmap pixmap = QPixmap::fromImage(readImage);
+    ui->webpLabel->setPixmap(pixmap.scaled(w,h,Qt::KeepAspectRatio));
+
+}
+
 void MainWindow::encodeWebP(const QImage& image, const QString& saveFilePath) {
     qDebug() << "encodeWebP: " << saveFilePath;
     int target_size = 4096;
@@ -923,11 +937,7 @@ void MainWindow::encodeWebP(const QImage& image, const QString& saveFilePath) {
         cpWebP.save(image.scaledToHeight(h, Qt::SmoothTransformation), saveFilePath, target_size);
     }
 
-    /*
-    QImage readImage;
-    cpWebP.read(filepath, &readImage);
-    qDebug() << "read image size: " << readImage.width() << "-" << readImage.height();
-    ui->webpLabel->setPixmap(QPixmap::fromImage(readImage));
-    */
+
+    setPhotoWebPImage(saveFilePath);
 }
 
