@@ -36,6 +36,7 @@ IdCard::IdCard(const IdCard &other):IdCard(NULL) {
     setChipUID(other.chipUID);
     setPassPhoto(other.passPhoto);
     setPassPhotoWebP(other.passPhotoWebP);
+    setPassPhotoSize(other.passPhotoSize);
 }
 
 void IdCard::setName(QString name) {
@@ -106,6 +107,8 @@ void IdCard::read(const QJsonObject &json) {
     if (json.contains("passPhotoWebP") && json["passPhotoWebP"].isDouble())
         passPhotoWebP = json["passPhotoWebP"].toString();
 
+    if (json.contains("passPhotoSize") && json["passPhotoSize"].isDouble())
+        passPhotoSize = json["passPhotoSize"].toInt();
 }
 
 void IdCard::write(QJsonObject &json) const {
@@ -118,6 +121,7 @@ void IdCard::write(QJsonObject &json) const {
 
     json["passPhoto"] = passPhoto;
     json["passPhotoWebP"] = passPhotoWebP;
+    json["passPhotoSize"] = passPhotoSize;
 
 
 }
@@ -149,6 +153,14 @@ void IdCard::setPassPhotoWebP(QString passPhotoWebP) {
 
 const QString & IdCard::getPassPhotoWebP() const {
     return passPhotoWebP;
+}
+
+void IdCard::setPassPhotoSize(int passPhotoSize) {
+    this->passPhotoSize = passPhotoSize;
+}
+
+const int IdCard::getPassPhotoSize()  const {
+    return passPhotoSize;
 }
 
 bool IdCard::operator==(const IdCard &other) const{

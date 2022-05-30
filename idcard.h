@@ -44,6 +44,10 @@ public:
 
     void setPassPhotoWebP(QString passPhotoWebP);
     const QString & getPassPhotoWebP()  const;
+
+
+    void setPassPhotoSize(int passPhotoSize);
+    const int getPassPhotoSize()  const;
 signals:
 
 private:
@@ -56,6 +60,7 @@ private:
     QString chipUID;
     QString passPhoto;
     QString passPhotoWebP;
+    int passPhotoSize;
 };
 
 #endif // IDCARD_H
