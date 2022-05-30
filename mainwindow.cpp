@@ -424,7 +424,7 @@ void MainWindow::updateInputTextField(IdCard idCard) {
     ui->serialNumberLineEdit->setText(idCard.getSerialNumber());
     ui->chipUIDLineEdit->setText(idCard.getChipUID());
     setPhotoImage(idCard.getPassPhoto());
-    setPhotoWebPImage(idCard.getPassPhotoWebP());
+    //setPhotoWebPImage(idCard.getPassPhotoWebP());
 }
 
 void MainWindow::initCameras() {
@@ -525,7 +525,7 @@ void MainWindow::updateStatusBarMessage(QString message) {
 }
 
 void MainWindow::receiveResponse(unsigned char* data, int data_len) {
-    qDebug() << "receiveResponse len: " << data_len;
+    //qDebug() << "receiveResponse len: " << data_len;
     if (data_len != MAX_RESPONSE && data_len > 2) {
         // convert data -> hex
         QString response;
@@ -566,12 +566,12 @@ void MainWindow::addLog(unsigned char* data, int data_len, int direction) {
 
     text.append("</font>");
 
-    //qDebug() << "addLog: " << text;
+    qDebug() << "addLog: " << text;
     //ui->logTextEdit->append(text);
 }
 
 void MainWindow::addLog2(QString text, int state) {
-    //qDebug() << "addLog2: " << text << " state: " << state;
+    qDebug() << "addLog2: " << text << " state: " << state;
 }
 
 
@@ -763,9 +763,14 @@ void MainWindow::writeNFC() {
     if (fm1208.isDeviceConnected()) {
 #endif
         bool ok;
+#if 0
         QString text = QInputDialog::getText(this, tr("write_nfc_idcard"),
                                             tr("write_nfc_data"), QLineEdit::Normal,
                                             "", &ok);
+#else
+        QString text = "ABCD1234 EAFFBDA2";
+        ok = true;
+#endif
         // QDir::home().dirName()
         if (ok && !text.isEmpty()) {
             qDebug() << "text: " << text;

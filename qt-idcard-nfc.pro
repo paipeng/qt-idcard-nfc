@@ -21,6 +21,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     pdfwriter.cpp \
+    smutil.cpp \
     sqliteengine.cpp
 
 HEADERS += \
@@ -32,6 +33,7 @@ HEADERS += \
     keyenterreceiver.h \
     mainwindow.h \
     pdfwriter.h \
+    smutil.h \
     sqliteengine.h
 
 # decoder/reader
@@ -116,6 +118,7 @@ DEPENDPATH += $$PWD/libs/x64
 INCLUDEPATH += $$PWD/include/zxing
 INCLUDEPATH += $$PWD/include/libharu
 INCLUDEPATH += $$PWD/include/cpcamera
+INCLUDEPATH += $$PWD/include/sm
 
 
 #DEFINES += CP_SMARTCARD_LIBRARY
@@ -135,6 +138,12 @@ INCLUDEPATH += $$PWD/../qt-webp-demo
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../qt-webp-demo/release/ -lqt-webp
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../qt-webp-demo/debug/ -lqt-webp
 else:unix: LIBS += -L$$PWD/libs/x64/ -lqt-webp
+
+
+# SM4
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libs/x64/release/ -lSM4
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libs/x64/debug/ -lSM4
+else:unix: LIBS += -L$$PWD/libs/x64/ -lSM4
 
 RESOURCES += \
     qt-idcard-nfc.qrc
