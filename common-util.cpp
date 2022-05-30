@@ -33,12 +33,13 @@ IdCard convertStringToIdCard(QString text) {
 }
 
 QString convertIdCardToString(const IdCard &idCard) {
-    QString data = QString("姓名: %1\n单位: %2\n证卡编号: %3\n过期日期: %4\n芯片序号: %5").arg(
+    QString data = QString("姓名: %1\n单位: %2\n证卡编号: %3\n过期日期: %4\n芯片序号: %5\n照片尺寸: %6").arg(
                 idCard.getName(),
                 idCard.getCompany(),
                 idCard.getSerialNumber(),
                 idCard.getExpireDate().toString(DATE_FORMAT),
-                idCard.getChipUID()
+                idCard.getChipUID(),
+                QString(idCard.getPassPhotoSize())
                 );
     return data;
 }
