@@ -831,6 +831,17 @@ void MainWindow::writeNFC() {
                                             break;
                                         }
                                     }
+
+
+                                    QImage webPImage;
+                                    cpWebP.readFromData(data2, data_size, &webPImage);
+
+                                    int w = ui->webpLabel->width();
+                                    int h = ui->webpLabel->height();
+                                    QPixmap pixmap = QPixmap::fromImage(webPImage);
+                                    ui->webpLabel->setPixmap(pixmap.scaled(w,h,Qt::KeepAspectRatio));
+
+                                    free(data2);
                                 }
 #endif
                                 QMessageBox::information(this, tr("idcard_write_nfc_title"), tr("idcard_write_nfc_success"), QMessageBox::Ok);
