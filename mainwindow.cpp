@@ -820,13 +820,22 @@ void MainWindow::writeNFC() {
                                 fm1208.writeFileData(0x01, 0x400, (unsigned char*)data.toStdString().data(), (int)strlen(data.toStdString().data()));
 
 
+                                // 1. read data from file
                                 QByteArray byteArray = readFile(idCard.getPassPhotoWebP());
                                 if (byteArray.length() > 0) {
                                     qDebug() << "write data size: " << byteArray.length();
-                                    // file size: 4096 (max)
-                                    fm1208.writeFileData(0x02, 0x1000, (unsigned char*)byteArray.data(), (int)byteArray.length());
 
-                                    // read file data
+                                    // 2. encrypt
+                                    int encoded_data_len = 0;
+                                    unsigned char *encoded_data = smUtil.sm4Encrypt((unsigned char*)byteArray.data(), byteArray.length(), &encoded_data_len);
+
+
+                                    // 3. write to chip
+                                    // file size: 4096 (max)
+                                    //fm1208.writeFileData(0x02, 0x1000, (unsigned char*)byteArray.data(), (int)byteArray.length());
+                                    fm1208.writeFileData(0x02, 0x1000, encoded_data, encoded_data_len);
+
+                                    // 4. read file data
                                     int data_size = 0;
                                     unsigned char* data2 = fm1208.readFileData(0x02, &data_size);
                                     qDebug() << "readFileData size: " << data_size << " original data size: " << byteArray.length();
@@ -840,15 +849,22 @@ void MainWindow::writeNFC() {
                                         }
                                     }
 
+                                    // 5. decrypt
+                                    unsigned char *decoded_data = smUtil.sm4Decrypt(data2, data_size, data_size);
 
+
+                                    // 6. convert to QImage
                                     QImage webPImage;
-                                    cpWebP.readFromData(data2, data_size, &webPImage);
+                                    //cpWebP.readFromData(data2, data_size, &webPImage);
+                                    cpWebP.readFromData(decoded_data, byteArray.length(), &webPImage);
 
                                     int w = ui->webpLabel->width();
                                     int h = ui->webpLabel->height();
                                     QPixmap pixmap = QPixmap::fromImage(webPImage);
                                     ui->webpLabel->setPixmap(pixmap.scaled(w,h,Qt::KeepAspectRatio));
 
+                                    free(encoded_data);
+                                    free(decoded_data);
                                     free(data2);
                                 }
 #endif
