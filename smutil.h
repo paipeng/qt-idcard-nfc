@@ -3,17 +3,17 @@
 
 #include <QObject>
 #include "sm4.h"
-#define SM4_KEY_SIZE 16
+#define SM4_BLOCK_SIZE 16
 
 class SMUtil
 {
 public:
     SMUtil();
     void setSM4Key(unsigned char *key);
-    char* sm4Encrypt(unsigned char* data, int data_len);
-    char* sm4Decrypt(unsigned char* data, int data_len);
+    unsigned char* sm4Encrypt(unsigned char* data, int data_len, int *encoded_data_len);
+    unsigned char* sm4Decrypt(unsigned char* data, int data_len, int decoded_data_len);
 private:
-    unsigned char sm4Key[SM4_KEY_SIZE];
+    unsigned char sm4Key[SM4_BLOCK_SIZE];
     sm4_context ctx;
 };
 
