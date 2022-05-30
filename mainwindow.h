@@ -11,6 +11,7 @@
 #include "nfc.h"
 #include "fm1208.h"
 #include "cpwebp.h"
+#include "smutil.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -91,5 +92,6 @@ private:
     QImage passPhotoImage;
     QString passPhoto;
     CPWebP cpWebP;
+    SMUtil smUtil;
 };
 #endif // MAINWINDOW_H

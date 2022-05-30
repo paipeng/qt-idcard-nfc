@@ -70,6 +70,9 @@ MainWindow::MainWindow(QWidget *parent)
     toggleWatch();
 
     QObject::connect(ui->photoLabel, SIGNAL(clicked()), this, SLOT(labelClicked()));
+
+
+    smUtil.test();
 }
 
 MainWindow::~MainWindow() {
