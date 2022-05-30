@@ -712,7 +712,8 @@ void MainWindow::readNFC() {
             }
             // read ndef data
             short fileId = 0x01;
-            unsigned char* data = fm1208.readFileData(fileId, 0x400);
+            int data_size = 0;
+            unsigned char* data = fm1208.readFileData(fileId, &data_size);
             qDebug() << "readNDEFText: " << " data_len: " << strlen((char*)data);
             if (data != NULL) {
                 //QString text(std::string((char*)data));
@@ -813,9 +814,23 @@ void MainWindow::writeNFC() {
 
                                 QByteArray byteArray = readFile(idCard.getPassPhotoWebP());
                                 if (byteArray.length() > 0) {
+                                    qDebug() << "write data size: " << byteArray.length();
                                     // file size: 4096 (max)
-                                    fm1208.writeFileData(0x02, byteArray.length(), (unsigned char*)byteArray.data(), (int)byteArray.length());
+                                    fm1208.writeFileData(0x02, 0x1000, (unsigned char*)byteArray.data(), (int)byteArray.length());
 
+                                    // read file data
+                                    int data_size = 0;
+                                    unsigned char* data2 = fm1208.readFileData(0x02, &data_size);
+                                    qDebug() << "readFileData size: " << data_size << " original data size: " << byteArray.length();
+                                    for (int i = 0; i < data.length(); i++) {
+                                        if ((unsigned char)(byteArray.data()[i]) != data2[i]) {
+                                            qDebug() << "read != write: " << i << " : " << (unsigned char)byteArray.data()[i] << " - " << (int)data2[i];
+
+                                        }
+                                        if (i > 10) {
+                                            break;
+                                        }
+                                    }
                                 }
 #endif
                                 QMessageBox::information(this, tr("idcard_write_nfc_title"), tr("idcard_write_nfc_success"), QMessageBox::Ok);
