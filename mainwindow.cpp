@@ -772,6 +772,7 @@ void MainWindow::writeNFC() {
                                             "", &ok);
 #else
         QString text = "ABCD1234 EAFFBDA2";
+        //text = "ABCD0000 BA7DBEA2";
         ok = true;
 #endif
         // QDir::home().dirName()
@@ -817,9 +818,10 @@ void MainWindow::writeNFC() {
 #if USE_NFC
                                 nfc.writeNDEFText(data.toStdString().data(), (int)strlen(data.toStdString().data()));
 #else
+                                fm1208.eraseData();
                                 fm1208.writeFileData(0x01, 0x400, (unsigned char*)data.toStdString().data(), (int)strlen(data.toStdString().data()));
 
-
+#if 1
                                 // 1. read data from file
                                 QByteArray byteArray = readFile(idCard.getPassPhotoWebP());
                                 if (byteArray.length() > 0) {
@@ -867,6 +869,8 @@ void MainWindow::writeNFC() {
                                     free(decoded_data);
                                     free(data2);
                                 }
+#endif
+
 #endif
                                 QMessageBox::information(this, tr("idcard_write_nfc_title"), tr("idcard_write_nfc_success"), QMessageBox::Ok);
 
